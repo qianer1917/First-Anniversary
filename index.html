@@ -10,16 +10,11 @@ body{
     margin:0;
     background:black;
     color:white;
-    font-family: "Noto Sans TC", Arial, sans-serif;
+    font-family: Arial, "Noto Sans TC", sans-serif;
     overflow:hidden;
 }
 
-/* 如果你有字體檔，把檔名放這裡 */
-@font-face {
-    font-family: "CustomFont";
-    src: url("./font.ttf"); /* ← 你之後把字體檔改名放這裡 */
-}
-
+/* 每一幕 */
 .scene{
     position:absolute;
     width:100%;
@@ -34,14 +29,17 @@ body{
     transition:opacity 1s ease;
 }
 
+/* 只顯示 active */
 .scene.active{
     opacity:1;
 }
 
+/* 發光文字 */
 .glow{
-    text-shadow:0 0 10px white, 0 0 20px #66ccff;
+    text-shadow:0 0 10px #fff, 0 0 20px #66ccff;
 }
 
+/* 按鈕 */
 .btn{
     margin-top:20px;
     padding:10px 18px;
@@ -61,72 +59,82 @@ body{
 }
 
 @keyframes typing{
-    from{ width:0 }
-    to{ width:100% }
+    from{width:0}
+    to{width:100%}
 }
 
 @keyframes blink{
-    50%{ border-color:transparent }
+    50%{border-color:transparent}
 }
 </style>
 </head>
 
 <body>
 
-<!-- 每一幕 -->
+<!-- 🌌 Scene 1 -->
 <div class="scene active">
     <h1 class="glow">本沉浸式系统已开启</h1>
+    <p>视觉影像生成中...</p>
     <button class="btn" onclick="nextScene()">进入</button>
 </div>
 
+<!-- 🌌 Scene 2 -->
 <div class="scene">
     <h2 class="glow typing">您已进入船舱</h2>
 </div>
 
+<!-- 🌌 Scene 3 -->
 <div class="scene">
     <h2 class="glow typing">正在连接系统核心...</h2>
 </div>
 
+<!-- 🌌 Scene 4 -->
 <div class="scene">
     <h2 class="glow">欢迎星航共乘者</h2>
 </div>
 
+<!-- 🌌 Scene 5 -->
 <div class="scene">
     <h2 class="glow">我是小奈领航员</h2>
 </div>
 
+<!-- 🌌 Scene 6 -->
 <div class="scene">
     <h2 class="glow typing">正在步入星际轨道...</h2>
 </div>
 
+<!-- 🌌 Scene 7 -->
 <div class="scene">
     <h2 class="glow">探索中...</h2>
 </div>
 
+<!-- 🌌 Scene 8 -->
 <div class="scene">
     <h2 class="glow">已进入稳定航行模式</h2>
 </div>
 
+<!-- 🌌 Scene 9 -->
 <div class="scene">
     <h2 class="glow">正在进入回忆星系...</h2>
 </div>
 
+<!-- 🌌 Scene 10 -->
 <div class="scene">
     <h2 class="glow">欢迎踏入回忆星系</h2>
 </div>
 
+<!-- 🌌 Scene 11 -->
 <div class="scene">
     <h2 class="glow">记得今天是什么日子吗？</h2>
 </div>
 
+<!-- 🌌 Scene 12 -->
 <div class="scene">
     <h1 class="glow">今天是一周年纪念日</h1>
+    <p>谢谢一路走来的我们</p>
 </div>
 
-<div class="scene">
-    <h2 class="glow">谢谢一路走来的我们</h2>
-</div>
-
+<!-- 🌌 Scene 13 -->
 <div class="scene">
     <h2 class="glow">我们还要一起走很久</h2>
 </div>
@@ -136,9 +144,17 @@ let index = 0;
 const scenes = document.querySelectorAll(".scene");
 
 function nextScene(){
+
+    // 安全檢查
+    if(index >= scenes.length) return;
+
+    // 目前消失
     scenes[index].classList.remove("active");
+
+    // 下一頁
     index++;
 
+    // 防止超界
     if(index >= scenes.length){
         index = scenes.length - 1;
         return;
@@ -150,28 +166,3 @@ function nextScene(){
 
 </body>
 </html>
-<script>
-let index = 0;
-const scenes = document.querySelectorAll(".scene");
-
-console.log("scene數量:", scenes.length);
-
-function nextScene(){
-    console.log("clicked");
-
-    if(!scenes.length){
-        alert("JS沒有抓到scene（DOM問題）");
-        return;
-    }
-
-    scenes[index].classList.remove("active");
-    index++;
-
-    if(index >= scenes.length){
-        alert("已到最後一頁");
-        return;
-    }
-
-    scenes[index].classList.add("active");
-}
-</script>
