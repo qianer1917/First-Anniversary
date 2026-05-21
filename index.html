@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>回忆星系</title>
 
 <style>
@@ -16,21 +17,50 @@
 /* 🌌 全域 */
 body{
     margin:0;
-    padding:0;
-
     width:100%;
     height:100vh;
 
-    background:black;
-    color:white;
-
     overflow:hidden;
+
+    background:
+        radial-gradient(circle at center,
+        #111 0%,
+        #000 100%);
+
+    color:white;
 
     display:flex;
     justify-content:center;
     align-items:center;
 
-    font-family:"DongZhu","Noto Serif TC",serif;
+    font-family:"DongZhu","Noto Serif SC",serif;
+}
+
+/* 🌌 星空背景 */
+body::before{
+    content:"";
+
+    position:fixed;
+    inset:0;
+
+    background-image:
+        radial-gradient(white 1px, transparent 1px);
+
+    background-size:40px 40px;
+
+    opacity:0.15;
+
+    animation:starsMove 30s linear infinite;
+}
+
+@keyframes starsMove{
+    from{
+        transform:translateY(0);
+    }
+
+    to{
+        transform:translateY(40px);
+    }
 }
 
 /* 🌌 場景 */
@@ -40,8 +70,7 @@ body{
     width:100%;
     height:100%;
 
-    display:none;
-
+    display:flex;
     justify-content:center;
     align-items:center;
     flex-direction:column;
@@ -50,30 +79,67 @@ body{
 
     padding:30px;
     box-sizing:border-box;
+
+    opacity:0;
+    pointer-events:none;
+
+    transition:opacity 1s;
 }
 
-/* 🌌 啟用中的場景 */
+/* 🌌 顯示中的場景 */
 .scene.active{
-    display:flex;
+    opacity:1;
+    pointer-events:auto;
 }
 
-/* 🌌 發光 */
+/* 🌌 發光文字 */
 .glow{
     text-shadow:
-        0 0 10px #ffffff,
-        0 0 20px #66ccff,
-        0 0 40px #66ccff;
+        0 0 8px #fff,
+        0 0 18px #66ccff,
+        0 0 35px #66ccff;
+
+    animation:glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse{
+    0%{
+        text-shadow:
+            0 0 8px #fff,
+            0 0 18px #66ccff,
+            0 0 35px #66ccff;
+    }
+
+    50%{
+        text-shadow:
+            0 0 12px #fff,
+            0 0 24px #99ddff,
+            0 0 45px #99ddff;
+    }
+
+    100%{
+        text-shadow:
+            0 0 8px #fff,
+            0 0 18px #66ccff,
+            0 0 35px #66ccff;
+    }
 }
 
 /* 🌌 打字動畫 */
 .typing{
+    display:inline-block;
+
     overflow:hidden;
+
     white-space:nowrap;
+
+    width:0;
+
     border-right:2px solid white;
 
     animation:
-        typing 2.5s steps(30,end),
-        blink 0.7s infinite;
+        typing 2.8s steps(30,end) forwards,
+        blink .8s infinite;
 }
 
 @keyframes typing{
@@ -92,22 +158,53 @@ body{
     }
 }
 
-/* 🌌 提示文字 */
+/* 🌌 提示 */
 .tip{
     margin-top:20px;
+
     opacity:0.7;
+
     font-size:14px;
+
+    animation:tipFloat 2s ease-in-out infinite;
+}
+
+@keyframes tipFloat{
+    0%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-5px);
+    }
+
+    100%{
+        transform:translateY(0);
+    }
+}
+
+/* 🌌 標題 */
+h1{
+    font-size:42px;
+    margin-bottom:15px;
+}
+
+h2{
+    font-size:34px;
+}
+
+p{
+    font-size:20px;
+    line-height:1.8;
 }
 
 </style>
 </head>
 
-<!-- 🌌 點任意地方切換 -->
-<body onclick="nextScene()">
+<body>
 
 <!-- 🌌 Scene 1 -->
 <div class="scene active">
-
     <h1 class="glow">
         本沉浸式系统已开启
     </h1>
@@ -119,39 +216,31 @@ body{
     <div class="tip">
         点击任意位置继续
     </div>
-
 </div>
 
 <!-- 🌌 Scene 2 -->
 <div class="scene">
-
     <h2 class="glow typing">
         您已进入船舱
     </h2>
-
 </div>
 
 <!-- 🌌 Scene 3 -->
 <div class="scene">
-
     <h2 class="glow typing">
         正在连接系统核心...
     </h2>
-
 </div>
 
 <!-- 🌌 Scene 4 -->
 <div class="scene">
-
     <h2 class="glow">
         欢迎星航共乘者
     </h2>
-
 </div>
 
 <!-- 🌌 Scene 5 -->
 <div class="scene">
-
     <h2 class="glow">
         您好！我是小奈领航员
     </h2>
@@ -159,66 +248,52 @@ body{
     <p>
         很高兴能与你一同探险
     </p>
-
 </div>
 
 <!-- 🌌 Scene 6 -->
 <div class="scene">
-
     <h2 class="glow typing">
         正在步入星际轨道...
     </h2>
-
 </div>
 
 <!-- 🌌 Scene 7 -->
 <div class="scene">
-
     <h2 class="glow">
         探索中...
     </h2>
-
 </div>
 
 <!-- 🌌 Scene 8 -->
 <div class="scene">
-
     <h2 class="glow">
         已进入稳定航行模式
     </h2>
-
 </div>
 
 <!-- 🌌 Scene 9 -->
 <div class="scene">
-
     <h2 class="glow">
         正在进入回忆星系范围...
     </h2>
-
 </div>
 
 <!-- 🌌 Scene 10 -->
 <div class="scene">
-
     <h2 class="glow">
         欢迎踏入回忆星系
     </h2>
-
 </div>
 
 <!-- 🌌 Scene 11 -->
 <div class="scene">
-
     <h2 class="glow">
         记得今天是什么日子吗？
     </h2>
-
 </div>
 
 <!-- 🌌 Scene 12 -->
 <div class="scene">
-
     <h1 class="glow">
         今天是我们一周年的纪念日
     </h1>
@@ -226,21 +301,17 @@ body{
     <p>
         很感谢一路辛苦走来的我们
     </p>
-
 </div>
 
 <!-- 🌌 Scene 13 -->
 <div class="scene">
-
     <h2 class="glow">
         坚定选择对方的我们
     </h2>
-
 </div>
 
 <!-- 🌌 Scene 14 -->
 <div class="scene">
-
     <h2 class="glow">
         让我们一起欣赏拼图吧
     </h2>
@@ -250,16 +321,13 @@ body{
         <br><br>
         第四片 / 第五片 / 第六片
     </p>
-
 </div>
 
 <!-- 🌌 Scene 15 -->
 <div class="scene">
-
     <h2 class="glow typing">
         小奈说：我们还要一起走，好久好久
     </h2>
-
 </div>
 
 <script>
@@ -268,23 +336,41 @@ let index = 0;
 
 const scenes = document.querySelectorAll(".scene");
 
-/* 🌌 切換場景 */
-function nextScene(){
+let canClick = true;
 
-    /* 最後一頁停止 */
-    if(index >= scenes.length - 1){
-        return;
-    }
+/* 🌌 點擊切換 */
+document.body.addEventListener("click",()=>{
 
-    /* 隱藏目前 */
+    if(!canClick) return;
+
+    if(index >= scenes.length - 1) return;
+
+    canClick = false;
+
     scenes[index].classList.remove("active");
 
-    /* 下一頁 */
     index++;
 
-    /* 顯示下一頁 */
     scenes[index].classList.add("active");
-}
+
+    /* 🌌 重新觸發 typing */
+    const typing = scenes[index].querySelector(".typing");
+
+    if(typing){
+
+        typing.style.animation = "none";
+
+        void typing.offsetWidth;
+
+        typing.style.animation =
+            "typing 2.8s steps(30,end) forwards, blink .8s infinite";
+    }
+
+    setTimeout(()=>{
+        canClick = true;
+    },800);
+
+});
 
 </script>
 
