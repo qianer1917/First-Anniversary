@@ -1,110 +1,60 @@
-<!DOCTYPE html><html lang="zh">
+<!DOCTYPE html>
+<html lang="zh">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>回忆星系</title>
+
 <style>
-    body {
-        margin: 0;
-        background: black;
-        color: white;
-        font-family: Arial, sans-serif;
-        overflow: hidden;
-    }.scene {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    opacity: 0;
-    transition: opacity 1.2s ease;
-    text-align: center;
-    padding: 20px;
+body{
+    margin:0;
+    background:black;
+    color:white;
+    font-family: "Noto Sans TC", Arial, sans-serif;
+    overflow:hidden;
 }
 
-.scene.active {
-    opacity: 1;
+/* 如果你有字體檔，把檔名放這裡 */
+@font-face {
+    font-family: "CustomFont";
+    src: url("./font.ttf"); /* ← 你之後把字體檔改名放這裡 */
 }
 
-.glow {
-    text-shadow: 0 0 10px #ffffff, 0 0 20px #66ccff;
+.scene{
+    position:absolute;
+    width:100%;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:20px;
+    opacity:0;
+    transition:opacity 1s ease;
 }
 
-.typing {
-    border-right: 2px solid white;
-    white-space: nowrap;
-    overflow: hidden;
-    animation: typing 2.5s steps(30, end), blink 0.7s infinite;
+.scene.active{
+    opacity:1;
 }
 
-@keyframes typing {
-    from { width: 0 }
-    to { width: 100% }
+.glow{
+    text-shadow:0 0 10px white, 0 0 20px #66ccff;
 }
 
-@keyframes blink {
-    50% { border-color: transparent }
+.btn{
+    margin-top:20px;
+    padding:10px 18px;
+    border:1px solid white;
+    background:transparent;
+    color:white;
+    cursor:pointer;
 }
 
-.btn {
-    margin-top: 20px;
-    padding: 10px 20px;
-    border: 1px solid white;
-    background: transparent;
-    color: white;
-    cursor: pointer;
-}
-
-</style>
-</head>
-<body><div class="scene active" id="s1">
-    <h1 class="glow">本沉浸式系统已开启</h1>
-    <p>视觉景象生成中...</p>
-    <button class="btn" onclick="nextScene()">进入</button>
-</div><div class="scene" id="s2">
-    <h2 class="glow typing">您已进入船舱</h2>
-</div><div class="scene" id="s3">
-    <h2 class="glow typing">正在连接系统核心..</h2>
-</div><div class="scene" id="s4">
-    <h2 class="glow">欢迎星航共乘者</h2>
-    <p>正在随机匹配队伍中...</p>
-</div><div class="scene" id="s5">
-    <h2 class="glow">您好！我是小奈领航员</h2>
-    <p>很高兴能与你一同探险</p>
-</div><div class="scene" id="s6">
-    <h2 class="glow typing">正在步入星际轨道...</h2>
-</div><div class="scene" id="s7">
-    <h2 class="glow">探索中...</h2>
-</div><div class="scene" id="s8">
-    <h2 class="glow">已进入稳定航行模式</h2>
-</div><div class="scene" id="s9">
-    <h2 class="glow">正在进入回忆星系范围..</h2>
-</div><div class="scene" id="s10">
-    <h2 class="glow">欢迎踏入回忆星系</h2>
-</div><div class="scene" id="s11">
-    <h2 class="glow">记得今天是什么日子吗？</h2>
-</div><div class="scene" id="s12">
-    <h1 class="glow">今天是我们一周年的纪念日</h1>
-    <p>很感谢一路辛苦走来的我们</p>
-</div><div class="scene" id="s13">
-    <h2 class="glow">堅定選擇對方的我們</h2>
-</div><div class="scene" id="s14">
-    <h2 class="glow">让我们一起欣赏拼图吧</h2>
-    <p>第一片 / 第二片 / 第三片 / 第四片 / 第五片 / 第六片</p>
-</div><div class="scene" id="s15">
-    <h2 class="glow typing">小奈说：我们还要一起走，好久好久</h2>
-</div><script>
-let index = 0;
-const scenes = document.querySelectorAll('.scene');
-
-function nextScene() {
-    scenes[index].classList.remove('active');
-    index++;
-    if (index < scenes.length) {
-        scenes[index].classList.add('active');
-    }
-}
-</script></body>
-</html>
+/* 打字效果 */
+.typing{
+    overflow:hidden;
+    white-space:nowrap;
+    border-right:2px solid white;
+    width:0;
+    animation:typing 2s steps(20,end) forwards, blink 0
