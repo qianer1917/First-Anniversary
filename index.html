@@ -17,34 +17,26 @@
 body{
     margin:0;
     padding:0;
+
+    width:100%;
+    height:100vh;
+
     background:black;
     color:white;
+
     overflow:hidden;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
 
     font-family:"DongZhu","Noto Serif TC",serif;
 }
 
-/* 🌌 星空背景 */
-.stars{
-    position:fixed;
-    width:100%;
-    height:100%;
-    top:0;
-    left:0;
-    z-index:-1;
-
-    background:
-        radial-gradient(white 1px, transparent 1px),
-        radial-gradient(white 1px, transparent 1px),
-        black;
-
-    background-size:50px 50px,100px 100px;
-    background-position:0 0,25px 25px;
-}
-
-/* 🌌 每個場景 */
+/* 🌌 場景 */
 .scene{
     position:absolute;
+
     width:100%;
     height:100%;
 
@@ -56,11 +48,11 @@ body{
 
     text-align:center;
 
-    padding:20px;
+    padding:30px;
     box-sizing:border-box;
 }
 
-/* 🌌 顯示中的場景 */
+/* 🌌 啟用中的場景 */
 .scene.active{
     display:flex;
 }
@@ -73,7 +65,7 @@ body{
         0 0 40px #66ccff;
 }
 
-/* 🌌 打字效果 */
+/* 🌌 打字動畫 */
 .typing{
     overflow:hidden;
     white-space:nowrap;
@@ -100,37 +92,18 @@ body{
     }
 }
 
-/* 🌌 按鈕 */
-.btn{
-    margin-top:25px;
-
-    padding:12px 26px;
-
-    border:1px solid white;
-
-    background:transparent;
-
-    color:white;
-
-    font-size:16px;
-
-    cursor:pointer;
-
-    transition:0.3s;
-}
-
-.btn:hover{
-    background:white;
-    color:black;
+/* 🌌 提示文字 */
+.tip{
+    margin-top:20px;
+    opacity:0.7;
+    font-size:14px;
 }
 
 </style>
 </head>
 
-<body>
-
-<!-- 🌌 星空 -->
-<div class="stars"></div>
+<!-- 🌌 點任意地方切換 -->
+<body onclick="nextScene()">
 
 <!-- 🌌 Scene 1 -->
 <div class="scene active">
@@ -143,9 +116,9 @@ body{
         视觉影像生成中...
     </p>
 
-    <button class="btn" onclick="nextScene()">
-        进入
-    </button>
+    <div class="tip">
+        点击任意位置继续
+    </div>
 
 </div>
 
@@ -273,7 +246,8 @@ body{
     </h2>
 
     <p>
-        第一片 / 第二片 / 第三片 /
+        第一片 / 第二片 / 第三片
+        <br><br>
         第四片 / 第五片 / 第六片
     </p>
 
@@ -297,16 +271,16 @@ const scenes = document.querySelectorAll(".scene");
 /* 🌌 切換場景 */
 function nextScene(){
 
-    /* 隱藏目前頁 */
+    /* 最後一頁停止 */
+    if(index >= scenes.length - 1){
+        return;
+    }
+
+    /* 隱藏目前 */
     scenes[index].classList.remove("active");
 
     /* 下一頁 */
     index++;
-
-    /* 防止超出 */
-    if(index >= scenes.length){
-        index = scenes.length - 1;
-    }
 
     /* 顯示下一頁 */
     scenes[index].classList.add("active");
