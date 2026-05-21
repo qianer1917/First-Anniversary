@@ -150,3 +150,28 @@ function nextScene(){
 
 </body>
 </html>
+<script>
+let index = 0;
+const scenes = document.querySelectorAll(".scene");
+
+console.log("scene數量:", scenes.length);
+
+function nextScene(){
+    console.log("clicked");
+
+    if(!scenes.length){
+        alert("JS沒有抓到scene（DOM問題）");
+        return;
+    }
+
+    scenes[index].classList.remove("active");
+    index++;
+
+    if(index >= scenes.length){
+        alert("已到最後一頁");
+        return;
+    }
+
+    scenes[index].classList.add("active");
+}
+</script>
