@@ -1,10 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>我的網站</title>
+<meta charset="UTF-8">
+
+<style>
+
+@font-face {
+  font-family: "DongZhu";
+  src: url("./ZhuShi.ttf") format("truetype");
+}
+
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:black;
+  color:white;
+}
+
+.text{
+  font-family: "DongZhu";
+  font-size: 48px;
+
+  /* 白光 */
+  text-shadow: 0 0 10px white, 0 0 25px white;
+}
+
+</style>
 </head>
+
 <body>
-<h1>成功了</h1>
+<div class="text">如果這行變得不一樣就成功了</div>
 </body>
 </html>
