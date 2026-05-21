@@ -2,13 +2,14 @@
 <html lang="zh">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>回忆星系</title>
 
 <style>
 
-/* 🌸 東竹字體 */
+/* 🌸 字體 */
 @font-face{
     font-family:"DongZhu";
     src:url("./DongZhu.ttf") format("truetype");
@@ -17,8 +18,6 @@
 /* 🌌 全域 */
 body{
     margin:0;
-    padding:0;
-
     width:100%;
     height:100vh;
 
@@ -31,10 +30,13 @@ body{
     justify-content:center;
     align-items:center;
 
-    font-family:"DongZhu","Noto Serif TC",serif;
+    font-family:
+    "DongZhu",
+    "Noto Serif TC",
+    serif;
 }
 
-/* 🌌 金色星點 */
+/* 🌌 星點 */
 body::before{
     content:"";
 
@@ -42,13 +44,27 @@ body::before{
     inset:0;
 
     background-image:
-        radial-gradient(#ffe8a3 1px, transparent 1px);
+    radial-gradient(
+    #ffe8a3 1px,
+    transparent 1px);
 
-    background-size:50px 50px;
+    background-size:55px 55px;
 
-    opacity:.25;
+    opacity:.22;
 
-    animation:starsMove 25s linear infinite;
+    animation:
+    starsMove 30s linear infinite;
+}
+
+@keyframes starsMove{
+
+    from{
+        transform:translateY(0);
+    }
+
+    to{
+        transform:translateY(55px);
+    }
 }
 
 /* 🌠 流星 */
@@ -57,25 +73,29 @@ body::after{
 
     position:fixed;
 
-    top:-10%;
-    left:-10%;
+    top:-20%;
+    left:-20%;
 
     width:2px;
-    height:180px;
+    height:220px;
 
-    background:linear-gradient(
-        to bottom,
-        rgba(255,230,150,0),
-        rgba(255,230,150,.9),
-        rgba(255,230,150,0)
-    );
+    background:
+    linear-gradient(
+    to bottom,
+    transparent,
+    #ffe6a0,
+    transparent);
 
     transform:rotate(-35deg);
 
-    animation:meteor 6s linear infinite;
+    opacity:.7;
+
+    animation:
+    meteor 7s linear infinite;
 }
 
 @keyframes meteor{
+
     0%{
         transform:
         translate(0,0)
@@ -90,25 +110,16 @@ body::after{
 
     100%{
         transform:
-        translate(130vw,130vh)
+        translate(140vw,140vh)
         rotate(-35deg);
 
         opacity:0;
     }
 }
 
-@keyframes starsMove{
-    from{
-        transform:translateY(0);
-    }
-
-    to{
-        transform:translateY(50px);
-    }
-}
-
 /* 🌌 場景 */
 .scene{
+
     position:absolute;
 
     width:100%;
@@ -118,45 +129,57 @@ body::after{
 
     justify-content:center;
     align-items:center;
-    flex-direction:column;
 
     text-align:center;
 
-    padding:25px;
+    padding:30px;
+
     box-sizing:border-box;
 }
 
-/* 🌌 顯示 */
 .scene.active{
     display:flex;
 }
 
-/* 🌌 發光 */
-.glow{
-    text-shadow:
-        0 0 10px #fff4c2,
-        0 0 20px #ffd76a,
-        0 0 40px #ffd76a;
-}
+/* 🌌 主文字 */
+h1{
 
-/* 🌌 打字動畫 */
-.typing{
-    display:inline-block;
+    margin:0;
 
-    overflow:hidden;
+    color:white;
+
+    font-size:
+    clamp(24px,4vw,52px);
+
+    font-weight:normal;
 
     white-space:nowrap;
 
-    border-right:2px solid white;
+    overflow:hidden;
+
+    text-shadow:
+    0 0 10px #fff4c2,
+    0 0 25px #ffd76a,
+    0 0 40px #ffd76a;
+}
+
+/* 🌌 印刷輸入 */
+.typing{
+
+    display:inline-block;
 
     width:0;
 
+    border-right:
+    2px solid white;
+
     animation:
-        typing 2.5s steps(30,end) forwards,
-        blink .7s infinite;
+    typing 2.8s steps(30,end) forwards,
+    blink .7s infinite;
 }
 
 @keyframes typing{
+
     from{
         width:0;
     }
@@ -167,72 +190,21 @@ body::after{
 }
 
 @keyframes blink{
+
     50%{
         border-color:transparent;
     }
-}
-
-/* 🌌 向上浮現 */
-.floatUp{
-    opacity:0;
-
-    transform:translateY(40px);
-
-    animation:floatUp 1.5s ease forwards;
-}
-
-@keyframes floatUp{
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
-/* 🌌 閃爍 */
-.flash{
-    animation:flash 1s infinite;
-}
-
-@keyframes flash{
-    50%{
-        opacity:.3;
-    }
-}
-
-/* 🌌 字 */
-h1,h2{
-    line-height:1.6;
-    max-width:90%;
-}
-
-h1{
-    font-size:48px;
-}
-
-h2{
-    font-size:36px;
 }
 
 /* 🌌 手機 */
 @media(max-width:768px){
 
     h1{
-        font-size:30px;
-    }
 
-    h2{
-        font-size:22px;
-    }
+        font-size:
+        clamp(18px,5vw,28px);
 
-    .typing{
-
-        white-space:normal;
-
-        word-break:break-word;
-
-        width:100%;
-
-        border-right:none;
+        transform:scale(.92);
     }
 }
 
@@ -241,121 +213,106 @@ h2{
 
 <body onclick="nextScene()">
 
-<!-- 1 -->
 <div class="scene active">
-    <h1 class="glow">
-        本沉浸式系统已开启
-    </h1>
+<h1 class="typing">
+本沉浸式系统已开启
+</h1>
 </div>
 
-<!-- 2 -->
 <div class="scene">
-    <h2 class="glow typing">
-        视觉影像生成中...
-    </h2>
+<h1 class="typing">
+视觉影像生成中...
+</h1>
 </div>
 
-<!-- 3 -->
 <div class="scene">
-    <h2 class="glow typing">
-        您已进入船舱
-    </h2>
+<h1 class="typing">
+您已进入船舱
+</h1>
 </div>
 
-<!-- 4 -->
 <div class="scene">
-    <h2 class="glow typing">
-        正在连接系统核心...
-    </h2>
+<h1 class="typing">
+正在连接系统核心...
+</h1>
 </div>
 
-<!-- 5 -->
 <div class="scene">
-    <h2 class="glow">
-        欢迎星航共乘者
-    </h2>
+<h1 class="typing">
+欢迎星航共乘者
+</h1>
 </div>
 
-<!-- 6 -->
 <div class="scene">
-    <h2 class="glow">
-        您好！我是小奈领航员
-    </h2>
+<h1 class="typing">
+您好！我是小奈领航员
+</h1>
 </div>
 
-<!-- 7 -->
 <div class="scene">
-    <h2 class="glow typing">
-        正在步入星际轨道...
-    </h2>
+<h1 class="typing">
+正在步入星际轨道...
+</h1>
 </div>
 
-<!-- 8 -->
 <div class="scene">
-    <h2 class="glow floatUp">
-        状态稳定
-    </h2>
+<h1 class="typing">
+状态稳定
+</h1>
 </div>
 
-<!-- 9 -->
 <div class="scene">
-    <h2 class="glow floatUp">
-        距离正在缩短
-    </h2>
+<h1 class="typing">
+距离正在缩短
+</h1>
 </div>
 
-<!-- 10 -->
 <div class="scene">
-    <h2 class="glow typing">
-        正在进入回忆星系范围...
-    </h2>
+<h1 class="typing">
+正在进入回忆星系范围...
+</h1>
 </div>
 
-<!-- 11 -->
 <div class="scene">
-    <h2 class="glow">
-        欢迎踏入回忆星系
-    </h2>
+<h1 class="typing">
+欢迎踏入回忆星系
+</h1>
 </div>
 
-<!-- 12 -->
 <div class="scene">
-    <h2 class="glow">
-        记得今天是什么日子吗？
-    </h2>
+<h1 class="typing">
+记得今天是什么日子吗？
+</h1>
 </div>
 
-<!-- 13 -->
 <div class="scene">
-    <h1 class="glow">
-        今天是我们一周年的纪念日
-    </h1>
+<h1 class="typing">
+今天是我们一周年的纪念日
+</h1>
 </div>
 
-<!-- 14 -->
 <div class="scene">
-    <h2 class="glow">
-        坚定选择对方的我们
-    </h2>
+<h1 class="typing">
+坚定选择对方的我们
+</h1>
 </div>
 
-<!-- 15 -->
 <div class="scene">
-    <h2 class="glow typing">
-        小奈说：我们还要一起走，好久好久...
-    </h2>
+<h1 class="typing">
+让我们一起欣赏拼图吧
+</h1>
 </div>
 
-<!-- 16 -->
 <div class="scene">
-    <h2 class="glow typing">
-        最后，感谢你来到这个网站
-    </h2>
+<h1 class="typing">
+小奈说：我们还要一起走，好久好久...
+</h1>
+</div>
 
-    <div class="flash glow"
-    style="margin-top:20px;font-size:20px;">
-        ■ WEBSITE CONNECTED ■
-    </div>
+<div class="scene">
+<h1 class="typing">
+最后，感谢你来到这个网站
+</h1>
 </div>
 
 <script>
@@ -364,6 +321,19 @@ let index = 0;
 
 const scenes =
 document.querySelectorAll(".scene");
+
+function restartTyping(scene){
+
+    const text =
+    scene.querySelector(".typing");
+
+    text.style.animation = "none";
+
+    void text.offsetWidth;
+
+    text.style.animation =
+    "typing 2.8s steps(30,end) forwards, blink .7s infinite";
+}
 
 function nextScene(){
 
@@ -379,21 +349,13 @@ function nextScene(){
     scenes[index]
     .classList.add("active");
 
-    /* 🌌 重播 typing */
-    const typing =
-    scenes[index]
-    .querySelector(".typing");
-
-    if(typing){
-
-        typing.style.animation="none";
-
-        void typing.offsetWidth;
-
-        typing.style.animation=
-        "typing 2.5s steps(30,end) forwards, blink .7s infinite";
-    }
+    restartTyping(
+    scenes[index]);
 }
+
+/* 🌌 首頁先播放 */
+restartTyping(
+scenes[0]);
 
 </script>
 
