@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>回忆星系</title>
 
 <style>
@@ -21,16 +22,89 @@ body{
     width:100%;
     height:100vh;
 
+    overflow:hidden;
+
     background:black;
     color:white;
-
-    overflow:hidden;
 
     display:flex;
     justify-content:center;
     align-items:center;
 
     font-family:"DongZhu","Noto Serif TC",serif;
+}
+
+/* 🌌 金色星點 */
+body::before{
+    content:"";
+
+    position:fixed;
+    inset:0;
+
+    background-image:
+        radial-gradient(#ffe8a3 1px, transparent 1px);
+
+    background-size:50px 50px;
+
+    opacity:.25;
+
+    animation:starsMove 25s linear infinite;
+}
+
+/* 🌠 流星 */
+body::after{
+    content:"";
+
+    position:fixed;
+
+    top:-10%;
+    left:-10%;
+
+    width:2px;
+    height:180px;
+
+    background:linear-gradient(
+        to bottom,
+        rgba(255,230,150,0),
+        rgba(255,230,150,.9),
+        rgba(255,230,150,0)
+    );
+
+    transform:rotate(-35deg);
+
+    animation:meteor 6s linear infinite;
+}
+
+@keyframes meteor{
+    0%{
+        transform:
+        translate(0,0)
+        rotate(-35deg);
+
+        opacity:0;
+    }
+
+    10%{
+        opacity:1;
+    }
+
+    100%{
+        transform:
+        translate(130vw,130vh)
+        rotate(-35deg);
+
+        opacity:0;
+    }
+}
+
+@keyframes starsMove{
+    from{
+        transform:translateY(0);
+    }
+
+    to{
+        transform:translateY(50px);
+    }
 }
 
 /* 🌌 場景 */
@@ -48,11 +122,11 @@ body{
 
     text-align:center;
 
-    padding:30px;
+    padding:25px;
     box-sizing:border-box;
 }
 
-/* 🌌 啟用中的場景 */
+/* 🌌 顯示 */
 .scene.active{
     display:flex;
 }
@@ -60,9 +134,9 @@ body{
 /* 🌌 發光 */
 .glow{
     text-shadow:
-        0 0 10px #ffffff,
-        0 0 20px #66ccff,
-        0 0 40px #66ccff;
+        0 0 10px #fff4c2,
+        0 0 20px #ffd76a,
+        0 0 40px #ffd76a;
 }
 
 /* 🌌 打字動畫 */
@@ -73,13 +147,13 @@ body{
 
     white-space:nowrap;
 
-    width:0;
-
     border-right:2px solid white;
+
+    width:0;
 
     animation:
         typing 2.5s steps(30,end) forwards,
-        blink 0.7s infinite;
+        blink .7s infinite;
 }
 
 @keyframes typing{
@@ -98,14 +172,48 @@ body{
     }
 }
 
-/* 🌌 提示文字 */
-.tip{
-    margin-top:20px;
-    opacity:0.7;
-    font-size:14px;
+/* 🌌 向上浮現 */
+.floatUp{
+    opacity:0;
+
+    transform:translateY(40px);
+
+    animation:floatUp 1.5s ease forwards;
 }
 
-/* 🌌 手機修正 */
+@keyframes floatUp{
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* 🌌 閃爍 */
+.flash{
+    animation:flash 1s infinite;
+}
+
+@keyframes flash{
+    50%{
+        opacity:.3;
+    }
+}
+
+/* 🌌 字 */
+h1,h2{
+    line-height:1.6;
+    max-width:90%;
+}
+
+h1{
+    font-size:48px;
+}
+
+h2{
+    font-size:36px;
+}
+
+/* 🌌 手機 */
 @media(max-width:768px){
 
     h1{
@@ -113,241 +221,177 @@ body{
     }
 
     h2{
-        font-size:24px;
-        line-height:1.6;
+        font-size:22px;
     }
 
-    p{
-        font-size:18px;
-        line-height:1.8;
-    }
+    .typing{
 
-    /* 長句不要被切掉 */
-    .mobile-fix{
         white-space:normal;
-        word-break:break-word;
-        width:100%;
-        border-right:none;
-        animation:none;
-    }
 
+        word-break:break-word;
+
+        width:100%;
+
+        border-right:none;
+    }
 }
 
 </style>
 </head>
 
-<!-- 🌌 點任意地方切換 -->
 <body onclick="nextScene()">
 
-<!-- 🌌 Scene 1 -->
+<!-- 1 -->
 <div class="scene active">
-
     <h1 class="glow">
         本沉浸式系统已开启
     </h1>
-
-    <div class="tip">
-        点击任意位置继续
-    </div>
-
 </div>
 
-<!-- 🌌 Scene 2 -->
+<!-- 2 -->
 <div class="scene">
-
     <h2 class="glow typing">
         视觉影像生成中...
     </h2>
-
 </div>
 
-<!-- 🌌 Scene 3 -->
+<!-- 3 -->
 <div class="scene">
-
     <h2 class="glow typing">
         您已进入船舱
     </h2>
-
 </div>
 
-<!-- 🌌 Scene 4 -->
+<!-- 4 -->
 <div class="scene">
-
     <h2 class="glow typing">
         正在连接系统核心...
     </h2>
-
 </div>
 
-<!-- 🌌 Scene 5 -->
+<!-- 5 -->
 <div class="scene">
-
     <h2 class="glow">
         欢迎星航共乘者
     </h2>
-
 </div>
 
-<!-- 🌌 Scene 6 -->
+<!-- 6 -->
 <div class="scene">
-
     <h2 class="glow">
         您好！我是小奈领航员
     </h2>
-
-    <p>
-        很高兴能与你一同探险
-    </p>
-
 </div>
 
-<!-- 🌌 Scene 7 -->
+<!-- 7 -->
 <div class="scene">
-
     <h2 class="glow typing">
         正在步入星际轨道...
     </h2>
-
 </div>
 
-<!-- 🌌 Scene 8 -->
+<!-- 8 -->
 <div class="scene">
-
-    <h2 class="glow">
-        探索中...
+    <h2 class="glow floatUp">
+        状态稳定
     </h2>
-
 </div>
 
-<!-- 🌌 Scene 9 -->
+<!-- 9 -->
 <div class="scene">
-
-    <h2 class="glow">
-        已进入稳定航行模式
+    <h2 class="glow floatUp">
+        距离正在缩短
     </h2>
-
 </div>
 
-<!-- 🌌 Scene 10 -->
+<!-- 10 -->
 <div class="scene">
-
     <h2 class="glow typing">
         正在进入回忆星系范围...
     </h2>
-
 </div>
 
-<!-- 🌌 Scene 11 -->
+<!-- 11 -->
 <div class="scene">
-
     <h2 class="glow">
         欢迎踏入回忆星系
     </h2>
-
 </div>
 
-<!-- 🌌 Scene 12 -->
+<!-- 12 -->
 <div class="scene">
-
     <h2 class="glow">
         记得今天是什么日子吗？
     </h2>
-
 </div>
 
-<!-- 🌌 Scene 13 -->
+<!-- 13 -->
 <div class="scene">
-
     <h1 class="glow">
         今天是我们一周年的纪念日
     </h1>
-
-    <p>
-        很感谢一路辛苦走来的我们
-    </p>
-
 </div>
 
-<!-- 🌌 Scene 14 -->
+<!-- 14 -->
 <div class="scene">
-
     <h2 class="glow">
         坚定选择对方的我们
     </h2>
-
 </div>
 
-<!-- 🌌 Scene 15 -->
+<!-- 15 -->
 <div class="scene">
+    <h2 class="glow typing">
+        小奈说：我们还要一起走，好久好久...
+    </h2>
+</div>
 
-    <h2 class="glow">
-        让我们一起欣赏拼图吧
+<!-- 16 -->
+<div class="scene">
+    <h2 class="glow typing">
+        最后，感谢你来到这个网站
     </h2>
 
-    <p>
-        第一片 / 第二片 / 第三片
-        <br><br>
-        第四片 / 第五片 / 第六片
-    </p>
-
-</div>
-
-<!-- 🌌 Scene 16 -->
-<div class="scene">
-
-    <h2 class="glow mobile-fix">
-        小奈说：我们还要一起走，好久好久
-    </h2>
-
-</div>
-
-<!-- 🌌 Scene 17 -->
-<div class="scene">
-
-    <h1 class="glow">
-        回忆星系已永久记录
-    </h1>
-
-    <p>
-        我们的故事
-    </p>
-
+    <div class="flash glow"
+    style="margin-top:20px;font-size:20px;">
+        ■ WEBSITE CONNECTED ■
+    </div>
 </div>
 
 <script>
 
 let index = 0;
 
-const scenes = document.querySelectorAll(".scene");
+const scenes =
+document.querySelectorAll(".scene");
 
-/* 🌌 切換場景 */
 function nextScene(){
 
-    /* 最後一頁停止 */
     if(index >= scenes.length - 1){
         return;
     }
 
-    /* 隱藏目前 */
-    scenes[index].classList.remove("active");
+    scenes[index]
+    .classList.remove("active");
 
-    /* 下一頁 */
     index++;
 
-    /* 顯示下一頁 */
-    scenes[index].classList.add("active");
+    scenes[index]
+    .classList.add("active");
 
-    /* 🌌 重新觸發 typing 動畫 */
-    const typing = scenes[index].querySelector(".typing");
+    /* 🌌 重播 typing */
+    const typing =
+    scenes[index]
+    .querySelector(".typing");
 
     if(typing){
 
-        typing.style.animation = "none";
+        typing.style.animation="none";
 
         void typing.offsetWidth;
 
-        typing.style.animation =
-            "typing 2.5s steps(30,end) forwards, blink 0.7s infinite";
+        typing.style.animation=
+        "typing 2.5s steps(30,end) forwards, blink .7s infinite";
     }
 }
 
