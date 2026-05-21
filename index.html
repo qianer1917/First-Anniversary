@@ -57,4 +57,96 @@ body{
     white-space:nowrap;
     border-right:2px solid white;
     width:0;
-    animation:typing 2s steps(20,end) forwards, blink 0
+    animation:typing 2s steps(20,end) forwards, blink 0.7s infinite;
+}
+
+@keyframes typing{
+    from{ width:0 }
+    to{ width:100% }
+}
+
+@keyframes blink{
+    50%{ border-color:transparent }
+}
+</style>
+</head>
+
+<body>
+
+<!-- 每一幕 -->
+<div class="scene active">
+    <h1 class="glow">本沉浸式系统已开启</h1>
+    <button class="btn" onclick="nextScene()">进入</button>
+</div>
+
+<div class="scene">
+    <h2 class="glow typing">您已进入船舱</h2>
+</div>
+
+<div class="scene">
+    <h2 class="glow typing">正在连接系统核心...</h2>
+</div>
+
+<div class="scene">
+    <h2 class="glow">欢迎星航共乘者</h2>
+</div>
+
+<div class="scene">
+    <h2 class="glow">我是小奈领航员</h2>
+</div>
+
+<div class="scene">
+    <h2 class="glow typing">正在步入星际轨道...</h2>
+</div>
+
+<div class="scene">
+    <h2 class="glow">探索中...</h2>
+</div>
+
+<div class="scene">
+    <h2 class="glow">已进入稳定航行模式</h2>
+</div>
+
+<div class="scene">
+    <h2 class="glow">正在进入回忆星系...</h2>
+</div>
+
+<div class="scene">
+    <h2 class="glow">欢迎踏入回忆星系</h2>
+</div>
+
+<div class="scene">
+    <h2 class="glow">记得今天是什么日子吗？</h2>
+</div>
+
+<div class="scene">
+    <h1 class="glow">今天是一周年纪念日</h1>
+</div>
+
+<div class="scene">
+    <h2 class="glow">谢谢一路走来的我们</h2>
+</div>
+
+<div class="scene">
+    <h2 class="glow">我们还要一起走很久</h2>
+</div>
+
+<script>
+let index = 0;
+const scenes = document.querySelectorAll(".scene");
+
+function nextScene(){
+    scenes[index].classList.remove("active");
+    index++;
+
+    if(index >= scenes.length){
+        index = scenes.length - 1;
+        return;
+    }
+
+    scenes[index].classList.add("active");
+}
+</script>
+
+</body>
+</html>
