@@ -1,37 +1,250 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>星航共乘者 · 回忆星系航行日志</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<style>
+        body {
+            background: radial-gradient(circle at 30% 10%, #0a0f1e, #03060c);
+            font-family: 'Segoe UI', 'Inter', 'PingFang SC', Roboto, 'Helvetica Neue', sans-serif;
+            line-height: 1.5;
+            color: #edeff7;
+            padding: 2rem 1rem 4rem;
+            min-height: 100vh;
+        }
 
-@font-face {
-  font-family: "DongZhu";
-  src: url("./DongZhu.ttf") format("truetype");
-}
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background-image: radial-gradient(2px 2px at 20px 30px, rgba(255,255,240,0.2), transparent),
+                              radial-gradient(1px 1px at 80px 150px, rgba(255,240,210,0.25), transparent);
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            opacity: 0.5;
+            z-index: 0;
+            animation: starsFloat 60s linear infinite;
+        }
 
-body{
-  margin:0;
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:black;
-  color:white;
-}
+        @keyframes starsFloat {
+            0% { background-position: 0 0; }
+            100% { background-position: 200px 200px; }
+        }
 
-.text{
-  font-family: "DongZhu";
-  font-size: 48px;
+        .voyage-container {
+            max-width: 680px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
 
-  /* 白光 */
-  text-shadow: 0 0 10px white, 0 0 25px white;
-}
+        .log-card {
+            background: rgba(12, 20, 30, 0.55);
+            backdrop-filter: blur(4px);
+            border-radius: 2rem;
+            padding: 1.8rem 1.8rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(100, 150, 210, 0.25);
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+            will-change: transform, opacity;
+        }
 
-</style>
+        .log-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .log-card:hover {
+            border-color: rgba(160, 200, 255, 0.5);
+            background: rgba(18, 28, 42, 0.75);
+            box-shadow: 0 25px 40px -14px rgba(0,0,0,0.6);
+        }
+
+        .card-content {
+            font-size: 1.25rem;
+            font-weight: 400;
+            letter-spacing: 0.01em;
+            white-space: pre-wrap;
+            word-break: break-word;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .mono-preserve {
+            font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .memory-link {
+            color: #b9dcff;
+            text-decoration: none;
+            border-bottom: 1px dashed rgba(180, 210, 255, 0.6);
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .memory-link:hover {
+            color: white;
+            border-bottom-color: #9ac6ff;
+        }
+
+        @media (max-width: 550px) {
+            .log-card {
+                padding: 1.3rem 1.2rem;
+            }
+            .card-content {
+                font-size: 1rem;
+            }
+            .mono-preserve {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
 </head>
-
 <body>
-<div class="text">如果这行变得不一样就成功了</div>
+<div class="voyage-container"></div>
+
+<script>
+    // 全部文字已转换为简体中文，其余内容完全忠实于原 PDF
+    const pagesContent = [
+        { text: "本沉浸式系统已开启", isMono: false },
+        { text: "视觉景象生成中...", isMono: false },
+        { text: "您已进入船舱", isMono: false },
+        { text: "载入中...\n**载入中...**", isMono: false },
+        { text: "正在连接系统核心..", isMono: false },
+        { text: "欢迎星航共乘者", isMono: false },
+        { text: "正在随机匹配队伍中..", isMono: false },
+        { text: "您好！我是小奈领航员", isMono: false },
+        { text: "很高兴能够与你一同探险", isMono: false },
+        { text: "准备好了吗？", isMono: false },
+        { text: "5\n## 5\n## 5\n## 5\n## 5\n5\n## 5\n## 5\n## 5\n## 5\n##", isMono: true },
+        { text: "确认玩家状态中...", isMono: false },
+        { text: "状态：稳定", isMono: false },
+        { text: "正在步入星际轨道...", isMono: false },
+        { text: "已进入稳定航行模式", isMono: false },
+        { text: "探索中...", isMono: false },
+        { text: "探索中...", isMono: false },
+        { text: "探索中...", isMono: false },
+        { text: "值测到回忆星系", isMono: false },
+        { text: "目标已成功锁定", isMono: false },
+        { text: "正在前往此地", isMono: false },
+        { text: "距离：逐渐缩短", isMono: false },
+        { text: "正在进入回忆星系范围...", isMono: false },
+        { text: "光线强度提升", isMono: false },
+        { text: "感知功能调整同步", isMono: false },
+        { text: "即将抵达目的地", isMono: false },
+        { text: "请保持连线稳定", isMono: false },
+        { text: "抵达回忆星系", isMono: false },
+        { text: "0.0\n## [ ]\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0 0\n0\n0\n0\n0\n0\n0\n0\n0\n0", isMono: true },
+        { text: "无 无 无 无 无 无 无 无 无 无 无\n无 无 无 无 无 无 无 无 无 无 无\n无 无 无 无 无 无 无 无 无 无 无\n无 无 无 无 无 无 无 无 无 无 无\n无 无 无 无 无 无 无 无 无 无 无\n无 无 无 无 无 无 无 无 无 无 无\n无 无 无 无 无 无 无 无 无 无 无\n无", isMono: true },
+        { text: "程\n程\n程\n程\n程\n程\n程\n程\n程\n程\n程程\n程\n程\n程\n程\n程\n程\n程\n程\n程", isMono: true },
+        { text: "记得今天是什么日子吗？", isMono: false },
+        { text: "和月亮伊布已经\n365\n起始日: 2025-6-5 星期四\n今天是我们一遇年的纪念日", isMono: false },
+        { text: "很感谢一路辛苦走来的我们", isMono: false },
+        { text: "坚定选择对方的我们", isMono: false },
+        { text: "这是小安最喜欢与重要的东西", isMono: false },
+        { text: "让我们一起欣赏拼图吧 ~", isMono: false },
+        { text: "第一片\n第1页 | 初遇\n一开始,\n只是普通的日子。", isMono: false },
+        { text: "第二片\n第2页 | 出现另一只\n然后，\n有人走进来了。", isMono: false },
+        { text: "没有特别的事情，但变得不一样了。", isMono: false },
+        { text: "第四片\n第1页 | 初遇\n一开始,\n只是普通的日子。", isMono: false },
+        { text: "第五片", isMono: false },
+        { text: "第六片", isMono: false },
+        { text: "小奈说：我们还要一起走，好久好久", isMono: false },
+        { text: "最后...\n网址: https://myppt.cc/AjhUmp", isMono: false, isLink: true }
+    ];
+
+    const container = document.querySelector('.voyage-container');
+
+    function buildCards() {
+        pagesContent.forEach((item) => {
+            const card = document.createElement('div');
+            card.className = 'log-card';
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'card-content';
+
+            if (item.isLink) {
+                const raw = item.text;
+                const lines = raw.split('\n');
+                for (let i = 0; i < lines.length; i++) {
+                    let line = lines[i];
+                    if (line.includes('网址:') && line.includes('https://')) {
+                        const urlPart = line.replace('网址:', '').trim();
+                        const textBefore = line.substring(0, line.indexOf('网址:'));
+                        const textNode = document.createTextNode(textBefore + '网址: ');
+                        contentDiv.appendChild(textNode);
+                        const link = document.createElement('a');
+                        link.href = urlPart;
+                        link.className = 'memory-link';
+                        link.target = '_blank';
+                        link.rel = 'noopener noreferrer';
+                        link.textContent = urlPart;
+                        contentDiv.appendChild(link);
+                        if (i !== lines.length - 1) contentDiv.appendChild(document.createElement('br'));
+                    } else {
+                        contentDiv.appendChild(document.createTextNode(line));
+                        if (i !== lines.length - 1) contentDiv.appendChild(document.createElement('br'));
+                    }
+                }
+            } 
+            else if (item.isMono) {
+                const pre = document.createElement('div');
+                pre.className = 'mono-preserve';
+                pre.style.whiteSpace = 'pre-wrap';
+                pre.textContent = item.text;
+                contentDiv.appendChild(pre);
+            } else {
+                const lines = item.text.split('\n');
+                for (let i = 0; i < lines.length; i++) {
+                    if (lines[i] === '') {
+                        const br = document.createElement('br');
+                        contentDiv.appendChild(br);
+                    } else {
+                        const span = document.createElement('span');
+                        span.textContent = lines[i];
+                        contentDiv.appendChild(span);
+                    }
+                    if (i !== lines.length - 1) {
+                        const br = document.createElement('br');
+                        contentDiv.appendChild(br);
+                    }
+                }
+            }
+            card.appendChild(contentDiv);
+            container.appendChild(card);
+        });
+    }
+
+    buildCards();
+
+    const cards = document.querySelectorAll('.log-card');
+    function checkVisibility() {
+        cards.forEach(card => {
+            const rect = card.getBoundingClientRect();
+            if (rect.top < window.innerHeight - 80 && rect.bottom > 30) {
+                card.classList.add('visible');
+            }
+        });
+    }
+    window.addEventListener('scroll', checkVisibility);
+    window.addEventListener('resize', checkVisibility);
+    checkVisibility();
+    setTimeout(checkVisibility, 100);
+</script>
 </body>
 </html>
