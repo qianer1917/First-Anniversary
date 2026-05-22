@@ -146,6 +146,12 @@ a.starlink{
     100%{opacity:1; transform:translateY(0);}
 }
 
+.delayText{
+    opacity:0;
+    animation:floatUp 1.6s ease forwards;
+    animation-delay:3s;
+}
+
 </style>
 </head>
 
@@ -181,11 +187,9 @@ a.starlink{
 
 <div class="scene"><h1 class="typing">星船即将启动！</h1></div>
 
-<div class="scene"><h1 class="typing">确认玩家状态中</h1></div>
+<div class="scene"><h1 class="typing">确认玩家状态中..</h1></div>
 
-<div class="scene">
-    <h1 class="floatUp delay3">状态：稳定</h1>
-</div>
+<h1 class="floatUp delayText">状态：稳定</h1>
 
 <div class="scene"><h1 class="typing">正在步入星际轨道..</h1></div>
 
@@ -201,9 +205,7 @@ a.starlink{
 
 <div class="scene"><h1 class="typing">正在前往此地</h1></div>
 
-<div class="scene">
-    <h1 class="floatUp delay3">距离：逐渐缩短</h1>
-</div>
+<h1 class="floatUp delayText">距离：逐渐缩短</h1>
 
 <div class="scene"><h1 class="typing">正在进入回忆星系范围..</h1></div>
 
