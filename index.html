@@ -100,15 +100,17 @@ body{
     transition:opacity .8s ease, transform .8s ease, filter .8s ease;
 }
 
+/* 只保留唯一 active 規則 */
 .scene.active{
     display:flex;
     opacity:1;
     transform:scale(1);
     filter:blur(0);
+    z-index:10;
 }
 
 /* 🌌 文字 */
-h1,h2{
+h1, h2{
     margin:0;
     white-space:nowrap;
     font-weight:normal;
@@ -129,13 +131,19 @@ h2{
 .typing{
     display:inline-block;
     overflow:hidden;
-    width:100%;
+    width:0;
     border-right:2px solid white;
-    animation:typing 2.4s steps(30,end) forwards,blink .8s infinite;
+    animation:typing 2.4s steps(30,end) forwards, blink .8s infinite;
 }
 
-@keyframes typing{from{width:0;}to{width:100%;}}
-@keyframes blink{50%{border-color:transparent;}}
+@keyframes typing{
+    from{width:0;}
+    to{width:100%;}
+}
+
+@keyframes blink{
+    50%{border-color:transparent;}
+}
 
 /* 🌌 浮現 */
 .floatUp{
@@ -154,7 +162,7 @@ h2{
     h2{font-size:clamp(15px,4vw,22px);}
 }
 
-/* 🌸 粉色連結（點我進入） */
+/* 🌸 粉色連結 */
 a.starlink{
     color:#f7b6d2 !important;
     text-decoration:none !important;
@@ -169,52 +177,31 @@ a.starlink:active{
     color:#ff4fa3 !important;
 }
 
-/* 🌸 圖片回憶進出場 */
+/* 🌸 圖片 */
 .scene img{
     width:100vw;
     max-width:100%;
     height:auto;
     display:block;
-
 }
 
-/* 進場 */
-.scene.active{
-display:flex;
-opacity:1;
-transform:scale(1);
-filter:blur(0);
+/* 🌸 圖片退場動畫 */
+.scene img.fade-out{
+    animation:imgOut 1.2s ease forwards;
 }
 
-/* 🌌 文字 */
-h1,h2{
-margin:0;
-white-space:nowrap;
-font-weight:normal;
-text-shadow:0 0 10px #fff3c4,0 0 25px #ffd77a;
+@keyframes imgOut{
+    0%{
+        opacity:1;
+        transform:scale(1);
+        filter:blur(0);
+    }
+    100%{
+        opacity:0;
+        transform:scale(0.98);
+        filter:blur(8px);
+    }
 }
-
-h1{
-font-size:clamp(32px,6vw,72px);
-line-height:1.4;
-}
-
-h2{
-font-size:clamp(22px,4.5vw,42px);
-line-height:1.4;
-}
-
-/* 🌌 打字 */
-.typing{
-display:inline-block;
-overflow:hidden;
-width:0;
-border-right:2px solid white;
-animation:typing 2.4s steps(30,end) forwards,blink .8s infinite;
-}
-
-@keyframes typing{from{width:0;}to{width:100%;}}
-@keyframes blink{50%{border-color:transparent;}}
 
 /* 🌌 浮現 */
 .floatUp{
