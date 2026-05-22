@@ -140,21 +140,21 @@ h2{font-size:clamp(18px,3vw,32px);}
     h2{font-size:clamp(15px,4vw,22px);}
 }
 
-a:link{
-    color:#ffd77a; /* 🌟 没点过：黄色 */
+a.starlink:link{
+    color:#ffd77a !important;
     text-decoration:none;
 }
 
-a:visited{
-    color:#f7b6d2; /* 🌸 点过：淡粉色 */
+a.starlink:visited{
+    color:#f7b6d2 !important;
 }
 
-a:active{
-    color:#ff4fa3; /* 💖 点击中：桃红色 */
+a.starlink:hover{
+    color:#ffe9a8 !important;
 }
 
-a:hover{
-    color:#ffe9a8; /* ✨ 鼠标悬停（可选增强） */
+a.starlink:active{
+    color:#ff4fa3 !important;
 }
 
 </style>
@@ -242,9 +242,11 @@ a:hover{
 
 <div class="scene"><h1 class="typing">小奈说：我们还要一起走，好久好久..</h1></div>
 
-<div class="scene"><h1 class="typing">最后..<br><br>🚀网站：<a href="https://myppt.cc/8Pa3Sn"_blank">
+<a class="starlink"
+href="https://myppt.cc/8Pa3Sn"
+target="_blank">
 点我进入
-</a></h1></div>
+</a>
 
 <script>
 
