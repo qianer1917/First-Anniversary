@@ -111,6 +111,17 @@ body{
     display:flex;
 }
 
+.scene{
+    opacity:0;
+    transform:scale(1.02);
+    transition:opacity 0.6s ease, transform 0.6s ease;
+}
+
+.scene.active{
+    opacity:1;
+    transform:scale(1);
+}
+
 /* 🌌 文字（穩定不偏） */
 h1,h2{
     margin:0;
