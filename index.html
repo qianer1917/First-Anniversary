@@ -263,6 +263,21 @@ a.starlink:active{
     filter:blur(0);
 }
 
+#puzzleScene{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+#puzzleImg{
+    width:100vw;
+    height:100vh;
+    object-fit:cover;
+
+    opacity:1;
+    transition:opacity .35s ease, transform .35s ease;
+}
+
 </style>
 </head>
 
@@ -350,6 +365,11 @@ a.starlink:active{
 
 <div class="scene">
     <h1 class="typing">让我们一起欣赏拼图吧~</h1>
+
+<div class="scene" id="puzzleScene" onclick="nextPuzzle()">
+    <img id="puzzleImg" src="./01.png">
+</div>
+
 </div>
 <div class="scene"><h1 class="typing">小奈说：我们还要一起走，好久好久..</h1></div>
 
@@ -393,6 +413,30 @@ function nextScene(){
 }
 
 replayTyping(scenes[0]);
+
+let puzzleIndex = 1;
+
+function nextPuzzle(){
+
+    const img = document.getElementById("puzzleImg");
+
+    if(puzzleIndex >= 6){
+        nextScene(); // 去最後頁
+        return;
+    }
+
+    puzzleIndex++;
+
+    // 小動畫（先淡出再換）
+    img.style.opacity = "0";
+    img.style.transform = "scale(1.03)";
+
+    setTimeout(() => {
+        img.src = "./0" + puzzleIndex + ".png";
+        img.style.opacity = "1";
+        img.style.transform = "scale(1)";
+    }, 200);
+} 
 
 </script>
 
