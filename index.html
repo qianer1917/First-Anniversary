@@ -173,6 +173,12 @@ a.starlink:active{
 }
 
 .fade-img{
+    width:100vw;          /* 🌟 手机/屏幕全宽 */
+    max-width:100%;       /* 防止溢出 */
+    height:auto;
+
+    object-fit:contain;
+
     opacity:0;
     transform:scale(1.05);
     animation:imgfade 1.8s ease forwards;
@@ -267,12 +273,7 @@ a.starlink:active{
 <div class="scene"><h1 class="typing">坚定选择对方的我们</h1></div>
 
 <div class="scene">
-    <img src="./01.png" class="fade-img" style="
-        width:75%;
-        max-width:420px;
-        border-radius:12px;
-        box-shadow:0 0 20px #ffd77a,0 0 40px #ff9ecf;
-    ">
+    <img src="./01.png" class="fade-img">
 </div>
 
 <div class="scene"><h1 class="typing">让我们一起欣赏拼图吧~</h1></div>
