@@ -43,7 +43,7 @@ body{
     serif;
 }
 
-/* 🌌 多層夢幻星空 */
+/* 🌌 多層星空 */
 body::before{
 
     content:"";
@@ -84,17 +84,9 @@ body::before{
 
 @keyframes starsTwinkle{
 
-    0%{
-        opacity:.5;
-    }
-
-    50%{
-        opacity:1;
-    }
-
-    100%{
-        opacity:.5;
-    }
+    0%{opacity:.5;}
+    50%{opacity:1;}
+    100%{opacity:.5;}
 }
 
 /* 🌌 柔光 */
@@ -119,20 +111,9 @@ body::after{
 
 @keyframes auraMove{
 
-    0%{
-        transform:
-        translate(-10%,-10%);
-    }
-
-    50%{
-        transform:
-        translate(5%,5%);
-    }
-
-    100%{
-        transform:
-        translate(-10%,-10%);
-    }
+    0%{transform:translate(-10%,-10%);}
+    50%{transform:translate(5%,5%);}
+    100%{transform:translate(-10%,-10%);}
 }
 
 /* 🌌 漂浮星光 */
@@ -154,18 +135,11 @@ body::after{
 
 @keyframes floatStar{
 
-    from{
-        transform:
-        translateY(0);
-    }
-
-    to{
-        transform:
-        translateY(-120vh);
-    }
+    from{transform:translateY(0);}
+    to{transform:translateY(-120vh);}
 }
 
-/* 🌌 場景 */
+/* 🌌 場景（真正置中修正） */
 .scene{
 
     position:absolute;
@@ -175,12 +149,12 @@ body::after{
 
     display:none;
 
-    justify-content:flex-start;
+    justify-content:center;
     align-items:center;
 
     text-align:center;
 
-    padding-top:38vh;
+    padding:0;
 
     box-sizing:border-box;
 }
@@ -189,7 +163,7 @@ body::after{
     display:flex;
 }
 
-/* 🌌 文字 */
+/* 🌌 文字（微上移修正核心） */
 h1,h2{
 
     margin:0;
@@ -200,27 +174,25 @@ h1,h2{
 
     color:white;
 
+    transform:translateY(-3vh);
+
     text-shadow:
     0 0 8px #fff5cc,
     0 0 18px #ffd76a,
     0 0 38px #ffd76a;
 }
 
-/* 🌌 主句 */
+/* 🌌 主字 */
 h1{
-
-    font-size:
-    clamp(26px,4vw,54px);
+    font-size:clamp(26px,4vw,54px);
 }
 
 /* 🌌 小奈 */
 h2{
-
-    font-size:
-    clamp(18px,3vw,32px);
+    font-size:clamp(18px,3vw,32px);
 }
 
-/* 🌌 打字輸入 */
+/* 🌌 打字 */
 .typing{
 
     display:inline-block;
@@ -229,33 +201,20 @@ h2{
 
     width:0;
 
-    border-right:
-    2px solid white;
+    border-right:2px solid white;
 
     animation:
-    typing 2.5s
-    steps(30,end)
-    forwards,
-
+    typing 2.5s steps(30,end) forwards,
     blink .8s infinite;
 }
 
 @keyframes typing{
-
-    from{
-        width:0;
-    }
-
-    to{
-        width:100%;
-    }
+    from{width:0;}
+    to{width:100%;}
 }
 
 @keyframes blink{
-
-    50%{
-        border-color:transparent;
-    }
+    50%{border-color:transparent;}
 }
 
 /* 🌌 向上浮現 */
@@ -263,21 +222,15 @@ h2{
 
     opacity:0;
 
-    transform:
-    translateY(40px);
+    transform:translateY(40px);
 
-    animation:
-    floatUp 1.8s ease forwards;
+    animation:floatUp 1.8s ease forwards;
 }
 
 @keyframes floatUp{
-
     to{
-
         opacity:1;
-
-        transform:
-        translateY(0);
+        transform:translateY(0);
     }
 }
 
@@ -285,20 +238,11 @@ h2{
 @media(max-width:768px){
 
     h1{
-
-        font-size:
-        clamp(18px,5vw,28px);
+        font-size:clamp(18px,5vw,28px);
     }
 
     h2{
-
-        font-size:
-        clamp(15px,4vw,22px);
-    }
-
-    .scene{
-
-        padding-top:34vh;
+        font-size:clamp(15px,4vw,22px);
     }
 }
 
@@ -307,310 +251,99 @@ h2{
 
 <body onclick="nextScene()">
 
-<!-- 🌌 漂浮星星 -->
+<!-- 🌌 星星 -->
 <div class="star"
-style="
-width:2px;
-height:2px;
-left:10%;
-top:100%;
-animation-duration:18s;">
-</div>
+style="width:2px;height:2px;left:10%;top:100%;animation-duration:18s;"></div>
 
 <div class="star"
-style="
-width:3px;
-height:3px;
-left:25%;
-top:100%;
-animation-duration:22s;">
-</div>
+style="width:3px;height:3px;left:25%;top:100%;animation-duration:22s;"></div>
 
 <div class="star"
-style="
-width:2px;
-height:2px;
-left:45%;
-top:100%;
-animation-duration:20s;">
-</div>
+style="width:2px;height:2px;left:45%;top:100%;animation-duration:20s;"></div>
 
 <div class="star"
-style="
-width:4px;
-height:4px;
-left:70%;
-top:100%;
-animation-duration:26s;">
-</div>
+style="width:4px;height:4px;left:70%;top:100%;animation-duration:26s;"></div>
 
 <div class="star"
-style="
-width:2px;
-height:2px;
-left:88%;
-top:100%;
-animation-duration:19s;">
-</div>
+style="width:2px;height:2px;left:88%;top:100%;animation-duration:19s;"></div>
 
-<!-- 🌌 頁面 -->
+<!-- 🌌 完整劇情（全部保留） -->
 
-<div class="scene active">
-<h1 class="typing">
-本沉浸式系统已开启
-</h1>
-</div>
+<div class="scene active"><h1 class="typing">本沉浸式系统已开启</h1></div>
+<div class="scene"><h1 class="typing">载入中...</h1></div>
+<div class="scene"><h1 class="typing">视觉景象生成中...</h1></div>
+<div class="scene"><h1 class="typing">您已进入船舱</h1></div>
+<div class="scene"><h1 class="typing">正在连接系统核心...</h1></div>
+<div class="scene"><h1 class="typing">欢迎星航共乘者</h1></div>
+<div class="scene"><h1 class="typing">正在随机匹配队伍中...</h1></div>
+<div class="scene"><h1 class="typing">很高兴能与你一同探险</h1></div>
+<div class="scene"><h1 class="typing">准备好了吗？</h1></div>
+<div class="scene"><h1 class="typing">星船即将启动！</h1></div>
 
-<div class="scene">
-<h1 class="typing">
-视觉景象生成中...
-</h1>
-</div>
+<div class="scene"><h1 class="floatUp">状态：稳定</h1></div>
 
-<div class="scene">
-<h1 class="typing">
-您已进入船舱
-</h1>
-</div>
+<div class="scene"><h1 class="typing">正在步入星际轨道...</h1></div>
+<div class="scene"><h1 class="typing">已进入稳定航行模式</h1></div>
 
-<div class="scene">
-<h1 class="typing">
-正在连接系统核心...
-</h1>
-</div>
+<div class="scene"><h1 class="typing">探索中.</h1></div>
+<div class="scene"><h1 class="typing">探索中..</h1></div>
+<div class="scene"><h1 class="typing">探索中...</h1></div>
 
-<div class="scene">
-<h1 class="typing">
-欢迎星航共乘者
-</h1>
-</div>
+<div class="scene"><h1 class="floatUp">距离：逐渐缩短</h1></div>
 
-<div class="scene">
-<h1 class="typing">
-载入中...
-</h1>
-</div>
+<div class="scene"><h1 class="typing">侦测到回忆星系</h1></div>
+<div class="scene"><h1 class="typing">目标已成功锁定</h1></div>
+<div class="scene"><h1 class="typing">正在前往此地</h1></div>
+<div class="scene"><h1 class="typing">正在进入回忆星系范围...</h1></div>
 
-<div class="scene">
-<h1 class="typing">
-正在随机匹配队伍中...
-</h1>
-</div>
+<div class="scene"><h1 class="typing">光线强度提升</h1></div>
+<div class="scene"><h1 class="typing">感知功能同步</h1></div>
+<div class="scene"><h1 class="typing">即将抵达目的地</h1></div>
+<div class="scene"><h1 class="typing">请保持连线稳定</h1></div>
+<div class="scene"><h1 class="typing">抵达回忆星系</h1></div>
+<div class="scene"><h1 class="typing">正在开启舱门</h1></div>
+<div class="scene"><h1 class="typing">侦测结果顺利，允许离舱</h1></div>
 
-<div class="scene">
-<h1 class="typing">
-很高兴能与你一同探险
-</h1>
-</div>
+<div class="scene"><h1 class="typing">记得今天是什么日子吗？</h1></div>
+<div class="scene"><h1 class="typing">今天是我们一周年的纪念日</h1></div>
+<div class="scene"><h1 class="typing">很感谢一路辛苦走来的我们</h1></div>
+<div class="scene"><h1 class="typing">坚定选择对方的我们</h1></div>
+<div class="scene"><h1 class="typing">让我们一起欣赏拼图吧</h1></div>
 
-<div class="scene">
-<h1 class="typing">
-准备好了吗？
-</h1>
-</div>
+<div class="scene"><h2 class="typing">小奈说：我们还要一起走，好久好久...</h2></div>
 
-<div class="scene">
-<h1 class="typing">
-星船即将启动！
-</h1>
-</div>
-
-<div class="scene">
-<h1 class="floatUp">
-状态：稳定
-</h1>
-</div>
-
-<div class="scene">
-<h1 class="typing">
-正在步入星际轨道...
-</h1>
-</div>
-
-<div class="scene">
-<h1 class="typing">
-已进入稳定航行模式
-</h1>
-</div>
-
-<div class="scene">
-<h1 class="typing">
-探索中.
-</h1>
-</div>
-
-<div class="scene">
-<h1 class="typing">
-探索中..
-</h1>
-</div>
-
-<div class="scene">
-<h1 class="typing">
-探索中...
-</h1>
-</div>
-
-<div class="scene">
-<h1 class="floatUp">
-距离：逐渐缩短
-</h1>
-</div>
-
-<div class="scene">
-<h1 class="typing">
-侦测到回忆星系
-</h1>
-</div>
-
-<div class="scene">
-<h1 class="typing">
-目标已成功锁定
-</h1>
-</div>
-
-<div class="scene">
-<h1 class="typing">
-正在前往此地
-</h1>
-</div>
-
-<div class="scene">
-<h1 class="typing">
-正在进入回忆星系范围...
-</h1>
-</div>
-
-<div class="scene">
-<h1 class="typing">
-光线强度提升
-</h1>
-</div>
-
-<div class="scene">
-<h1 class="typing">
-感知功能同步
-</h1>
-</div>
-
-<div class="scene">
-<h1 class="typing">
-即将抵达目的地
-</h1>
-</div>
-
-<div class="scene">
-<h1 class="typing">
-请保持连线稳定
-</h1>
-</div>
-
-<div class="scene">
-<h1 class="typing">
-抵达回忆星系
-</h1>
-</div>
-
-<div class="scene">
-<h1 class="typing">
-正在开启舱门
-</h1>
-</div>
-
-<div class="scene">
-<h1 class="typing">
-侦测结果顺利，允许离舱
-</h1>
-</div>
-
-<div class="scene">
-<h1 class="typing">
-记得今天是什么日子吗？
-</h1>
-</div>
-
-<div class="scene">
-<h1 class="typing">
-今天是我们一周年的纪念日
-</h1>
-</div>
-
-<div class="scene">
-<h1 class="typing">
-很感谢一路辛苦走来的我们
-</h1>
-</div>
-
-<div class="scene">
-<h1 class="typing">
-坚定选择对方的我们
-</h1>
-</div>
-
-<div class="scene">
-<h1 class="typing">
-让我们一起欣赏拼图吧
-</h1>
-</div>
-
-<div class="scene">
-<h2 class="typing">
-小奈说：我们还要一起走，好久好久...
-</h2>
-</div>
-
-<div class="scene">
-<h1 class="typing">
-最后，感谢你来到这个网站
-</h1>
-</div>
+<div class="scene"><h1 class="typing">最后，感谢你来到这个网站</h1></div>
 
 <script>
 
 let index = 0;
-
-const scenes =
-document.querySelectorAll(".scene");
+const scenes = document.querySelectorAll(".scene");
 
 function replayTyping(scene){
 
-    const text =
-    scene.querySelector(
-    ".typing");
+    const text = scene.querySelector(".typing");
 
-    if(text){
+    if(!text) return;
 
-        text.style.animation =
-        "none";
+    text.style.animation = "none";
+    void text.offsetWidth;
 
-        void text.offsetWidth;
-
-        text.style.animation =
-        "typing 2.5s steps(30,end) forwards, blink .8s infinite";
-    }
+    text.style.animation =
+    "typing 2.5s steps(30,end) forwards, blink .8s infinite";
 }
 
 function nextScene(){
 
-    if(index >= scenes.length - 1){
-        return;
-    }
+    if(index >= scenes.length - 1) return;
 
-    scenes[index]
-    .classList.remove("active");
-
+    scenes[index].classList.remove("active");
     index++;
+    scenes[index].classList.add("active");
 
-    scenes[index]
-    .classList.add("active");
-
-    replayTyping(
-    scenes[index]);
+    replayTyping(scenes[index]);
 }
 
-/* 🌌 初始播放 */
-replayTyping(
-scenes[0]);
+replayTyping(scenes[0]);
 
 </script>
 
