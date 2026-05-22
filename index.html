@@ -141,26 +141,25 @@ h2{font-size:clamp(18px,3vw,32px);}
 }
 
 a.starlink{
-    color:#ffd77a !important;
+    color:#f7b6d2 !important;
     text-decoration:none !important;
+
+    text-shadow:
+        0 0 8px #f7b6d2,
+        0 0 18px #ff9ecf,
+        0 0 30px #ff7fbf;
+
+    transition:0.3s ease;
 }
 
-/* 没点过 */
-a.starlink:link{
-    color:#ffd77a !important;
-}
-
-/* 点过（浏览器可能不一定显示） */
-a.starlink:visited{
-    color:#ffd77a !important;
-}
-
-/* 鼠标悬停 */
 a.starlink:hover{
-    color:#ffe9a8 !important;
+    color:#ffd1e6 !important;
+    text-shadow:
+        0 0 10px #ffd1e6,
+        0 0 25px #ff9ecf,
+        0 0 40px #ff7fbf;
 }
 
-/* 点击中 */
 a.starlink:active{
     color:#ff4fa3 !important;
 }
