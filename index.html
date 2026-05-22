@@ -12,18 +12,25 @@ content="width=device-width, initial-scale=1.0">
 /* 🌸 字體 */
 @font-face{
     font-family:"DongZhu";
-    src:url("./DongZhu.ttf") format("truetype");
+    src:url("./DongZhu.ttf")
+    format("truetype");
 }
 
 /* 🌌 全域 */
 body{
+
     margin:0;
     width:100%;
     height:100vh;
 
     overflow:hidden;
 
-    background:black;
+    background:
+    radial-gradient(
+    circle at center,
+    #151515 0%,
+    #000 100%);
+
     color:white;
 
     display:flex;
@@ -36,84 +43,76 @@ body{
     serif;
 }
 
-/* 🌌 星點 */
+/* 🌌 星塵 */
 body::before{
+
     content:"";
 
     position:fixed;
     inset:0;
 
-    background-image:
+    background:
     radial-gradient(
-    #ffe8a3 1px,
+    circle,
+    rgba(255,230,150,.9) 1px,
     transparent 1px);
 
-    background-size:55px 55px;
+    background-size:60px 60px;
 
-    opacity:.22;
+    opacity:.18;
 
     animation:
-    starsMove 30s linear infinite;
+    starsFloat 18s linear infinite;
 }
 
-@keyframes starsMove{
+@keyframes starsFloat{
 
     from{
-        transform:translateY(0);
+        transform:
+        translateY(0);
     }
 
     to{
-        transform:translateY(55px);
+        transform:
+        translateY(60px);
     }
 }
 
-/* 🌠 流星 */
+/* 🌌 柔光 */
 body::after{
+
     content:"";
 
     position:fixed;
 
-    top:-20%;
-    left:-20%;
-
-    width:2px;
-    height:220px;
+    width:140vw;
+    height:140vw;
 
     background:
-    linear-gradient(
-    to bottom,
-    transparent,
-    #ffe6a0,
-    transparent);
-
-    transform:rotate(-35deg);
-
-    opacity:.7;
+    radial-gradient(
+    circle,
+    rgba(255,220,120,.06),
+    transparent 70%);
 
     animation:
-    meteor 7s linear infinite;
+    auraMove 10s ease-in-out infinite;
 }
 
-@keyframes meteor{
+@keyframes auraMove{
 
     0%{
         transform:
-        translate(0,0)
-        rotate(-35deg);
-
-        opacity:0;
+        translate(-10%,-10%);
     }
 
-    10%{
-        opacity:1;
+    50%{
+        transform:
+        translate(5%,5%);
     }
 
     100%{
         transform:
-        translate(140vw,140vh)
-        rotate(-35deg);
-
-        opacity:0;
+        translate(-10%,-10%);
     }
 }
 
@@ -132,7 +131,7 @@ body::after{
 
     text-align:center;
 
-    padding:30px;
+    padding:25px;
 
     box-sizing:border-box;
 }
@@ -141,32 +140,43 @@ body::after{
     display:flex;
 }
 
-/* 🌌 主文字 */
-h1{
+/* 🌌 文字 */
+h1,h2{
 
     margin:0;
-
-    color:white;
-
-    font-size:
-    clamp(24px,4vw,52px);
 
     font-weight:normal;
 
     white-space:nowrap;
 
-    overflow:hidden;
+    color:white;
 
     text-shadow:
-    0 0 10px #fff4c2,
-    0 0 25px #ffd76a,
-    0 0 40px #ffd76a;
+    0 0 8px #fff5cc,
+    0 0 18px #ffd76a,
+    0 0 38px #ffd76a;
 }
 
-/* 🌌 印刷輸入 */
+/* 🌌 主句 */
+h1{
+
+    font-size:
+    clamp(26px,4vw,54px);
+}
+
+/* 🌌 小奈 */
+h2{
+
+    font-size:
+    clamp(18px,3vw,32px);
+}
+
+/* 🌌 打字輸入 */
 .typing{
 
     display:inline-block;
+
+    overflow:hidden;
 
     width:0;
 
@@ -174,8 +184,11 @@ h1{
     2px solid white;
 
     animation:
-    typing 2.8s steps(30,end) forwards,
-    blink .7s infinite;
+    typing 2.5s
+    steps(30,end)
+    forwards,
+
+    blink .8s infinite;
 }
 
 @keyframes typing{
@@ -203,8 +216,12 @@ h1{
 
         font-size:
         clamp(18px,5vw,28px);
+    }
 
-        transform:scale(.92);
+    h2{
+
+        font-size:
+        clamp(15px,4vw,22px);
     }
 }
 
@@ -221,31 +238,37 @@ h1{
 
 <div class="scene">
 <h1 class="typing">
-视觉影像生成中...
+载入中...
 </h1>
 </div>
 
 <div class="scene">
 <h1 class="typing">
-您已进入船舱
+正在随机匹配队伍中...
 </h1>
 </div>
 
 <div class="scene">
 <h1 class="typing">
-正在连接系统核心...
+很高兴能与你一同探险
 </h1>
 </div>
 
 <div class="scene">
 <h1 class="typing">
-欢迎星航共乘者
+准备好了吗？
 </h1>
 </div>
 
 <div class="scene">
 <h1 class="typing">
-您好！我是小奈领航员
+星船即将启动！
+</h1>
+</div>
+
+<div class="scene">
+<h1 class="typing">
+状态：稳定
 </h1>
 </div>
 
@@ -257,13 +280,43 @@ h1{
 
 <div class="scene">
 <h1 class="typing">
-状态稳定
+已进入稳定航行模式
 </h1>
 </div>
 
 <div class="scene">
 <h1 class="typing">
-距离正在缩短
+探索中.
+</h1>
+</div>
+
+<div class="scene">
+<h1 class="typing">
+探索中..
+</h1>
+</div>
+
+<div class="scene">
+<h1 class="typing">
+探索中...
+</h1>
+</div>
+
+<div class="scene">
+<h1 class="typing">
+侦测到回忆星系
+</h1>
+</div>
+
+<div class="scene">
+<h1 class="typing">
+目标已成功锁定
+</h1>
+</div>
+
+<div class="scene">
+<h1 class="typing">
+正在前往此地
 </h1>
 </div>
 
@@ -275,7 +328,43 @@ h1{
 
 <div class="scene">
 <h1 class="typing">
-欢迎踏入回忆星系
+光线强度提升
+</h1>
+</div>
+
+<div class="scene">
+<h1 class="typing">
+感知功能同步
+</h1>
+</div>
+
+<div class="scene">
+<h1 class="typing">
+即将抵达目的地
+</h1>
+</div>
+
+<div class="scene">
+<h1 class="typing">
+请保持连线稳定
+</h1>
+</div>
+
+<div class="scene">
+<h1 class="typing">
+抵达回忆星系
+</h1>
+</div>
+
+<div class="scene">
+<h1 class="typing">
+正在开启舱门
+</h1>
+</div>
+
+<div class="scene">
+<h1 class="typing">
+侦测结果顺利，允许离舱
 </h1>
 </div>
 
@@ -293,6 +382,12 @@ h1{
 
 <div class="scene">
 <h1 class="typing">
+很感谢一路辛苦走来的我们
+</h1>
+</div>
+
+<div class="scene">
+<h1 class="typing">
 坚定选择对方的我们
 </h1>
 </div>
@@ -304,9 +399,9 @@ h1{
 </div>
 
 <div class="scene">
-<h1 class="typing">
+<h2 class="typing">
 小奈说：我们还要一起走，好久好久...
-</h1>
+</h2>
 </div>
 
 <div class="scene">
@@ -322,17 +417,18 @@ let index = 0;
 const scenes =
 document.querySelectorAll(".scene");
 
-function restartTyping(scene){
+function replayTyping(scene){
 
     const text =
     scene.querySelector(".typing");
 
-    text.style.animation = "none";
+    text.style.animation =
+    "none";
 
     void text.offsetWidth;
 
     text.style.animation =
-    "typing 2.8s steps(30,end) forwards, blink .7s infinite";
+    "typing 2.5s steps(30,end) forwards, blink .8s infinite";
 }
 
 function nextScene(){
@@ -349,12 +445,11 @@ function nextScene(){
     scenes[index]
     .classList.add("active");
 
-    restartTyping(
+    replayTyping(
     scenes[index]);
 }
 
-/* 🌌 首頁先播放 */
-restartTyping(
+replayTyping(
 scenes[0]);
 
 </script>
