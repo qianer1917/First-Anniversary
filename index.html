@@ -269,19 +269,26 @@ let index = 0;
 const scenes = document.querySelectorAll(".scene");
 
 /* 🌌 下一页 */
-function nextScene(){
-    if(index >= scenes.length - 1) return;
+function replayTyping(scene){
+    const text = scene.querySelector(".typing");
+    if(!text) return;
 
-    scenes[index].classList.remove("active");
-    index++;
-    scenes[index].classList.add("active");
+    /* ⭐ 先清掉舊狀態（關鍵） */
+    text.style.animation = "none";
+    text.style.borderRight = "none";
+    text.style.width = "auto";
 
-    const t = scenes[index].querySelector(".typing");
-    if(t){
-        t.style.animation="none";
-        void t.offsetWidth;
-        t.style.animation="typing 2.4s steps(30,end),blink .8s infinite";
-    }
+    /* ⭐ 強制重繪 */
+    void text.offsetWidth;
+
+    /* ⭐ 重設回初始 */
+    text.style.borderRight = "2px solid white";
+    text.style.width = "0";
+
+    /* ⭐ 重新播放 */
+    text.style.animation =
+        "typing 2.2s steps(30,end) forwards, blink .8s infinite";
+}
 }
 
 /* 🌌 拼图逻辑 */
@@ -304,6 +311,24 @@ function nextPuzzle(){
         img.src = "./0" + puzzleIndex + ".png";
         img.style.opacity = "1";
     }, 250);
+}
+
+function replayTyping(scene){
+    const text = scene.querySelector(".typing");
+    if(!text) return;
+
+    /* ❗ 先清掉舊動畫 */
+    text.style.animation = "none";
+    text.style.borderRight = "none";
+    text.style.width = "auto";
+
+    void text.offsetWidth;
+
+    text.style.borderRight = "2px solid white";
+    text.style.width = "0";
+
+    text.style.animation =
+        "typing 2.2s steps(30,end) forwards, blink .8s infinite";
 }
 
 </script>
