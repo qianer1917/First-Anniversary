@@ -239,7 +239,6 @@ a.starlink:active{
 }
 
 @keyframes endFade{
-
     0%{
         opacity:0;
         transform:translateY(20px) scale(0.98);
@@ -258,9 +257,10 @@ a.starlink:active{
     }
 
     100%{
-    opacity:1;
-    transform:translateY(-8px) scale(1.01);
-    filter:blur(0);
+        opacity:1;
+        transform:translateY(-8px) scale(1.01);
+        filter:blur(0);
+    }
 }
 
 #puzzleScene{
@@ -362,9 +362,9 @@ a.starlink:active{
 <div class="scene">
     <img src="./01.png" class="fade-img">
 </div>
-
 <div class="scene">
     <h1 class="typing">让我们一起欣赏拼图吧~</h1>
+</div>
 
 <div class="scene" id="puzzleScene" onclick="nextPuzzle()">
     <img id="puzzleImg" src="./01.png">
