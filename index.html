@@ -155,7 +155,7 @@ a.starlink{
 </style>
 </head>
 
-<body onclick="nextScene()">
+document.addEventListener("click", nextScene);
 
 <!-- 🌌 背景 -->
 <div class="layer-back"></div>
@@ -331,6 +331,8 @@ window.nextPuzzle = function(){
 replayTyping(scenes[0]);
 
 });
+
+document.addEventListener("click", nextScene);
 
 </script>
 
