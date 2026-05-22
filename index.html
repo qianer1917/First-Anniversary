@@ -43,7 +43,7 @@ body{
     serif;
 }
 
-/* 🌌 星塵 */
+/* 🌌 多層夢幻星空 */
 body::before{
 
     content:"";
@@ -52,29 +52,48 @@ body::before{
     inset:0;
 
     background:
+
     radial-gradient(
-    circle,
-    rgba(255,230,150,.9) 1px,
-    transparent 1px);
+    circle at 20% 30%,
+    rgba(255,240,180,.9) 1px,
+    transparent 2px),
 
-    background-size:60px 60px;
+    radial-gradient(
+    circle at 70% 20%,
+    rgba(255,255,255,.8) 1px,
+    transparent 2px),
 
-    opacity:.18;
+    radial-gradient(
+    circle at 40% 80%,
+    rgba(255,220,120,.8) 2px,
+    transparent 3px),
+
+    radial-gradient(
+    circle at 85% 70%,
+    rgba(255,255,255,.7) 1px,
+    transparent 2px),
+
+    radial-gradient(
+    circle at 10% 60%,
+    rgba(255,230,150,.7) 2px,
+    transparent 3px);
 
     animation:
-    starsFloat 18s linear infinite;
+    starsTwinkle 4s ease-in-out infinite;
 }
 
-@keyframes starsFloat{
+@keyframes starsTwinkle{
 
-    from{
-        transform:
-        translateY(0);
+    0%{
+        opacity:.5;
     }
 
-    to{
-        transform:
-        translateY(60px);
+    50%{
+        opacity:1;
+    }
+
+    100%{
+        opacity:.5;
     }
 }
 
@@ -91,7 +110,7 @@ body::after{
     background:
     radial-gradient(
     circle,
-    rgba(255,220,120,.06),
+    rgba(255,220,120,.08),
     transparent 70%);
 
     animation:
@@ -116,6 +135,36 @@ body::after{
     }
 }
 
+/* 🌌 漂浮星光 */
+.star{
+
+    position:absolute;
+
+    border-radius:50%;
+
+    background:#ffe9a8;
+
+    box-shadow:
+    0 0 10px #ffe9a8,
+    0 0 20px #ffe9a8;
+
+    animation:
+    floatStar linear infinite;
+}
+
+@keyframes floatStar{
+
+    from{
+        transform:
+        translateY(0);
+    }
+
+    to{
+        transform:
+        translateY(-120vh);
+    }
+}
+
 /* 🌌 場景 */
 .scene{
 
@@ -126,12 +175,12 @@ body::after{
 
     display:none;
 
-    justify-content:center;
+    justify-content:flex-start;
     align-items:center;
 
     text-align:center;
 
-    padding:25px;
+    padding-top:38vh;
 
     box-sizing:border-box;
 }
@@ -209,6 +258,29 @@ h2{
     }
 }
 
+/* 🌌 向上浮現 */
+.floatUp{
+
+    opacity:0;
+
+    transform:
+    translateY(40px);
+
+    animation:
+    floatUp 1.8s ease forwards;
+}
+
+@keyframes floatUp{
+
+    to{
+
+        opacity:1;
+
+        transform:
+        translateY(0);
+    }
+}
+
 /* 🌌 手機 */
 @media(max-width:768px){
 
@@ -223,12 +295,65 @@ h2{
         font-size:
         clamp(15px,4vw,22px);
     }
+
+    .scene{
+
+        padding-top:34vh;
+    }
 }
 
 </style>
 </head>
 
 <body onclick="nextScene()">
+
+<!-- 🌌 漂浮星星 -->
+<div class="star"
+style="
+width:2px;
+height:2px;
+left:10%;
+top:100%;
+animation-duration:18s;">
+</div>
+
+<div class="star"
+style="
+width:3px;
+height:3px;
+left:25%;
+top:100%;
+animation-duration:22s;">
+</div>
+
+<div class="star"
+style="
+width:2px;
+height:2px;
+left:45%;
+top:100%;
+animation-duration:20s;">
+</div>
+
+<div class="star"
+style="
+width:4px;
+height:4px;
+left:70%;
+top:100%;
+animation-duration:26s;">
+</div>
+
+<div class="star"
+style="
+width:2px;
+height:2px;
+left:88%;
+top:100%;
+animation-duration:19s;">
+</div>
+
+<!-- 🌌 頁面 -->
 
 <div class="scene active">
 <h1 class="typing">
@@ -267,7 +392,7 @@ h2{
 </div>
 
 <div class="scene">
-<h1 class="typing">
+<h1 class="floatUp">
 状态：稳定
 </h1>
 </div>
@@ -299,6 +424,12 @@ h2{
 <div class="scene">
 <h1 class="typing">
 探索中...
+</h1>
+</div>
+
+<div class="scene">
+<h1 class="floatUp">
+距离：逐渐缩短
 </h1>
 </div>
 
@@ -420,15 +551,19 @@ document.querySelectorAll(".scene");
 function replayTyping(scene){
 
     const text =
-    scene.querySelector(".typing");
+    scene.querySelector(
+    ".typing");
 
-    text.style.animation =
-    "none";
+    if(text){
 
-    void text.offsetWidth;
+        text.style.animation =
+        "none";
 
-    text.style.animation =
-    "typing 2.5s steps(30,end) forwards, blink .8s infinite";
+        void text.offsetWidth;
+
+        text.style.animation =
+        "typing 2.5s steps(30,end) forwards, blink .8s infinite";
+    }
 }
 
 function nextScene(){
@@ -449,6 +584,7 @@ function nextScene(){
     scenes[index]);
 }
 
+/* 🌌 初始播放 */
 replayTyping(
 scenes[0]);
 
