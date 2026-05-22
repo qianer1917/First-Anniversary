@@ -215,6 +215,36 @@ a.starlink:active{
         filter:blur(4px);
     }
 }
+
+.intro-title{
+    opacity:0;
+    transform:scale(1.08) translateY(10px);
+    animation:introIn 2.2s ease forwards;
+    text-shadow:
+        0 0 10px #fff3c4,
+        0 0 25px #ffd77a,
+        0 0 40px rgba(255,215,122,.3);
+}
+
+/* 🌌 进入感（关键） */
+@keyframes introIn{
+    0%{
+        opacity:0;
+        transform:scale(1.15) translateY(20px);
+        filter:blur(10px);
+    }
+    60%{
+        opacity:1;
+        transform:scale(1.02) translateY(0);
+        filter:blur(2px);
+    }
+    100%{
+        opacity:1;
+        transform:scale(1) translateY(0);
+        filter:blur(0);
+    }
+}
+
 </style>
 </head>
 
