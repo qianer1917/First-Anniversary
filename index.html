@@ -140,19 +140,27 @@ h2{font-size:clamp(18px,3vw,32px);}
     h2{font-size:clamp(15px,4vw,22px);}
 }
 
+a.starlink{
+    color:#ffd77a !important;
+    text-decoration:none !important;
+}
+
+/* 没点过 */
 a.starlink:link{
     color:#ffd77a !important;
-    text-decoration:none;
 }
 
+/* 点过（浏览器可能不一定显示） */
 a.starlink:visited{
-    color:#f7b6d2 !important;
+    color:#ffd77a !important;
 }
 
+/* 鼠标悬停 */
 a.starlink:hover{
     color:#ffe9a8 !important;
 }
 
+/* 点击中 */
 a.starlink:active{
     color:#ff4fa3 !important;
 }
@@ -243,6 +251,10 @@ a.starlink:active{
 <div class="scene"><h1 class="typing">小奈说：我们还要一起走，好久好久..</h1></div>
 
 <div class="scene">
+    <h1 class="typing">小奈说：我们还要一起走，好久好久..</h1>
+</div>
+
+<div class="scene">
     <h1>
         <a class="starlink"
         href="https://myppt.cc/8Pa3Sn"
@@ -252,30 +264,6 @@ a.starlink:active{
     </h1>
 </div>
 
-a.starlink{
-    color:#ffd77a !important;
-    text-decoration:none !important;
-}
-
-/* 没点过 */
-a.starlink:link{
-    color:#ffd77a !important;
-}
-
-/* 点过（浏览器可能不一定显示） */
-a.starlink:visited{
-    color:#ffd77a !important;
-}
-
-/* 鼠标悬停 */
-a.starlink:hover{
-    color:#ffe9a8 !important;
-}
-
-/* 点击中 */
-a.starlink:active{
-    color:#ff4fa3 !important;
-}
 <script>
 
 let index = 0;
