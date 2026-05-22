@@ -284,6 +284,15 @@ a.starlink:active{
     animation-delay:3s;
 }
 
+/* 🌸 拼图专用：满宽置中 */
+#puzzleImg{
+    width:100vw;
+    height:100vh;
+    object-fit:cover;
+    opacity:1;
+    transition:opacity .4s ease, transform .4s ease;
+}
+
 </style>
 </head>
 
@@ -372,20 +381,24 @@ a.starlink:active{
 <div class="scene">
     <img src="./01.png" class="fade-img">
 </div>
+
+<!-- 🌌 拼图说明页 -->
 <div class="scene">
     <h1 class="typing">让我们一起欣赏拼图吧~</h1>
 </div>
 
-<div class="scene" id="puzzleScene" onclick="nextPuzzle()">
+<!-- 🌌 拼图互动页（02~07） -->
+<div class="scene" onclick="nextPuzzle()">
     <img id="puzzleImg" src="./02.png">
 </div>
 
+<!-- 🌌 小奈说 -->
 <div class="scene">
     <h1 class="typing">小奈说：我们还要一起走，好久好久..</h1>
 </div>
 
+<!-- 🌌 最后一页 -->
 <div class="scene">
-
     <h1 class="end-fade">
         最后..
         <br><br>
@@ -448,6 +461,31 @@ function nextPuzzle(){
         img.style.transform = "scale(1)";
     }, 200);
 } 
+
+let puzzleIndex = 2; // 从02开始
+
+function nextPuzzle(){
+
+    const img = document.getElementById("puzzleImg");
+
+    if(puzzleIndex >= 7){
+        nextScene(); // 结束后进入“小奈说”
+        return;
+    }
+
+    // 淡出
+    img.style.opacity = "0";
+    img.style.transform = "scale(1.03)";
+
+    setTimeout(() => {
+        puzzleIndex++;
+        img.src = "./0" + puzzleIndex + ".png";
+
+        // 淡入
+        img.style.opacity = "1";
+        img.style.transform = "scale(1)";
+    }, 250);
+}
 
 </script>
 
