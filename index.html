@@ -322,24 +322,16 @@ z-index:10;
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+
 let index = 0;
-
-function showScene(i){
-    const scenes = document.querySelectorAll(".scene");
-
-    scenes.forEach(s => s.classList.remove("active"));
-
-    if(scenes[i]){
-        scenes[i].classList.add("active");
-    }
-}
 
 window.nextScene = function(){
 
     const scenes = document.querySelectorAll(".scene");
     const currentScene = scenes[index];
 
-    // 如果這頁有圖片
+    if(!currentScene) return;
+
     const img = currentScene.querySelector("img");
 
     if(img){
