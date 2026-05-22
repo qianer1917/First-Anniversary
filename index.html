@@ -335,18 +335,35 @@ function showScene(i){
 }
 
 window.nextScene = function(){
+
     const scenes = document.querySelectorAll(".scene");
+    const currentScene = scenes[index];
+
+    // 如果這頁有圖片
+    const img = currentScene.querySelector("img");
+
+    if(img){
+        img.classList.add("fade-out");
+
+        setTimeout(() => {
+            currentScene.classList.remove("active");
+
+            index++;
+            if(index >= scenes.length) return;
+
+            scenes[index].classList.add("active");
+        }, 1200);
+
+        return;
+    }
+
+    currentScene.classList.remove("active");
 
     index++;
     if(index >= scenes.length) return;
 
-    showScene(index);
+    scenes[index].classList.add("active");
 };
-
-window.onload = function(){
-    showScene(0);
-};
-});
 </script>
 
 </body>
