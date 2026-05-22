@@ -179,10 +179,13 @@ a.starlink:active{
 }
 
 /* 進場 */
-.scene.active img{
-    animation:imgIn 1.6s ease forwards;
+.scene.active{
+    display:flex;
+    opacity:1;
+    transform:scale(1);
+    filter:blur(0);
+    z-index:10;
 }
-z-index:10;
 
 /* 離場 */
 .scene img.fade-out{
