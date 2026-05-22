@@ -6,7 +6,13 @@
 <title>小安&小奈</title>
 
 <style>
-/* 🌌 基礎 */
+
+/* 🌸 字體 */
+@font-face{
+    font-family:"DongZhu";
+    src:url("./DongZhu.ttf") format("truetype");
+}
+
 body{
     margin:0;
     height:100vh;
@@ -15,97 +21,113 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    font-family:"Noto Serif TC",serif;
+    font-family:"DongZhu","Noto Serif TC",serif;
     color:white;
 }
 
-/* 🌌 星光背景（簡化穩定版） */
-body::before{
-    content:"";
+/* 🌌 星空 */
+.layer-back,.layer-mid,.layer-front,.scanline,.hud{
+    pointer-events:none;
     position:fixed;
     inset:0;
-    background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.15),transparent 40%),
-               radial-gradient(circle at 70% 60%,rgba(255,200,255,.1),transparent 50%);
-    animation:float 10s infinite linear;
 }
 
-@keyframes float{
+.layer-back{
+    background:radial-gradient(circle at 20% 30%,rgba(255,255,255,.25)1px,transparent 2px);
+    animation:drift 40s linear infinite;
+}
+
+.layer-mid{
+    background:radial-gradient(circle at 60% 50%,rgba(255,230,180,.4)1.5px,transparent 3px);
+    animation:drift 25s linear infinite;
+}
+
+.layer-front{
+    background:radial-gradient(circle at 30% 80%,rgba(255,255,255,.8)2px,transparent 3px);
+    animation:drift 12s linear infinite;
+}
+
+@keyframes drift{
     from{transform:translateY(0);}
-    to{transform:translateY(-50px);}
+    to{transform:translateY(-120px);}
 }
 
-/* 🌌 scene */
+/* 🌌 HUD */
+.hud{
+    border:1px solid rgba(255,230,150,.15);
+}
+
+/* 🌌 掃描線 */
+.scanline{
+    background:linear-gradient(to bottom,transparent,rgba(255,230,150,.05),transparent);
+    animation:scan 5s linear infinite;
+}
+
+@keyframes scan{
+    from{transform:translateY(-100%);}
+    to{transform:translateY(100%);}
+}
+
+/* 🌌 場景 */
 .scene{
     position:absolute;
     inset:0;
-    display:flex;
+    display:none;
     justify-content:center;
     align-items:center;
     text-align:center;
-    opacity:0;
-    pointer-events:none;
-    transition:opacity .6s ease;
-    padding:20px;
 }
 
 .scene.active{
-    opacity:1;
-    pointer-events:auto;
+    display:flex;
 }
 
 /* 🌌 文字 */
 h1{
-    font-size:clamp(22px,5vw,50px);
-    text-shadow:0 0 10px white;
-    white-space:nowrap;
+    font-weight:normal;
+    font-size:clamp(28px,6vw,72px);
+    text-shadow:0 0 10px #fff3c4,0 0 25px #ffd77a;
+    margin:0;
 }
 
-/* 🌌 typing */
-.typing{
-    display:inline-block;
-    overflow:hidden;
-    width:0;
-    border-right:2px solid white;
-    white-space:nowrap;
+/* 🌸 連結 */
+a.starlink{
+    color:#f7b6d2 !important;
+    text-decoration:none !important;
+    text-shadow:0 0 10px #ff9ecf;
 }
 
-.typing.play{
-    animation:typing 2.2s steps(30,end) forwards, blink .8s infinite;
-}
-
-@keyframes typing{
-    from{width:0;}
-    to{width:100%;}
-}
-
-@keyframes blink{
-    50%{border-color:transparent;}
-}
-
-/* 🌌 按鈕 */
-a{
-    color:#ffb6d9;
-    text-decoration:none;
-}
-
-/* 🌌 拼圖 */
-#puzzleImg{
+/* 🌸 圖片 */
+#memoryImg{
     width:100vw;
     height:100vh;
     object-fit:cover;
-    transition:opacity .4s ease;
+    transition:opacity .4s ease, transform .4s ease;
 }
+
+/* 🌸 最後淡入 */
+.end-fade{
+    animation:endFade 3s ease forwards;
+}
+
+@keyframes endFade{
+    0%{opacity:0;transform:translateY(20px);}
+    100%{opacity:1;transform:translateY(0);}
+}
+
 </style>
 </head>
 
 <body onclick="nextScene()">
 
-<!-- 🌌 背景 -->
 <div class="layer-back"></div>
 <div class="layer-mid"></div>
 <div class="layer-front"></div>
 <div class="scanline"></div>
 <div class="hud"></div>
+
+<!-- 🌌 劇情 -->
+<div class="scene active"><h1>本系统已开启</h1></div>
 
 <!-- 🌌 劇情（全部完整保留） -->
 
@@ -186,6 +208,11 @@ a{
     <h1 class="typing">让我们一起欣赏拼图吧~</h1>
 </div>
 
+<!-- 🌌 回憶圖 02~07 -->
+<div class="scene" id="memoryScene" onclick="nextMemory(event)">
+    <img id="memoryImg" src="./02.png">
+</div>
+
 <div class="scene" onclick="nextPuzzle()">
     <img id="puzzleImg" src="./02.png">
 </div>
@@ -209,79 +236,41 @@ a{
 
 <script>
 
-let scenes = document.querySelectorAll(".scene");
-let index = 0;
+let sceneIndex = 0;
+const scenes = document.querySelectorAll(".scene");
 
-/* 🌌 控制下一页 */
 function nextScene(){
-
-    if(index >= scenes.length - 1) return;
-
-    scenes[index].classList.remove("active");
-    index++;
-    let current = scenes[index];
-    current.classList.add("active");
-
-    let typing = current.querySelector(".typing");
-    if(typing){
-        typing.classList.remove("play");
-        void typing.offsetWidth;
-        typing.classList.add("play");
-    }
-
-    /* ⭐ 状态延迟3秒 */
-    if(current.querySelector("#statusText")){
-        setTimeout(()=>{
-            current.querySelector("#statusText").style.opacity = 1;
-        },3000);
-    }
-
-    /* ⭐ 距离延迟3秒 */
-    if(current.querySelector("#distanceText")){
-        setTimeout(()=>{
-            current.querySelector("#distanceText").style.opacity = 1;
-        },3000);
+    if(sceneIndex < scenes.length - 1){
+        scenes[sceneIndex].classList.remove("active");
+        sceneIndex++;
+        scenes[sceneIndex].classList.add("active");
     }
 }
 
-/* 🌌 拼图 */
-let puzzleIndex = 1;
+/* 🌌 回憶圖 */
+let memoryIndex = 2;
 
-function nextPuzzle(){
+function nextMemory(e){
 
-    const img = document.getElementById("puzzleImg");
+    e.stopPropagation();
 
-    if(puzzleIndex >= 7){
+    const img = document.getElementById("memoryImg");
+
+    if(memoryIndex >= 7){
         nextScene();
         return;
     }
 
-    puzzleIndex++;
-    img.style.opacity = 0;
+    memoryIndex++;
 
-    setTimeout(()=>{
-        img.src = "./0" + puzzleIndex + ".png";
-        img.style.opacity = 1;
-    },300);
-}
+    img.style.opacity = "0";
+    img.style.transform = "scale(1.03)";
 
-.delay-end{
-    opacity:0;
-    animation:fadeInEnd 2.5s ease forwards;
-    animation-delay:2.5s;
-}
-
-@keyframes fadeInEnd{
-    0%{
-        opacity:0;
-        transform:translateY(20px);
-        filter:blur(8px);
-    }
-    100%{
-        opacity:1;
-        transform:translateY(0);
-        filter:blur(0);
-    }
+    setTimeout(() => {
+        img.src = "./0" + memoryIndex + ".png";
+        img.style.opacity = "1";
+        img.style.transform = "scale(1)";
+    }, 250);
 }
 
 </script>
