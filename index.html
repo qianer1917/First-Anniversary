@@ -87,7 +87,7 @@ body{
     position:absolute;
     inset:0;
 
-    display:none;
+    display:flex;
     justify-content:center;
     align-items:center;
 
@@ -97,16 +97,28 @@ body{
     box-sizing:border-box;
 
     opacity:0;
+    visibility:hidden;
+
     transform:scale(1.03);
     filter:blur(6px);
-    transition:opacity .8s ease, transform .8s ease, filter .8s ease;
+
+    transition:
+        opacity .8s ease,
+        transform .8s ease,
+        filter .8s ease;
+
+    pointer-events:none;
 }
 
 .scene.active{
-    display:flex;
     opacity:1;
+    visibility:visible;
+
     transform:scale(1);
     filter:blur(0);
+
+    pointer-events:auto;
+    z-index:2;
 }
 
 /* 🌌 文字 */
