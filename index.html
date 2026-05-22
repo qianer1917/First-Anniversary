@@ -274,6 +274,38 @@ a.starlink:active{
     filter:blur(0);
 }
 
+.scene img{
+    width:100vw;
+    max-width:100%;
+    height:auto;
+
+    display:block;
+
+    opacity:0;
+    transform:scale(1.06);
+
+    filter:blur(10px);
+    animation:memoryIn 2s ease forwards;
+}
+
+/* 🌸 回忆浮现感 */
+@keyframes memoryIn{
+    0%{
+        opacity:0;
+        transform:scale(1.08);
+        filter:blur(12px);
+    }
+    50%{
+        opacity:1;
+        filter:blur(3px);
+    }
+    100%{
+        opacity:1;
+        transform:scale(1);
+        filter:blur(0);
+    }
+}
+
 </style>
 </head>
 
