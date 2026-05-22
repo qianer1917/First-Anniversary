@@ -265,11 +265,16 @@ a.starlink{
 
 <script>
 
+document.addEventListener("DOMContentLoaded", () => {
+
 let index = 0;
 const scenes = document.querySelectorAll(".scene");
 
+/* 🧪 檢查（很重要） */
+console.log("scene數量：", scenes.length);
+
 /* 🌌 下一頁 */
-function nextScene(){
+window.nextScene = function(){
 
     if(index >= scenes.length - 1) return;
 
@@ -281,7 +286,7 @@ function nextScene(){
     replayTyping(scenes[index]);
 }
 
-/* 🌌 打字重置（唯一版本） */
+/* 🌌 typing 修復 */
 function replayTyping(scene){
     const text = scene.querySelector(".typing");
     if(!text) return;
@@ -299,13 +304,12 @@ function replayTyping(scene){
         "typing 2.2s steps(30,end) forwards, blink .8s infinite";
 }
 
-/* 🌌 拼图 */
+/* 🌌 拼圖 */
 let puzzleIndex = 2;
 const maxPuzzle = 7;
 
-function nextPuzzle(){
+window.nextPuzzle = function(){
     const img = document.getElementById("puzzleImg");
-
     if(!img) return;
 
     if(puzzleIndex >= maxPuzzle){
@@ -325,6 +329,8 @@ function nextPuzzle(){
 
 /* 🌌 初始化 */
 replayTyping(scenes[0]);
+
+});
 
 </script>
 
