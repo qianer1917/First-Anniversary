@@ -388,9 +388,7 @@ a.starlink:active{
 </div>
 
 <!-- 🌌 拼图互动页（02~07） -->
-<div class="scene" onclick="nextPuzzle()">
-    <img id="puzzleImg" src="./02.png">
-</div>
+<div class="scene" id="puzzleScene">
 
 <!-- 🌌 小奈说 -->
 <div class="scene">
@@ -486,6 +484,15 @@ function nextPuzzle(){
         img.style.transform = "scale(1)";
     }, 250);
 }
+
+const puzzleScene = document.getElementById("puzzleScene");
+
+puzzleScene.addEventListener("click", function(e){
+
+    e.stopPropagation(); // 阻止 body 的 nextScene()
+
+    nextPuzzle();
+});
 
 </script>
 
