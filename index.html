@@ -258,13 +258,15 @@ a.starlink:active{
 
 .scene{
     opacity:0;
-    transform:scale(1.02);
-    transition:opacity 0.6s ease, transform 0.6s ease;
+    transform:scale(1.03);
+    filter:blur(6px);
+    transition:opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease;
 }
 
 .scene.active{
     opacity:1;
     transform:scale(1);
+    filter:blur(0);
 }
 
 </style>
