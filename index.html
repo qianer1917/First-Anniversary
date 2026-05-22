@@ -195,9 +195,10 @@ a{
 </div>
 
 <div class="scene">
-    <h1 class="end-fade">
+    <h1 class="end-fade delay-end">
         最后..
         <br><br>
+
         <a class="starlink"
            href="https://myppt.cc/8Pa3Sn"
            target="_blank">
@@ -262,6 +263,25 @@ function nextPuzzle(){
         img.src = "./0" + puzzleIndex + ".png";
         img.style.opacity = 1;
     },300);
+}
+
+.delay-end{
+    opacity:0;
+    animation:fadeInEnd 2.5s ease forwards;
+    animation-delay:2.5s;
+}
+
+@keyframes fadeInEnd{
+    0%{
+        opacity:0;
+        transform:translateY(20px);
+        filter:blur(8px);
+    }
+    100%{
+        opacity:1;
+        transform:translateY(0);
+        filter:blur(0);
+    }
 }
 
 </script>
