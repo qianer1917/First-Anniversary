@@ -278,6 +278,12 @@ a.starlink:active{
     transition:opacity .35s ease, transform .35s ease;
 }
 
+.delay3{
+    opacity:0;
+    animation:floatUp 1.6s ease forwards;
+    animation-delay:3s;
+}
+
 </style>
 </head>
 
@@ -315,7 +321,9 @@ a.starlink:active{
 
 <div class="scene"><h1 class="typing">确认玩家状态中</h1></div>
 
-<div class="scene"><h1 class="floatUp">状态：稳定</h1></div>
+<div class="scene">
+    <h1 class="floatUp delay3">状态：稳定</h1>
+</div>
 
 <div class="scene"><h1 class="typing">正在步入星际轨道..</h1></div>
 
@@ -331,7 +339,9 @@ a.starlink:active{
 
 <div class="scene"><h1 class="typing">正在前往此地</h1></div>
 
-<div class="scene"><h1 class="floatUp">距离：逐渐缩短</h1></div>
+<div class="scene">
+    <h1 class="floatUp delay3">距离：逐渐缩短</h1>
+</div>
 
 <div class="scene"><h1 class="typing">正在进入回忆星系范围..</h1></div>
 
