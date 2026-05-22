@@ -176,10 +176,12 @@ a.starlink:active{
     width:100vw;
     max-width:100%;
     height:auto;
-    object-fit:contain;
 
+    display:block;
+
+    /* 🌸 只做视觉，不动布局 */
     opacity:0;
-    transform:scale(1.08);
+    transform:scale(1.05);
 
     animation:imgIn 1.8s ease forwards;
 }
@@ -188,7 +190,7 @@ a.starlink:active{
 @keyframes imgIn{
     from{
         opacity:0;
-        transform:scale(1.08);
+        transform:scale(1.05);
         filter:blur(6px);
     }
     to{
