@@ -176,17 +176,45 @@ a.starlink:active{
     width:100vw;
     max-width:100%;
     height:auto;
-
     object-fit:contain;
 
     opacity:0;
     transform:scale(1.08);
 
-    animation:imgfade 2s ease forwards;
-
-    box-shadow:0 0 30px rgba(255,215,122,.3);
+    animation:imgIn 1.8s ease forwards;
 }
 
+/* 🌸 进入 */
+@keyframes imgIn{
+    from{
+        opacity:0;
+        transform:scale(1.08);
+        filter:blur(6px);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+        filter:blur(0);
+    }
+}
+
+/* 🌫 离开 */
+.fade-out{
+    animation:imgOut 1.2s ease forwards;
+}
+
+@keyframes imgOut{
+    from{
+        opacity:1;
+        transform:scale(1);
+        filter:blur(0);
+    }
+    to{
+        opacity:0;
+        transform:scale(0.98);
+        filter:blur(4px);
+    }
+}
 </style>
 </head>
 
