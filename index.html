@@ -173,22 +173,18 @@ a.starlink:active{
 }
 
 .fade-img{
-    width:100vw;          /* 🌟 手机/屏幕全宽 */
-    max-width:100%;       /* 防止溢出 */
+    width:100vw;
+    max-width:100%;
     height:auto;
 
     object-fit:contain;
 
     opacity:0;
-    transform:scale(1.05);
-    animation:imgfade 1.8s ease forwards;
-}
+    transform:scale(1.08);
 
-@keyframes imgfade{
-    to{
-        opacity:1;
-        transform:scale(1);
-    }
+    animation:imgfade 2s ease forwards;
+
+    box-shadow:0 0 30px rgba(255,215,122,.3);
 }
 
 </style>
