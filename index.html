@@ -13,14 +13,17 @@
     src:url("./DongZhu.ttf") format("truetype");
 }
 
+/* 🌌 基礎 */
 body{
     margin:0;
     height:100vh;
     overflow:hidden;
     background:#000;
+
     display:flex;
     justify-content:center;
     align-items:center;
+
     font-family:"DongZhu","Noto Serif TC",serif;
     color:white;
 }
@@ -28,23 +31,30 @@ body{
 /* 🌌 星空 */
 .layer-back,.layer-mid,.layer-front,.scanline,.hud{
     pointer-events:none;
-    position:fixed;
-    inset:0;
 }
 
 .layer-back{
+    position:fixed;
+    inset:0;
     background:radial-gradient(circle at 20% 30%,rgba(255,255,255,.25)1px,transparent 2px);
-    animation:drift 40s linear infinite;
+    animation: drift 40s linear infinite;
+    opacity:.5;
 }
 
 .layer-mid{
+    position:fixed;
+    inset:0;
     background:radial-gradient(circle at 60% 50%,rgba(255,230,180,.4)1.5px,transparent 3px);
-    animation:drift 25s linear infinite;
+    animation: drift 25s linear infinite;
+    opacity:.6;
 }
 
 .layer-front{
+    position:fixed;
+    inset:0;
     background:radial-gradient(circle at 30% 80%,rgba(255,255,255,.8)2px,transparent 3px);
-    animation:drift 12s linear infinite;
+    animation: drift 12s linear infinite;
+    opacity:.8;
 }
 
 @keyframes drift{
@@ -54,11 +64,15 @@ body{
 
 /* 🌌 HUD */
 .hud{
+    position:fixed;
+    inset:0;
     border:1px solid rgba(255,230,150,.15);
 }
 
 /* 🌌 掃描線 */
 .scanline{
+    position:fixed;
+    inset:0;
     background:linear-gradient(to bottom,transparent,rgba(255,230,150,.05),transparent);
     animation:scan 5s linear infinite;
 }
@@ -68,66 +82,155 @@ body{
     to{transform:translateY(100%);}
 }
 
-/* 🌌 場景 */
+/* 🌌 場景（真正置中） */
 .scene{
     position:absolute;
     inset:0;
+
     display:none;
     justify-content:center;
     align-items:center;
+
     text-align:center;
+
+    padding:0 20px;
+    box-sizing:border-box;
+
+    opacity:0;
+    transform:scale(1.03);
+    filter:blur(6px);
+    transition:opacity .8s ease, transform .8s ease, filter .8s ease;
 }
 
 .scene.active{
     display:flex;
+    opacity:1;
+    transform:scale(1);
+    filter:blur(0);
 }
 
 /* 🌌 文字 */
-h1{
-    font-weight:normal;
-    font-size:clamp(28px,6vw,72px);
-    text-shadow:0 0 10px #fff3c4,0 0 25px #ffd77a;
+h1,h2{
     margin:0;
+    white-space:nowrap;
+    font-weight:normal;
+    text-shadow:0 0 10px #fff3c4,0 0 25px #ffd77a;
 }
 
-/* 🌸 連結 */
+h1{
+    font-size:clamp(32px,6vw,72px);
+    line-height:1.4;
+}
+
+h2{
+    font-size:clamp(22px,4.5vw,42px);
+    line-height:1.4;
+}
+
+/* 🌌 打字 */
+.typing{
+    display:inline-block;
+    overflow:hidden;
+    width:0;
+    border-right:2px solid white;
+    animation:typing 2.4s steps(30,end) forwards,blink .8s infinite;
+}
+
+@keyframes typing{from{width:0;}to{width:100%;}}
+@keyframes blink{50%{border-color:transparent;}}
+
+/* 🌌 浮現 */
+.floatUp{
+    opacity:0;
+    transform:translateY(40px);
+    animation:floatUp 1.6s ease forwards;
+}
+
+@keyframes floatUp{
+    to{opacity:1;transform:translateY(0);}
+}
+
+/* 🌌 手機 */
+@media(max-width:768px){
+    h1{font-size:clamp(18px,5vw,28px);}
+    h2{font-size:clamp(15px,4vw,22px);}
+}
+
+/* 🌸 粉色連結（點我進入） */
 a.starlink{
     color:#f7b6d2 !important;
     text-decoration:none !important;
-    text-shadow:0 0 10px #ff9ecf;
+    text-shadow:0 0 8px #f7b6d2,0 0 18px #ff9ecf,0 0 30px #ff7fbf;
 }
 
-/* 🌸 圖片 */
-#memoryImg{
+a.starlink:hover{
+    color:#ffd1e6 !important;
+}
+
+a.starlink:active{
+    color:#ff4fa3 !important;
+}
+
+/* 🌸 圖片回憶進出場 */
+.scene img{
     width:100vw;
-    height:100vh;
-    object-fit:cover;
-    transition:opacity .4s ease, transform .4s ease;
+    max-width:100%;
+    height:auto;
+    display:block;
+
+    opacity:0;
 }
 
-/* 🌸 最後淡入 */
-.end-fade{
-    animation:endFade 3s ease forwards;
+/* 進場 */
+.scene.active img{
+    animation:imgIn 1.6s ease forwards;
 }
 
-@keyframes endFade{
-    0%{opacity:0;transform:translateY(20px);}
-    100%{opacity:1;transform:translateY(0);}
+/* 離場 */
+.scene img.fade-out{
+    animation:imgOut 1.2s ease forwards;
 }
 
-</style>
+@keyframes imgIn{
+    0%{
+        opacity:0;
+        transform:scale(1.06);
+        filter:blur(10px);
+    }
+    60%{
+        opacity:1;
+        filter:blur(3px);
+    }
+    100%{
+        opacity:1;
+        transform:scale(1);
+        filter:blur(0);
+    }
+}
+
+@keyframes imgOut{
+    0%{
+        opacity:1;
+        transform:scale(1);
+        filter:blur(0);
+    }
+    100%{
+        opacity:0;
+        transform:scale(0.98);
+        filter:blur(8px);
+    }
+}
+<style>
 </head>
 
 <body onclick="nextScene()">
 
+<!-- 🌌 星層 -->
 <div class="layer-back"></div>
 <div class="layer-mid"></div>
 <div class="layer-front"></div>
 <div class="scanline"></div>
 <div class="hud"></div>
-
-<!-- 🌌 劇情 -->
-<div class="scene active"><h1>本系统已开启</h1></div>
 
 <!-- 🌌 劇情（全部完整保留） -->
 
@@ -152,9 +255,9 @@ a.starlink{
 
 <div class="scene"><h1 class="typing">星船即将启动！</h1></div>
 
-<div class="scene"><h1 class="typing">确认玩家状态中..</h1></div>
+<div class="scene"><h1 class="typing">确认玩家状态中</h1></div>
 
-<h1 class="floatUp delayText">状态：稳定</h1>
+<div class="scene"><h1 class="floatUp">状态：稳定</h1></div>
 
 <div class="scene"><h1 class="typing">正在步入星际轨道..</h1></div>
 
@@ -170,7 +273,7 @@ a.starlink{
 
 <div class="scene"><h1 class="typing">正在前往此地</h1></div>
 
-<h1 class="floatUp delayText">距离：逐渐缩短</h1>
+<div class="scene"><h1 class="floatUp">距离：逐渐缩短</h1></div>
 
 <div class="scene"><h1 class="typing">正在进入回忆星系范围..</h1></div>
 
@@ -199,33 +302,18 @@ a.starlink{
 <div class="scene"><h1 class="typing">坚定选择对方的我们</h1></div>
 
 <div class="scene">
-    <img src="./01.png" class="fade-img" alt="">
+    <img src="./01.png" class="fade-img">
 </div>
 
-<div class="scene">
-    
 <div class="scene">
     <h1 class="typing">让我们一起欣赏拼图吧~</h1>
 </div>
-
-<!-- 🌌 回憶圖 02~07 -->
-<div class="scene" id="memoryScene" onclick="nextMemory(event)">
-    <img id="memoryImg" src="./02.png">
-</div>
-
-<div class="scene" onclick="nextPuzzle()">
-    <img id="puzzleImg" src="./02.png">
-</div>
+<div class="scene"><h1 class="typing">小奈说：我们还要一起走，好久好久..</h1></div>
 
 <div class="scene">
-    <h1 class="typing">小奈说：我们还要一起走，好久好久..</h1>
-</div>
-
-<div class="scene">
-    <h1 class="end-fade delay-end">
+    <h1 class="typing">
         最后..
         <br><br>
-
         <a class="starlink"
            href="https://myppt.cc/8Pa3Sn"
            target="_blank">
@@ -236,42 +324,29 @@ a.starlink{
 
 <script>
 
-let sceneIndex = 0;
+let index = 0;
 const scenes = document.querySelectorAll(".scene");
 
+function replayTyping(scene){
+    const text = scene.querySelector(".typing");
+    if(!text) return;
+
+    text.style.animation="none";
+    void text.offsetWidth;
+    text.style.animation="typing 2.4s steps(30,end) forwards, blink .8s infinite";
+}
+
 function nextScene(){
-    if(sceneIndex < scenes.length - 1){
-        scenes[sceneIndex].classList.remove("active");
-        sceneIndex++;
-        scenes[sceneIndex].classList.add("active");
-    }
+    if(index >= scenes.length - 1) return;
+
+    scenes[index].classList.remove("active");
+    index++;
+    scenes[index].classList.add("active");
+
+    replayTyping(scenes[index]);
 }
 
-/* 🌌 回憶圖 */
-let memoryIndex = 2;
-
-function nextMemory(e){
-
-    e.stopPropagation();
-
-    const img = document.getElementById("memoryImg");
-
-    if(memoryIndex >= 7){
-        nextScene();
-        return;
-    }
-
-    memoryIndex++;
-
-    img.style.opacity = "0";
-    img.style.transform = "scale(1.03)";
-
-    setTimeout(() => {
-        img.src = "./0" + memoryIndex + ".png";
-        img.style.opacity = "1";
-        img.style.transform = "scale(1)";
-    }, 250);
-}
+replayTyping(scenes[0]);
 
 </script>
 
