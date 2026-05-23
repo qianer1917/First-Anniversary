@@ -305,91 +305,68 @@ filter:blur(8px);
 </div>  
 <audio id="bgm" src="./time-to-love.mp3" loop></audio>  
 <script>  
-document.addEventListener("DOMContentLoaded", () => {  let index = 0;  
-const scenes = document.querySelectorAll(".scene");  
+document.addEventListener("DOMContentLoaded", () => {
 
-window.nextScene = function () {  
+    let index = 0;
+    const scenes = document.querySelectorAll(".scene");
 
-    if (index >= scenes.length - 1) return;  
+    window.nextScene = function () {
 
-    const currentScene = scenes[index];  
+        if (index >= scenes.length - 1) return;
 
-    if (!currentScene) return;  
+        const currentScene = scenes[index];
 
-    const img = currentScene.querySelector("img");  
+        const img = currentScene.querySelector("img");
 
-    // 有圖片就先做淡出動畫  
-    if (img) {  
-        img.classList.add("fade-out");  
+        // 有圖片先做淡出
+        if (img) {
+            img.classList.add("fade-out");
 
-        setTimeout(() => {  
-            currentScene.classList.remove("active");  
+            setTimeout(() => {
+                currentScene.classList.remove("active");
+                index++;
 
-            index++;  
+                if (index < scenes.length) {
+                    scenes[index].classList.add("active");
+                }
+            }, 800);
 
-            if (index < scenes.length) {  
-                scenes[index].classList.add("active");  
-            }  
+            return;
+        }
 
-            // 到最後一頁時顯示按鈕  
-            if (index === scenes.length - 1) {  
-                const finalBtn = document.querySelector(".starlink");  
-                if (finalBtn) finalBtn.classList.add("show");  
-            }  
+        // 一般場景
+        currentScene.classList.remove("active");
+        index++;
 
-        }, 1200);  
-
-        return;  
-    }  
-
-    // 一般場景切換  
-    currentScene.classList.remove("active");  
-
-    index++;  
-
-    if (index < scenes.length) {  
-        scenes[index].classList.add("active");  
-    }  
-
-    // 最後一頁顯示按鈕  
-    if (index >= scenes.length) return;
-
-const finalBtn = document.querySelector(".starlink");
-if (finalBtn) finalBtn.classList.add("show");
-}
-};
+        if (index < scenes.length) {
+            scenes[index].classList.add("active");
+        }
+    };
 
 });
 const bgm = document.getElementById("bgm");
 let musicStarted = false;
 
 function startMusic(){
-if(musicStarted) return;
-musicStarted = true;
+    if(musicStarted) return;
+    musicStarted = true;
 
-if(!bgm) return;  
+    if(!bgm) return;
 
-bgm.volume = 0;  
+    bgm.volume = 0;
+    bgm.play().catch(()=>{});
 
-const playPromise = bgm.play();  
-
-if(playPromise !== undefined){  
-    playPromise.catch(() => {  
-        musicStarted = false; // fallback  
-    });  
-}  
-
-let v = 0;  
-const fade = setInterval(() => {  
-    v += 0.05;  
-    bgm.volume = v;  
-    if(v >= 1) clearInterval(fade);  
-}, 80);
-
+    let v = 0;
+    const fade = setInterval(() => {
+        v += 0.05;
+        bgm.volume = v;
+        if(v >= 1) clearInterval(fade);
+    }, 80);
 }
+
 function handleClick(){
-startMusic();
-nextScene();
+    startMusic();
+    nextScene();
 }
 </script>
 
