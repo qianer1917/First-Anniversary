@@ -638,15 +638,13 @@ function nextScene(){
             return;
         }
 
-        // ⭐強制等 1 frame + 1 small delay（修07→09卡頓）
-        requestAnimationFrame(() => {
-            setTimeout(() => {
-                scenes[index].classList.add("active");
-            }, 50);
-        });
+        // ⭐關鍵：只留一層 delay（不要 rAF + timeout）
+        setTimeout(() => {
+            scenes[index].classList.add("active");
+        }, 80);
     };
 
-    // ⭐圖片場（關鍵穩定點）
+    // ⭐圖片場
     if(img){
 
         const isSlow =
@@ -657,7 +655,8 @@ function nextScene(){
 
         img.classList.add(isSlow ? "slow-fade-out" : "fade-out");
 
-        setTimeout(goNext, isSlow ? 1800 : 600);
+        // ⭐關鍵修復：給 07→09 足夠「退場時間」
+        setTimeout(goNext, isSlow ? 2000 : 800);
 
         return;
     }
