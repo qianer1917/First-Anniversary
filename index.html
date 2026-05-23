@@ -51,16 +51,21 @@ body{
 .layer-front{
     position:fixed;
     inset:0;
-    background:radial-gradient(circle at 30% 80%,rgba(255,255,255,.8)2px,transparent 3px);
+    background:radial-gradient(circle at 30% 80%,rgba(255,255,255,.8) 2px, transparent 3px);
     animation: drift 12s linear infinite;
     opacity:.8;
+    will-change: transform;
+    transform: translateZ(0);
 }
 
 @keyframes drift{
-    from{transform:translateY(0);}
-    to{transform:translateY(-120px);}
+    0%{
+        transform: translateY(0);
+    }
+    100%{
+        transform: translateY(-120px);
+    }
 }
-
 /* 🌌 HUD */
 .hud{
     position:fixed;
