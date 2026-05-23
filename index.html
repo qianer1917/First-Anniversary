@@ -558,6 +558,124 @@ filter:blur(8px);
             drop-shadow(0 0 60px rgba(255,255,255,0.4));
     }
 }
+/* =========================
+   🌑 09｜終極登場模式
+========================= */
+
+.scene.special09{
+    position:relative;
+    background:#000;
+    overflow:hidden;
+}
+
+/* 🌌 進場前黑洞感 */
+.scene.special09::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle,
+        rgba(0,0,0,0.2) 0%,
+        rgba(0,0,0,0.7) 40%,
+        rgba(0,0,0,1) 100%
+    );
+    z-index:1;
+    animation: blackIn 1.2s ease forwards;
+}
+
+@keyframes blackIn{
+    from{opacity:0;}
+    to{opacity:1;}
+}
+
+/* 🌟 圖片本體（白光核心） */
+.glow-img{
+    position:relative;
+    z-index:2;
+
+    width:auto;
+    max-width:90vw;
+    max-height:85vh;
+
+    object-fit:contain;
+
+    opacity:0;
+    transform:scale(0.92);
+
+    filter:
+        drop-shadow(0 0 15px rgba(255,255,255,1))
+        drop-shadow(0 0 40px rgba(255,255,255,0.8))
+        drop-shadow(0 0 90px rgba(255,255,255,0.6));
+
+    animation: revealWhite 2.2s ease forwards;
+}
+
+/* ✨ 白光浮現 */
+@keyframes revealWhite{
+    0%{
+        opacity:0;
+        transform:scale(0.9);
+        filter:blur(20px);
+    }
+    40%{
+        opacity:1;
+        filter:blur(6px);
+    }
+    100%{
+        opacity:1;
+        transform:scale(1);
+        filter:blur(0);
+    }
+}
+
+/* 🌟 呼吸白光 */
+.glow-img{
+    animation:
+        revealWhite 2.2s ease forwards,
+        glowPulse 3s ease-in-out infinite 2.2s;
+}
+
+@keyframes glowPulse{
+    0%{
+        filter:
+            drop-shadow(0 0 10px rgba(255,255,255,0.8))
+            drop-shadow(0 0 25px rgba(255,255,255,0.6))
+            drop-shadow(0 0 60px rgba(255,255,255,0.4));
+        transform:scale(1);
+    }
+    50%{
+        filter:
+            drop-shadow(0 0 25px rgba(255,255,255,1))
+            drop-shadow(0 0 60px rgba(255,255,255,0.8))
+            drop-shadow(0 0 120px rgba(255,255,255,0.6));
+        transform:scale(1.02);
+    }
+    100%{
+        filter:
+            drop-shadow(0 0 10px rgba(255,255,255,0.8))
+            drop-shadow(0 0 25px rgba(255,255,255,0.6))
+            drop-shadow(0 0 60px rgba(255,255,255,0.4));
+        transform:scale(1);
+    }
+}
+
+/* 💥 空間閃光（登場瞬間） */
+.scene.special09::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle,
+        rgba(255,255,255,0.25),
+        transparent 60%
+    );
+    z-index:0;
+    animation: flash 1.2s ease forwards;
+}
+
+@keyframes flash{
+    0%{opacity:0;}
+    30%{opacity:1;}
+    100%{opacity:0;}
+}
 </style>  </head>   <body onclick="handleClick()">  <!-- 🌌 星層 -->  <div class="layer-back"></div>  
 <div class="layer-mid"></div>  
 <div class="layer-front"></div>  
