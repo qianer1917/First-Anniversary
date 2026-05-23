@@ -459,6 +459,58 @@ filter:blur(8px);
         transform:scale(1.01);
     }
 }
+.message-box{
+    width:100%;
+    height:100%;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    gap:12px;
+
+    text-align:center;
+}
+
+.message-box h2{
+    color:#fff3c4;
+    text-shadow:0 0 15px #ffd77a;
+}
+
+.message-box input{
+    width:260px;
+    padding:12px;
+
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.3);
+
+    background:rgba(0,0,0,0.4);
+    color:white;
+
+    text-align:center;
+
+    outline:none;
+}
+
+.message-box button{
+    padding:10px 16px;
+    border:none;
+    border-radius:10px;
+
+    background:linear-gradient(135deg,#ffd77a,#ff9ecf);
+    color:black;
+
+    cursor:pointer;
+}
+
+#output{
+    margin-top:10px;
+    color:#ffddaa;
+    text-shadow:0 0 10px #ff9ecf;
+    max-width:80%;
+    word-break:break-word;
+}
 </style>  </head>   <body onclick="handleClick()">  <!-- 🌌 星層 -->  <div class="layer-back"></div>  
 <div class="layer-mid"></div>  
 <div class="layer-front"></div>  
@@ -508,7 +560,23 @@ filter:blur(8px);
     <img src="./09.jpg" class="glow-img">
 </div>
 
-<div class="scene"><h1 class="typing">小奈说：我们还要一起走，好久好久..</h1></div>  <div class="scene">  
+<div class="scene"><h1 class="typing">小奈说：我们还要一起走，好久好久..</h1></div> 
+
+<div class="scene">
+    <div class="message-box">
+
+        <h2>💌想給小奈的話：</h2>
+
+        <input id="msg" type="text" placeholder="請輸入..." />
+
+        <button onclick="sendMsg()">送出</button>
+
+        <div id="output"></div>
+
+    </div>
+</div>
+
+ <div class="scene">  
     <h1 class="typing">  
         最后..  
         <br><br>  
@@ -627,6 +695,13 @@ function spawnMeteor(){
 
 setInterval(spawnMeteor, 2000);
 
+function sendMsg(){
+    const text = document.getElementById("msg").value;
+
+    document.getElementById("output").innerText = text;
+
+    document.getElementById("msg").value = "";
+}
 </script>
 </body>  
 </html>
