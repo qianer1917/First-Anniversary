@@ -590,10 +590,10 @@ filter:blur(8px);
 let index = 0;
 let busy = false;
 
-const scenes = () => document.querySelectorAll(".scene");
+const scenes = Array.from(document.querySelectorAll(".scene"));
 
 /* =========================
-   🎵 音樂
+   🎵 音樂（安全版）
 ========================= */
 const bgm = document.getElementById("bgm");
 let musicStarted = false;
@@ -605,7 +605,10 @@ function startMusic(){
     if(!bgm) return;
 
     bgm.volume = 0;
-    bgm.play().catch(()=>{});
+
+    bgm.play().catch(() => {
+        // 👉 防 Chrome 攔截，不會卡流程
+    });
 
     let v = 0;
     const fade = setInterval(() => {
@@ -616,50 +619,65 @@ function startMusic(){
 }
 
 /* =========================
-   👉 換場（修正版）
+   👉 核心換場（100%不會卡死版）
 ========================= */
 function nextScene(){
     if(busy) return;
     busy = true;
 
-    const list = scenes();
-    const current = list[index];
+    const current = scenes[index];
+    if(!current){
+        busy = false;
+        return;
+    }
+
     const img = current.querySelector("img");
 
     const goNext = () => {
         current.classList.remove("active");
+
         index++;
 
-        const next = scenes()[index];
-        if(next) next.classList.add("active");
+        if(index >= scenes.length){
+            busy = false;
+            return;
+        }
 
+        scenes[index].classList.add("active");
         busy = false;
     };
 
-    // ⭐ 只讓 01 & 08 慢
-    const isSlow =
-        current.querySelector("img[src='./01.png']") ||
-        current.querySelector("img[src='./08.png']");
+    try {
+        // ⭐ 判斷 01 / 08（只靠圖片，不靠 index）
+        const isSlow =
+            current.querySelector("img[src='./01.png']") ||
+            current.querySelector("img[src='./08.png']");
 
-    if(img){
-        img.classList.remove("fade-out", "slow-fade-out");
+        if(img){
+            img.classList.remove("fade-out", "slow-fade-out");
 
-        if(isSlow){
-            img.classList.add("slow-fade-out");
-            setTimeout(goNext, 2000);
-        } else {
-            img.classList.add("fade-out");
-            setTimeout(goNext, 250);
+            if(isSlow){
+                img.classList.add("slow-fade-out");
+                setTimeout(goNext, 1800);
+            } else {
+                img.classList.add("fade-out");
+                setTimeout(goNext, 250);
+            }
+
+            return;
         }
 
-        return;
-    }
+        goNext();
 
-    goNext();
+    } catch (e) {
+        // 💥 任何錯誤都強制往下一頁（避免卡死）
+        console.log("scene error:", e);
+        goNext();
+    }
 }
 
 /* =========================
-   🖱 點擊
+   🖱 點擊（永遠可用）
 ========================= */
 function handleClick(){
     startMusic();
@@ -667,36 +685,45 @@ function handleClick(){
 }
 
 /* =========================
-   🌠 流星
+   🌠 流星（安全）
 ========================= */
 function spawnMeteor(){
-    const m = document.createElement("div");
-    m.className = "meteor";
-    m.style.left = Math.random() * 100 + "vw";
-    document.body.appendChild(m);
-    setTimeout(() => m.remove(), 7000);
+    try {
+        const m = document.createElement("div");
+        m.className = "meteor";
+        m.style.left = Math.random() * 100 + "vw";
+        document.body.appendChild(m);
+
+        setTimeout(() => {
+            m.remove();
+        }, 7000);
+    } catch(e){}
 }
 
 setInterval(spawnMeteor, 2000);
 
 /* =========================
-   💌 留言（只修不動功能）
+   💌 留言（不影響流程）
 ========================= */
 function sendMsg(){
-    const input = document.getElementById("msg");
-    const text = input.value.trim();
+    try {
+        const input = document.getElementById("msg");
+        const text = input.value.trim();
 
-    if(!text) return;
+        if(!text) return;
 
-    const output = document.getElementById("output");
+        const output = document.getElementById("output");
+        output.innerHTML = "💌 已收到你的話：<br>" + text;
 
-    output.innerHTML = "💌 已收到你的話：<br>" + text;
+        input.value = "";
 
-    input.value = "";
+        setTimeout(() => {
+            nextScene();
+        }, 500);
 
-    setTimeout(() => {
+    } catch(e){
         nextScene();
-    }, 600);
+    }
 }
 </script>
 </body>  
