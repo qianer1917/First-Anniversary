@@ -624,20 +624,16 @@ filter:blur(8px);
 <audio id="bgm" src="./time-to-love.mp3" loop></audio>  
 <script>
 let index = 0;
-let lock = false; // 只控制「使用者點擊」
+let lock = false;
 
 const scenes = Array.from(document.querySelectorAll(".scene"));
 
-/* =========================
-   🎵 音樂
-========================= */
 const bgm = document.getElementById("bgm");
 let musicStarted = false;
 
 function startMusic(){
     if(musicStarted) return;
     musicStarted = true;
-
     if(!bgm) return;
 
     bgm.volume = 0;
@@ -652,7 +648,7 @@ function startMusic(){
 }
 
 /* =========================
-   👉 換場核心（已修卡死）
+   ⭐ 核心修復版 nextScene
 ========================= */
 function nextScene(){
 
@@ -664,27 +660,19 @@ function nextScene(){
     const img = current.querySelector("img");
 
     const goNext = () => {
-
         current.classList.remove("active");
 
         index++;
 
-        // ✅ 改這裡：最後一頁「顯示 + 停住」
+        // ⭐⭐⭐ 修復：不要卡死最後一頁
         if(index >= scenes.length){
-            index = scenes.length - 1;
-
-            // 👉 強制顯示最後一頁（避免卡死）
-            scenes[index].classList.add("active");
-            return;
+            return; // 讓最後一頁自然停住（不強制回寫 index）
         }
 
-        requestAnimationFrame(() => {
-            setTimeout(() => {
-                scenes[index].classList.add("active");
-            }, 50);
-        });
+        scenes[index].classList.add("active");
     };
 
+    // 圖片動畫
     if(img){
 
         const isSlow =
@@ -692,11 +680,9 @@ function nextScene(){
             img.getAttribute("src") === "./08.png";
 
         img.classList.remove("fade-out", "slow-fade-out");
-
         img.classList.add(isSlow ? "slow-fade-out" : "fade-out");
 
         setTimeout(goNext, isSlow ? 1800 : 600);
-
         return;
     }
 
@@ -704,17 +690,17 @@ function nextScene(){
 }
 
 /* =========================
-   🖱 點擊
+   點擊
 ========================= */
 function handleClick(){
-    if(lock) return; // 只擋使用者點擊
+    if(lock) return;
 
     startMusic();
     nextScene();
 }
 
 /* =========================
-   🌠 流星
+   🌠 流星（不動）
 ========================= */
 setInterval(() => {
     const m = document.createElement("div");
@@ -726,7 +712,7 @@ setInterval(() => {
 }, 2000);
 
 /* =========================
-   💌 留言（已修不卡死 + 動畫）
+   💌 修復版 sendMsg（重點）
 ========================= */
 function sendMsg(){
     const input = document.getElementById("msg");
@@ -737,25 +723,27 @@ function sendMsg(){
     const text = input.value.trim();
     if(!text) return;
 
-    // ✨ 動畫
+    // ✨ 出現動畫
     output.style.opacity = "0";
+    output.style.transform = "translateY(10px)";
+
     output.innerHTML = "🤍已收到你的话💍：<br>" + text;
 
     requestAnimationFrame(() => {
-        output.style.transition = "all 0.8s ease";
+        output.style.transition = "all 0.6s ease";
         output.style.opacity = "1";
         output.style.transform = "translateY(0)";
     });
 
     input.value = "";
 
+    // ⭐⭐⭐ 重點修復：避免卡死 + 一定會往下一頁
     lock = true;
 
-    // ✅ 5秒（你要的）
     setTimeout(() => {
-        lock = false;
-        nextScene();
-    }, 5000);
+        lock = false;   // ⭐先解鎖
+        nextScene();    // ⭐再跳頁
+    }, 5000); // 你要的 5 秒
 }
 </script>
 </body>  
