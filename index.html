@@ -356,8 +356,27 @@ filter:blur(8px);
     height:100vh;
     object-fit:contain;
     opacity:0;
-    transform:scale(1.05);
-    transition:all 1.2s ease;
+    transform:translateY(20px) scale(1.02);
+}
+
+/* 只有當 scene active 才播放 */
+.scene.active .story-img{
+    animation: imgMove 1.4s ease forwards;
+}
+
+@keyframes imgMove{
+    0%{
+        opacity:0;
+        transform:translateY(20px) scale(1.02);
+    }
+    60%{
+        opacity:1;
+        transform:translateY(0px) scale(1.01);
+    }
+    100%{
+        opacity:1;
+        transform:translateY(0px) scale(1);
+    }
 }
 </style>  </head>   <body onclick="handleClick()">  <!-- 🌌 星層 -->  <div class="layer-back"></div>  
 <div class="layer-mid"></div>  
@@ -374,12 +393,11 @@ filter:blur(8px);
 
 <div class="scene">
     <img src="./08.png" style="
-        width:92vw;
-        max-height:85vh;
-        height:auto;
+        width:96vw;
+        max-height:88vh;
         object-fit:contain;
-        opacity:1;
-        transform:scale(1.03);
+        filter:drop-shadow(0 0 20px rgba(255,244,180,0.3));
+        transform:scale(1.05);
     ">
 </div>
 
