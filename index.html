@@ -624,16 +624,16 @@ filter:blur(8px);
 <audio id="bgm" src="./time-to-love.mp3" loop></audio>  
 <script>
 let index = 0;
-let lock = false;
+let lock = false; // 只控制「使用者點擊」
 
 const scenes = Array.from(document.querySelectorAll(".scene"));
-
-const bgm = document.getElementById("bgm");
-let musicStarted = false;
 
 /* =========================
    🎵 音樂
 ========================= */
+const bgm = document.getElementById("bgm");
+let musicStarted = false;
+
 function startMusic(){
     if(musicStarted) return;
     musicStarted = true;
@@ -652,11 +652,9 @@ function startMusic(){
 }
 
 /* =========================
-   👉 換場（穩定核心）
+   👉 換場核心（已修卡死）
 ========================= */
 function nextScene(){
-
-    if(lock) return;
 
     const current = document.querySelector(".scene.active");
     if(!current) return;
@@ -665,8 +663,7 @@ function nextScene(){
 
     const goNext = () => {
 
-        // ⭐強制清場（避免 07→09 疊圖）
-        scenes.forEach(s => s.classList.remove("active"));
+        current.classList.remove("active");
 
         index++;
 
@@ -675,17 +672,14 @@ function nextScene(){
             return;
         }
 
-        // ⭐雙 requestAnimationFrame（修 Chrome 不 repaint）
         requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
+            setTimeout(() => {
                 scenes[index].classList.add("active");
-            });
+            }, 50);
         });
     };
 
-    // =========================
-    // 🖼 圖片場
-    // =========================
+    // ⭐圖片場
     if(img){
 
         const isSlow =
@@ -693,12 +687,9 @@ function nextScene(){
             img.getAttribute("src") === "./08.png";
 
         img.classList.remove("fade-out", "slow-fade-out");
-
         img.classList.add(isSlow ? "slow-fade-out" : "fade-out");
 
-        // ⭐關鍵：延長 transition，避免 07→09 卡住
-        setTimeout(goNext, isSlow ? 2100 : 1000);
-
+        setTimeout(goNext, isSlow ? 1800 : 600);
         return;
     }
 
@@ -709,7 +700,7 @@ function nextScene(){
    🖱 點擊
 ========================= */
 function handleClick(){
-    if(lock) return;
+    if(lock) return; // 只擋使用者點擊
 
     startMusic();
     nextScene();
@@ -728,9 +719,10 @@ setInterval(() => {
 }, 2000);
 
 /* =========================
-   💌 留言
+   💌 留言（已修不卡死 + 動畫）
 ========================= */
 function sendMsg(){
+
     const input = document.getElementById("msg");
     const output = document.getElementById("output");
 
@@ -739,30 +731,31 @@ function sendMsg(){
     const text = input.value.trim();
     if(!text) return;
 
-    // ⭐顯示動畫
-    output.innerHTML = "";
+    /* ✨ 出場動畫（先淡出再更新） */
+    output.style.transition = "all 0.3s ease";
+    output.style.opacity = "0";
 
-    const box = document.createElement("div");
-    box.style.opacity = "0";
-    box.style.transform = "translateY(10px)";
-    box.style.transition = "all 0.8s ease";
-    box.innerHTML = "🤍已收到你的话💍：<br>" + text;
+    setTimeout(() => {
 
-    output.appendChild(box);
+        output.innerHTML = "🤍已收到你的话💍：<br>" + text;
 
-    requestAnimationFrame(() => {
-        box.style.opacity = "1";
-        box.style.transform = "translateY(0)";
-    });
+        /* ✨ 進場動畫 */
+        requestAnimationFrame(() => {
+            output.style.opacity = "1";
+            output.style.transform = "translateY(0)";
+        });
+
+    }, 250);
 
     input.value = "";
 
-    // ⭐鎖5秒（你要的）
+    /* ⭐ 這裡只「暫停點擊」，不影響 nextScene */
     lock = true;
 
+    /* ⭐ 5秒（你要的穩定版本） */
     setTimeout(() => {
-        nextScene();
         lock = false;
+        nextScene(); // 5秒後自動進下一頁
     }, 5000);
 }
 </script>
