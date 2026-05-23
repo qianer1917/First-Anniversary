@@ -413,11 +413,17 @@ filter:blur(8px);
     position:relative;
 }
 
+.special09{
+    position:relative;
+}
+
 .special09 img{
     width:100vw;
     height:100vh;
     object-fit:contain;
     display:block;
+    position:relative;
+    z-index:1;
 }
 
 .corner-text{
@@ -430,9 +436,12 @@ filter:blur(8px);
 
     transform:rotate(-12deg);
 
-    text-shadow:0 0 10px #ffd77a,0 0 20px #ffb84d;
+    text-shadow:
+        0 0 10px #ffd77a,
+        0 0 20px #ffb84d,
+        0 0 30px rgba(255,200,100,0.6);
 
-    z-index:10;
+    z-index:10;   /* ⭐關鍵 */
     pointer-events:none;
 }
 </style>  </head>   <body onclick="handleClick()">  <!-- 🌌 星層 -->  <div class="layer-back"></div>  
