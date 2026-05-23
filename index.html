@@ -634,6 +634,7 @@ let musicStarted = false;
 function startMusic(){
     if(musicStarted) return;
     musicStarted = true;
+
     if(!bgm) return;
 
     bgm.volume = 0;
@@ -647,9 +648,6 @@ function startMusic(){
     }, 80);
 }
 
-/* =========================
-   ⭐ 核心修復版 nextScene
-========================= */
 function nextScene(){
 
     if(lock) return;
@@ -660,19 +658,21 @@ function nextScene(){
     const img = current.querySelector("img");
 
     const goNext = () => {
+
         current.classList.remove("active");
 
         index++;
 
-        // ⭐⭐⭐ 修復：不要卡死最後一頁
+        // ⭐⭐⭐ 關鍵修正：允許停在最後一頁，但不 return 死鎖
         if(index >= scenes.length){
-            return; // 讓最後一頁自然停住（不強制回寫 index）
+            index = scenes.length - 1;
         }
 
-        scenes[index].classList.add("active");
+        requestAnimationFrame(() => {
+            scenes[index].classList.add("active");
+        });
     };
 
-    // 圖片動畫
     if(img){
 
         const isSlow =
@@ -689,9 +689,6 @@ function nextScene(){
     goNext();
 }
 
-/* =========================
-   點擊
-========================= */
 function handleClick(){
     if(lock) return;
 
@@ -699,9 +696,6 @@ function handleClick(){
     nextScene();
 }
 
-/* =========================
-   🌠 流星（不動）
-========================= */
 setInterval(() => {
     const m = document.createElement("div");
     m.className = "meteor";
@@ -711,9 +705,6 @@ setInterval(() => {
     setTimeout(() => m.remove(), 7000);
 }, 2000);
 
-/* =========================
-   💌 修復版 sendMsg（重點）
-========================= */
 function sendMsg(){
     const input = document.getElementById("msg");
     const output = document.getElementById("output");
@@ -723,27 +714,18 @@ function sendMsg(){
     const text = input.value.trim();
     if(!text) return;
 
-    // ✨ 出現動畫
-    output.style.opacity = "0";
-    output.style.transform = "translateY(10px)";
-
     output.innerHTML = "🤍已收到你的话💍：<br>" + text;
-
-    requestAnimationFrame(() => {
-        output.style.transition = "all 0.6s ease";
-        output.style.opacity = "1";
-        output.style.transform = "translateY(0)";
-    });
 
     input.value = "";
 
-    // ⭐⭐⭐ 重點修復：避免卡死 + 一定會往下一頁
     lock = true;
 
     setTimeout(() => {
-        lock = false;   // ⭐先解鎖
-        nextScene();    // ⭐再跳頁
-    }, 5000); // 你要的 5 秒
+        nextScene();
+
+        // ⭐⭐⭐ 保底解鎖（防止任何卡死）
+        lock = false;
+    }, 5000);
 }
 </script>
 </body>  
