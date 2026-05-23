@@ -273,7 +273,10 @@ filter:blur(8px);
 .scene{  
     z-index:2;  
 }  
-</style>  </head>   <body onclick="startMusic(); nextScene()">  <canvas id="starCanvas"></canvas>
+</style>
+</head>
+<body onclick="startMusic(); nextScene()">
+<canvas id="starCanvas"></canvas>
 
 <!-- 🌌 星層 -->  <div class="layer-back"></div>  
 <div class="layer-mid"></div>  
@@ -544,6 +547,22 @@ function animate(){
 }  
   
 animate();  
-  
-</script>  </body>  
+
+function startMusic(){
+    if(!bgm.paused) return;
+
+    bgm.volume = 0;
+
+    const playPromise = bgm.play();
+    if(playPromise) playPromise.catch(()=>{});
+
+    let v = 0;
+    let fadeIn = setInterval(() => {
+        v += 0.03;
+        bgm.volume = v;
+        if(v >= 1) clearInterval(fadeIn);
+    }, 80);
+}
+</script>
+</body>  
 </html>
