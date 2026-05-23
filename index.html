@@ -337,6 +337,20 @@ filter:blur(8px);
         filter:blur(0);
     }
 }
+.story-img{
+    width:85vw;
+    max-height:75vh;
+    object-fit:contain;
+    opacity:0;
+    transform:scale(1.08);
+    transition:all 1.2s ease;
+}
+
+/* 當 scene 變 active 才播放 */
+.scene.active .story-img{
+    opacity:1;
+    transform:scale(1);
+}
 </style>  </head>   <body onclick="handleClick()">  <!-- 🌌 星層 -->  <div class="layer-back"></div>  
 <div class="layer-mid"></div>  
 <div class="layer-front"></div>  
@@ -370,27 +384,27 @@ filter:blur(8px);
     <h1 class="typing">让我们一起欣赏拼图吧~</h1>  
 </div>  
 <div class="scene">
-    <img src="./02.png" class="seq-img">
+    <img src="./02.png" class="story-img">
 </div>
 
 <div class="scene">
-    <img src="./03.png" class="seq-img">
+    <img src="./03.png" class="story-img">
 </div>
 
 <div class="scene">
-    <img src="./04.png" class="seq-img">
+    <img src="./04.png" class="story-img">
 </div>
 
 <div class="scene">
-    <img src="./05.png" class="seq-img">
+    <img src="./05.png" class="story-img">
 </div>
 
 <div class="scene">
-    <img src="./06.png" class="seq-img">
+    <img src="./06.png" class="story-img">
 </div>
 
 <div class="scene">
-    <img src="./07.png" class="seq-img">
+    <img src="./07.png" class="story-img">
 </div>
 <div class="scene"><h1 class="typing">小奈说：我们还要一起走，好久好久..</h1></div>  <div class="scene">  
     <h1 class="typing">  
