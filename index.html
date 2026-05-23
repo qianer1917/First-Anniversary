@@ -47,9 +47,8 @@ body{
 
 /* 🌌 HUD */
 .hud{
-    position:fixed;
-    inset:0;
-    border:1px solid rgba(255,230,150,.15);
+    pointer-events:none;
+    z-index:2;
 }
 
 /* 🌌 掃描線 */
@@ -482,29 +481,51 @@ function resize(){
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 }
-window.addEventListener("resize", resize);
+window.addEventListener("resize", () => {
+    resize();
+    initStars();
+});
 resize();
 
-// ⭐ 生成星星
 function initStars(){
     stars = [];
-    for(let i=0;i<120;i++){
+
+    // ⭐ 數量（你說「3~4個大星 + 少量小星」）
+    const bigStars = 4;
+    const smallStars = 60;
+
+    // 🌟 大星（很少）
+    for(let i=0;i<bigStars;i++){
         stars.push({
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
-            z: Math.random() * 2 + 0.2, // 深度
-            r: Math.random() * 1.5 + 0.3
+            r: Math.random() * 2.5 + 2,   // 大
+            speed: 0.2 + Math.random() * 0.3,
+            alpha: 0.8
+        });
+    }
+
+    // ✨ 小星（比較多）
+    for(let i=0;i<smallStars;i++){
+        stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            r: Math.random() * 1.2 + 0.2, // 小
+            speed: 0.05 + Math.random() * 0.2,
+            alpha: 0.4 + Math.random() * 0.4
         });
     }
 }
+
 initStars();
 
-// ⭐ 動畫
 function animate(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
 
     for(let s of stars){
-        s.y += s.z * 0.6; // 往下飄（太空流動感）
+
+        // 🌌 緩慢下飄（不會很明顯，但有生命感）
+        s.y += s.speed;
 
         if(s.y > canvas.height){
             s.y = 0;
@@ -512,11 +533,9 @@ function animate(){
         }
 
         ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
 
-        ctx.fillStyle = "white";
-        ctx.globalAlpha = 0.6 + s.z * 0.2;
-
+        ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
         ctx.fill();
     }
 
