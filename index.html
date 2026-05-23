@@ -637,6 +637,7 @@ function nextScene(){
     const current = list[index];
     const img = current.querySelector("img");
 
+    // ⭐不管動畫到哪 → 直接切
     const goNext = () => {
         current.classList.remove("active");
         index++;
@@ -644,40 +645,19 @@ function nextScene(){
         const newList = scenes();
         newList[index].classList.add("active");
 
-        // ⭐給畫面一點喘息時間
-        setTimeout(() => {
-            busy = false;
-        }, 400);
+        busy = false;
     };
 
-    // 🌸 如果有圖片 → 慢慢淡出
+    // 🌸 有圖片 → 直接觸發動畫，但不等待
     if(img){
         img.classList.add("fade-out");
 
-        setTimeout(goNext, 1800); // ⭐比你原本更慢更穩
+        // ⭐重點：不等動畫結束，直接切
+        goNext();
         return;
     }
 
-    // 🌌 文字場景 → 稍微停一下
-    setTimeout(goNext, 600);
-}
-
-    /* =========================
-       🌸 有圖片（01 / 08 / 02~07）
-    ========================= */
-    if(img){
-        img.classList.add("fade-out");
-
-        setTimeout(() => {
-            goNext();
-        }, 1200);
-
-        return;
-    }
-
-    /* =========================
-       🌌 純文字
-    ========================= */
+    // 🌌 文字 → 直接切
     goNext();
 }
 
