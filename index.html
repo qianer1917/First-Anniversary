@@ -728,13 +728,10 @@ function sendMsg(){
     const text = input.value.trim();
     if(!text) return;
 
-    // ✨ 出現動畫（新增）
     output.style.opacity = "0";
     output.style.transform = "translateY(10px)";
-
     output.innerHTML = "🤍已收到你的话💍：<br>" + text;
 
-    // ✨ fade-in
     requestAnimationFrame(() => {
         output.style.transition = "all 0.8s ease";
         output.style.opacity = "1";
@@ -743,12 +740,16 @@ function sendMsg(){
 
     input.value = "";
 
-    // ⭐鎖 3 秒（你要的）
+    // ⭐標記：這次是留言觸發
+    window._fromMsg = true;
     lock = true;
 
     setTimeout(() => {
         nextScene();
+
         lock = false;
+        window._fromMsg = false;
+
     }, 3000);
 }
 </script>
