@@ -567,12 +567,11 @@ function fadeOutMusic(){
     }, 100);
 }
 const bgm = document.getElementById("bgm");
-
 let musicStarted = false;
 
+/* 🎵 穩定音樂（不會波） */
 function startMusic(){
-    if(musicStarted) return; // ⭐只允許一次
-
+    if(musicStarted) return;
     musicStarted = true;
 
     bgm.volume = 0;
@@ -581,12 +580,185 @@ function startMusic(){
     if(playPromise) playPromise.catch(()=>{});
 
     let v = 0;
-    let fadeIn = setInterval(() => {
-        v += 0.03;
-        bgm.volume = v;
+    const fadeIn = setInterval(() => {
+        v += 0.02;
+        bgm.volume = Math.min(v, 1);
         if(v >= 1) clearInterval(fadeIn);
     }, 80);
 }
+
+/* 🎵 平滑淡出 */
+function fadeOutMusic(){
+    let v = bgm.volume;
+
+    const timer = setInterval(() => {
+        v -= 0.03;
+        bgm.volume = Math.max(v, 0);
+
+        if(v <= 0){
+            bgm.pause();
+            clearInterval(timer);
+        }
+    }, 100);
+}
+
+/* 🌌 場景控制（唯一版本） */
+document.addEventListener("DOMContentLoaded", () => {
+
+    let index = 0;
+
+    window.nextScene = function(){
+
+        const scenes = document.querySelectorAll(".scene");
+        const current = scenes[index];
+
+        if(!current) return;
+
+        const img = current.querySelector("img");
+
+        // 🌸 有圖片 → fade out
+        if(img){
+            img.classList.add("fade-out");
+
+            setTimeout(() => {
+                current.classList.remove("active");
+                index++;
+
+                if(index === scenes.length - 1){
+                    fadeOutMusic();
+                }
+
+                if(index < scenes.length){
+                    scenes[index].classList.add("active");
+                }
+            }, 1200);
+
+            return;
+        }
+
+        // 🌸 普通場景切換
+        current.classList.remove("active");
+        index++;
+
+        if(index === scenes.length - 1){
+            fadeOutMusic();
+        }
+
+        if(index < scenes.length){
+            scenes[index].classList.add("active");
+        }
+    };
+});
+
+
+/* 🌠 星空（穩定版） */
+const canvas = document.getElementById("starCanvas");
+const ctx = canvas.getContext("2d");
+
+let stars = [];
+let meteors = [];
+
+function resize(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resize);
+resize();
+
+/* ⭐ 星星（少一點 + 不單調） */
+function initStars(){
+    stars = [];
+
+    const bigStars = 2;     // ⭐ 少量大星
+    const smallStars = 18;   // ✨ 少量小星
+
+    for(let i=0;i<bigStars;i++){
+        stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            r: 2 + Math.random() * 1.5,
+            speed: 0.15 + Math.random() * 0.2,
+            alpha: 0.7
+        });
+    }
+
+    for(let i=0;i<smallStars;i++){
+        stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            r: 0.3 + Math.random() * 1.2,
+            speed: 0.05 + Math.random() * 0.15,
+            alpha: 0.3 + Math.random() * 0.4
+        });
+    }
+}
+
+/* 🌠 流星（少！！） */
+function spawnMeteor(){
+    meteors.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height * 0.3,
+        len: 60 + Math.random() * 60,
+        speedX: 4 + Math.random() * 3,
+        speedY: 2 + Math.random() * 2,
+        life: 1
+    });
+}
+
+initStars();
+
+/* 🎬 動畫 */
+function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    /* 🌠 流星 */
+    for(let i = meteors.length - 1; i >= 0; i--){
+        let m = meteors[i];
+
+        m.x += m.speedX;
+        m.y += m.speedY;
+        m.life -= 0.015;
+
+        ctx.beginPath();
+        ctx.moveTo(m.x, m.y);
+        ctx.lineTo(m.x - m.len, m.y - m.len * 0.3);
+
+        ctx.strokeStyle = `rgba(255,220,150,${m.life})`;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        if(m.life <= 0) meteors.splice(i,1);
+    }
+
+    /* ⭐ 星星 */
+    for(let s of stars){
+
+        s.y += s.speed;
+
+        if(s.y > canvas.height){
+            s.y = 0;
+            s.x = Math.random() * canvas.width;
+        }
+
+        ctx.beginPath();
+
+        // ⭐ 小亮點 + 柔光（比較夢幻）
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+
+        ctx.fillStyle = `rgba(255,230,180,${s.alpha})`;
+        ctx.fill();
+    }
+
+    /* 🌠 流星機率（超低） */
+    if(Math.random() < 0.008){
+        spawnMeteor();
+    }
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+
 </script>
 </body>  
 </html>
