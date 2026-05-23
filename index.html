@@ -646,19 +646,22 @@ function nextScene(){
         current.classList.contains("special01") ||
         current.classList.contains("special08");
 
+    img.classList.remove("fade-out");
+    img.classList.remove("slow-fade-out");
+
     if(isSlow){
         img.classList.add("slow-fade-out");
 
         setTimeout(() => {
             goNext();
-        }, 2000); // 慢退場
+        }, 2000);
     } 
     else {
         img.classList.add("fade-out");
 
         setTimeout(() => {
             goNext();
-        }, 250); // 快退場
+        }, 250);
     }
 
     return;
