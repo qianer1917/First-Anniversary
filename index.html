@@ -477,6 +477,26 @@ bgm.addEventListener("canplaythrough", () => {
     console.log("✔ 音檔已成功載入");
 });
 
+function startMusic(){
+
+    if(!bgm) return;
+
+    if(!bgm.paused) return;
+
+    bgm.volume = 1;
+
+    const playPromise = bgm.play();
+
+    if(playPromise){
+        playPromise.catch(() => {
+            // 如果被擋，就再試一次（手機救命用）
+            setTimeout(() => {
+                bgm.play().catch(()=>{});
+            }, 300);
+        });
+    }
+}
+
 </script>
 
 </body>
