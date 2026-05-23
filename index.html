@@ -635,8 +635,6 @@ function nextScene(){
     busy = true;
 
     const current = list[index];
-
-    const is09 = current.classList.contains("special09");
     const img = current.querySelector("img");
 
     const goNext = () => {
@@ -646,22 +644,23 @@ function nextScene(){
         const newList = scenes();
         newList[index].classList.add("active");
 
-        busy = false;
+        // ⭐給畫面一點喘息時間
+        setTimeout(() => {
+            busy = false;
+        }, 400);
     };
 
-    /* =========================
-       🌑 09（修正退出動畫）
-    ========================= */
-    if(is09){
-        const img09 = current.querySelector("img");
+    // 🌸 如果有圖片 → 慢慢淡出
+    if(img){
+        img.classList.add("fade-out");
 
-        if(img09){
-            img09.classList.add("fade-out");
-        }
-
-        setTimeout(goNext, 1200);
+        setTimeout(goNext, 1800); // ⭐比你原本更慢更穩
         return;
     }
+
+    // 🌌 文字場景 → 稍微停一下
+    setTimeout(goNext, 600);
+}
 
     /* =========================
        🌸 有圖片（01 / 08 / 02~07）
