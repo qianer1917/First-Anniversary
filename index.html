@@ -414,7 +414,37 @@ filter:blur(8px);
 <audio id="bgm" src="./time-to-love.mp3" loop></audio>
 
 <script>
+const bgm = document.getElementById("bgm");
+let musicStarted = false;
 
+function startMusic(){
+    if(musicStarted) return;
+    musicStarted = true;
+
+    bgm.volume = 0;
+    bgm.play().catch(()=>{});
+
+    let v = 0;
+    let t = setInterval(() => {
+        v += 0.05;
+        bgm.volume = v;
+        if(v >= 1) clearInterval(t);
+    }, 80);
+}
+
+function fadeOutMusic(){
+    let v = bgm.volume;
+
+    let t = setInterval(() => {
+        v -= 0.05;
+        bgm.volume = v;
+
+        if(v <= 0){
+            bgm.pause();
+            clearInterval(t);
+        }
+    }, 100);
+}
 document.addEventListener("DOMContentLoaded", () => {
 
     const scenes = document.querySelectorAll(".scene");
