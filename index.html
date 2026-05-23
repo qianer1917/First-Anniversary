@@ -1,499 +1,397 @@
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>小安&小奈</title>
+<!DOCTYPE html>  <html lang="zh">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<title>小安&小奈</title>  <style>  
+  
+/* 🌸 字體 */  
+@font-face{  
+    font-family:"DongZhu";  
+    src:url("./DongZhu.ttf") format("truetype");  
+}  
+  
+/* 🌌 基礎 */  
+body{  
+    margin:0;  
+    background:#0b0b14;  
+    overflow:hidden;  
+  
+    display:flex;  
+    justify-content:center;  
+    align-items:center;  
+  
+    font-family:"DongZhu","Noto Serif TC",serif;  
+    color:white;  
+}  
+  
+/* 🌌 星空 */  
+.layer-back,.layer-mid,.layer-front,.scanline,.hud{  
+    pointer-events:none;  
+}  
+  
+.layer-back{  
+    position:fixed;  
+    inset:0;  
+    background:radial-gradient(circle at 20% 30%,rgba(255,255,255,.25)1px,transparent 2px);  
+    animation: drift 40s linear infinite;  
+    opacity:.5;  
+}  
+  
+.layer-mid{  
+    position:fixed;  
+    inset:0;  
+    background:radial-gradient(circle at 60% 50%,rgba(255,230,180,.4)1.5px,transparent 3px);  
+    animation: drift 25s linear infinite;  
+    opacity:.6;  
+}  
+  
+.layer-front{  
+    position:fixed;  
+    inset:0;  
+    background:radial-gradient(circle at 30% 80%,rgba(255,255,255,.8)2px,transparent 3px);  
+    animation: drift 12s linear infinite;  
+    opacity:.8;  
+}  
+  
+@keyframes drift{  
+    from{transform:translateY(0);}  
+    to{transform:translateY(-120px);}  
+}  
+  
+/* 🌌 HUD */  
+.hud{  
+    position:fixed;  
+    inset:0;  
+    border:1px solid rgba(255,230,150,.15);  
+}  
+  
+/* 🌌 掃描線 */  
+.scanline{  
+    position:fixed;  
+    inset:0;  
+    background:linear-gradient(to bottom,transparent,rgba(255,230,150,.05),transparent);  
+    animation:scan 5s linear infinite;  
+}  
+  
+@keyframes scan{  
+    from{transform:translateY(-100%);}  
+    to{transform:translateY(100%);}  
+}  
+  
+/* 🌌 場景（真正置中） */  
+.scene{  
+    position:absolute;  
+    inset:0;  
+  
+    display:none;  
+    justify-content:center;  
+    align-items:center;  
+  
+    text-align:center;  
+  
+    padding:0 20px;  
+    box-sizing:border-box;  
+  
+    transform:scale(1.03);  
+    filter:blur(6px);  
+    transition:opacity .8s ease, transform .8s ease, filter .8s ease;  
+}  
+  
+/* 只保留唯一 active 規則 */  
+.scene.active{  
+    display:flex;  
+    opacity:1;  
+    transform:scale(1);  
+    filter:blur(0);  
+    z-index:10;  
+}  
+  
+/* 🌌 文字 */  
+h1, h2{  
+    margin:0;  
+    white-space:nowrap;  
+    font-weight:normal;  
+    text-shadow:0 0 10px #fff3c4,0 0 25px #ffd77a;  
+}  
+  
+h1{  
+    font-size:clamp(32px,6vw,72px);  
+    line-height:1.4;  
+}  
+  
+h2{  
+    font-size:clamp(22px,4.5vw,42px);  
+    line-height:1.4;  
+}  
+  
+/* 🌌 打字 */  
+.typing{  
+    display:inline-block;  
+    overflow:hidden;  
+    width:0;  
+    border-right:2px solid white;  
+    animation:typing 2.4s steps(30,end) forwards, blink .8s infinite;  
+}  
+  
+@keyframes typing{  
+    from{width:0;}  
+    to{width:100%;}  
+}  
+  
+@keyframes blink{  
+    50%{border-color:transparent;}  
+}  
+  
+/* 🌌 浮現 */  
+.floatUp{  
+    opacity:0;  
+    transform:translateY(40px);  
+    animation:floatUp 1.6s ease forwards;  
+}  
+  
+@keyframes floatUp{  
+    to{opacity:1;transform:translateY(0);}  
+}  
+  
+/* 🌌 手機 */  
+@media(max-width:768px){  
+    h1{font-size:clamp(18px,5vw,28px);}  
+    h2{font-size:clamp(15px,4vw,22px);}  
+}  
+  
+/* 🌸 粉色連結 */  
+a.starlink{  
+    color:#f7b6d2 !important;  
+    text-decoration:none !important;  
+    text-shadow:0 0 8px #f7b6d2,0 0 18px #ff9ecf,0 0 30px #ff7fbf;  
+}  
+  
+a.starlink:hover{  
+    color:#ffd1e6 !important;  
+}  
+  
+a.starlink:active{  
+    color:#ff4fa3 !important;  
+}  
+  
+/* 🌸 圖片 */  
+.scene img{  
+    width:100vw;  
+    max-width:100%;  
+    height:auto;  
+    display:block;  
+}  
+  
+/* 🌸 圖片退場動畫 */  
+.scene img.fade-out{  
+    animation:imgOut 1.2s ease forwards;  
+}  
+  
+@keyframes imgOut{  
+    0%{  
+        opacity:1;  
+        transform:scale(1);  
+        filter:blur(0);  
+    }  
+    100%{  
+        opacity:0;  
+        transform:scale(0.98);  
+        filter:blur(8px);  
+    }  
+}  
+  
+/* 🌌 浮現 */  
+.floatUp{  
+opacity:0;  
+transform:translateY(40px);  
+animation:floatUp 1.6s ease forwards;  
+}  
+  
+@keyframes floatUp{  
+to{opacity:1;transform:translateY(0);}  
+}  
+  
+/* 🌌 手機 */  
+@media(max-width:768px){  
+h1{font-size:clamp(18px,5vw,28px);}  
+h2{font-size:clamp(15px,4vw,22px);}  
+}  
+  
+/* 🌸 粉色連結（點我進入） */  
+a.starlink{  
+color:#f7b6d2 !important;  
+text-decoration:none !important;  
+text-shadow:0 0 8px #f7b6d2,0 0 18px #ff9ecf,0 0 30px #ff7fbf;  
+}  
+  
+a.starlink:hover{  
+color:#ffd1e6 !important;  
+}  
+  
+a.starlink:active{  
+color:#ff4fa3 !important;  
+}  
+  
+/* 🌸 圖片回憶進出場 */  
+.scene img{  
+width:100vw;  
+max-width:100%;  
+height:auto;  
+display:block;  
+  
+}  
+  
+/* 進場 */  
+.scene.active img{  
+animation:imgIn 1.6s ease forwards;  
+}  
+  
+/* 離場 */  
+.scene img.fade-out{  
+animation:imgOut 1.2s ease forwards;  
+}  
+  
+@keyframes imgIn{  
+0%{  
+opacity:0;  
+transform:scale(1.06);  
+filter:blur(10px);  
+}  
+60%{  
+opacity:1;  
+filter:blur(3px);  
+}  
+100%{  
+opacity:1;  
+transform:scale(1);  
+filter:blur(0);  
+}  
+}  
+  
+@keyframes imgOut{  
+0%{  
+opacity:1;  
+transform:scale(1);  
+filter:blur(0);  
+}  
+100%{  
+opacity:0;  
+transform:scale(0.98);  
+filter:blur(8px);  
+}  
+}  
+</style>  </head>   <body onclick="handleClick()">  <!-- 🌌 星層 -->  <div class="layer-back"></div>  
+<div class="layer-mid"></div>  
+<div class="layer-front"></div>  
+<div class="scanline"></div>  
+<div class="hud"></div>  <!-- 🌌 劇情（全部完整保留） -->  <div class="scene active"><h1 class="typing">本沉浸式系统已开启</h1></div>  <div class="scene"><h1 class="typing">视觉景象生成中..</h1></div>  <div class="scene"><h1 class="typing">您已进入船舱</h1></div>  <div class="scene"><h1 class="typing">载入中..</h1></div>  <div class="scene"><h1 class="typing">正在连接系统核心..</h1></div>  
+<div class="scene"><h1 class="typing">欢迎星航共乘者</h1></div>  <div class="scene"><h1 class="typing">正在随机匹配队伍中..</h1></div>  <div class="scene"><h1 class="typing">您好！我是小奈领航员</h1></div>  <div class="scene"><h1 class="typing">很高兴能够与你一同探险</h1></div>  <div class="scene"><h1 class="typing">准备好了吗？</h1></div>  <div class="scene"><h1 class="typing">星船即将启动！</h1></div>  <div class="scene"><h1 class="typing">确认玩家状态中</h1></div>  <div class="scene"><h1 class="floatUp">状态：稳定</h1></div>  <div class="scene"><h1 class="typing">正在步入星际轨道..</h1></div>  <div class="scene"><h1 class="typing">已进入稳定航行模式</h1></div>  <div class="scene"><h1 class="typing">探索中.</h1></div>  
+<div class="scene"><h1 class="typing">探索中..</h1></div>  
+<div class="scene"><h1 class="typing">探索中...</h1></div>  <div class="scene"><h1 class="typing">侦测到回忆星系</h1></div>  <div class="scene"><h1 class="typing">目标已成功锁定</h1></div>  <div class="scene"><h1 class="typing">正在前往此地</h1></div>  <div class="scene"><h1 class="floatUp">距离：逐渐缩短</h1></div>  <div class="scene"><h1 class="typing">正在进入回忆星系范围..</h1></div>  <div class="scene"><h1 class="typing">光线强度提升</h1></div>  <div class="scene"><h1 class="typing">感知功能同步</h1></div>  <div class="scene"><h1 class="typing">即将抵达目的地</h1></div>  <div class="scene"><h1 class="typing">请保持连线稳定</h1></div>  <div class="scene"><h1 class="typing">抵达回忆星系</h1></div>  <div class="scene"><h1 class="typing">侦测结果顺利，允许离舱</h1></div>  <div class="scene"><h1 class="typing">正在开启舱门..</h1></div>  <div class="scene"><h1 class="typing">欢迎进入回忆星系</h1></div>  <div class="scene"><h1 class="typing">记得今天是什么日子吗？</h1></div>  <div class="scene"><h1 class="typing">今天是我们一周年的纪念日</h1></div>  <div class="scene"><h1 class="typing">很感谢一路辛苦走来的我们</h1></div>  <div class="scene"><h1 class="typing">坚定选择对方的我们</h1></div>  <div class="scene">  
+    <img src="./01.png" class="fade-img">  
+</div>  <div class="scene">  
+    <h1 class="typing">让我们一起欣赏拼图吧~</h1>  
+</div>  
+<div class="scene"><h1 class="typing">小奈说：我们还要一起走，好久好久..</h1></div>  <div class="scene">  
+    <h1 class="typing">  
+        最后..  
+        <br><br>  
+        <a class="starlink show"  
+   href="https://myppt.cc/8Pa3Sn"  
+   target="_blank">  
+   点我进入  
+</a>  
+    </h1>  
+</div>  
+<audio id="bgm" src="./time-to-love.mp3" loop></audio>  
+<script>  
+document.addEventListener("DOMContentLoaded", () => {  let index = 0;  
+const scenes = document.querySelectorAll(".scene");  
 
-<style>
+window.nextScene = function () {  
 
-/* 🌸 字體 */
-@font-face{
-    font-family:"DongZhu";
-    src:url("./DongZhu.ttf") format("truetype");
+    if (index >= scenes.length - 1) return;  
+
+    const currentScene = scenes[index];  
+
+    if (!currentScene) return;  
+
+    const img = currentScene.querySelector("img");  
+
+    // 有圖片就先做淡出動畫  
+    if (img) {  
+        img.classList.add("fade-out");  
+
+        setTimeout(() => {  
+            currentScene.classList.remove("active");  
+
+            index++;  
+
+            if (index < scenes.length) {  
+                scenes[index].classList.add("active");  
+            }  
+
+            // 到最後一頁時顯示按鈕  
+            if (index === scenes.length - 1) {  
+                const finalBtn = document.querySelector(".starlink");  
+                if (finalBtn) finalBtn.classList.add("show");  
+            }  
+
+        }, 1200);  
+
+        return;  
+    }  
+
+    // 一般場景切換  
+    currentScene.classList.remove("active");  
+
+    index++;  
+
+    if (index < scenes.length) {  
+        scenes[index].classList.add("active");  
+    }  
+
+    // 最後一頁顯示按鈕  
+    if (index >= scenes.length) return;
+
+const finalBtn = document.querySelector(".starlink");
+if (finalBtn) finalBtn.classList.add("show");
 }
-
-/* 🌌 基礎 */
-body{
-    margin:0;
-    background:#0b0b14;
-    overflow:hidden;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    font-family:"DongZhu","Noto Serif TC",serif;
-    color:white;
-}
-
-/* 🌌 星空 */
-.layer-back,.layer-mid,.layer-front,.scanline,.hud{
-    pointer-events:none;
-}
-
-.layer-back{
-    position:fixed;
-    inset:0;
-    background:radial-gradient(circle at 20% 30%,rgba(255,255,255,.25)1px,transparent 2px);
-    animation: drift 40s linear infinite;
-    opacity:.5;
-}
-
-.layer-mid{
-    position:fixed;
-    inset:0;
-    background:radial-gradient(circle at 60% 50%,rgba(255,230,180,.4)1.5px,transparent 3px);
-    animation: drift 25s linear infinite;
-    opacity:.6;
-}
-
-.layer-front{
-    position:fixed;
-    inset:0;
-    background:radial-gradient(circle at 30% 80%,rgba(255,255,255,.8)2px,transparent 3px);
-    animation: drift 12s linear infinite;
-    opacity:.8;
-}
-
-@keyframes drift{
-    from{transform:translateY(0);}
-    to{transform:translateY(-120px);}
-}
-
-/* 🌌 HUD */
-.hud{
-    position:fixed;
-    inset:0;
-    border:1px solid rgba(255,230,150,.15);
-}
-
-/* 🌌 掃描線 */
-.scanline{
-    position:fixed;
-    inset:0;
-    background:linear-gradient(to bottom,transparent,rgba(255,230,150,.05),transparent);
-    animation:scan 5s linear infinite;
-}
-
-@keyframes scan{
-    from{transform:translateY(-100%);}
-    to{transform:translateY(100%);}
-}
-
-/* 🌌 場景（真正置中） */
-.scene{
-    position:absolute;
-    inset:0;
-
-    display:none;
-    justify-content:center;
-    align-items:center;
-
-    text-align:center;
-
-    padding:0 20px;
-    box-sizing:border-box;
-
-    transform:scale(1.03);
-    filter:blur(6px);
-    transition:opacity .8s ease, transform .8s ease, filter .8s ease;
-}
-
-/* 只保留唯一 active 規則 */
-.scene.active{
-    display:flex;
-    opacity:1;
-    transform:scale(1);
-    filter:blur(0);
-    z-index:10;
-}
-
-/* 🌌 文字 */
-h1, h2{
-    margin:0;
-    white-space:nowrap;
-    font-weight:normal;
-    text-shadow:0 0 10px #fff3c4,0 0 25px #ffd77a;
-}
-
-h1{
-    font-size:clamp(32px,6vw,72px);
-    line-height:1.4;
-}
-
-h2{
-    font-size:clamp(22px,4.5vw,42px);
-    line-height:1.4;
-}
-
-/* 🌌 打字 */
-.typing{
-    display:inline-block;
-    overflow:hidden;
-    width:0;
-    border-right:2px solid white;
-    animation:typing 2.4s steps(30,end) forwards, blink .8s infinite;
-}
-
-@keyframes typing{
-    from{width:0;}
-    to{width:100%;}
-}
-
-@keyframes blink{
-    50%{border-color:transparent;}
-}
-
-/* 🌌 浮現 */
-.floatUp{
-    opacity:0;
-    transform:translateY(40px);
-    animation:floatUp 1.6s ease forwards;
-}
-
-@keyframes floatUp{
-    to{opacity:1;transform:translateY(0);}
-}
-
-/* 🌌 手機 */
-@media(max-width:768px){
-    h1{font-size:clamp(18px,5vw,28px);}
-    h2{font-size:clamp(15px,4vw,22px);}
-}
-
-/* 🌸 粉色連結 */
-a.starlink{
-    color:#f7b6d2 !important;
-    text-decoration:none !important;
-    text-shadow:0 0 8px #f7b6d2,0 0 18px #ff9ecf,0 0 30px #ff7fbf;
-}
-
-a.starlink:hover{
-    color:#ffd1e6 !important;
-}
-
-a.starlink:active{
-    color:#ff4fa3 !important;
-}
-
-/* 🌸 圖片 */
-.scene img{
-    width:100vw;
-    max-width:100%;
-    height:auto;
-    display:block;
-}
-
-/* 🌸 圖片退場動畫 */
-.scene img.fade-out{
-    animation:imgOut 1.2s ease forwards;
-}
-
-@keyframes imgOut{
-    0%{
-        opacity:1;
-        transform:scale(1);
-        filter:blur(0);
-    }
-    100%{
-        opacity:0;
-        transform:scale(0.98);
-        filter:blur(8px);
-    }
-}
-
-/* 🌌 浮現 */
-.floatUp{
-opacity:0;
-transform:translateY(40px);
-animation:floatUp 1.6s ease forwards;
-}
-
-@keyframes floatUp{
-to{opacity:1;transform:translateY(0);}
-}
-
-/* 🌌 手機 */
-@media(max-width:768px){
-h1{font-size:clamp(18px,5vw,28px);}
-h2{font-size:clamp(15px,4vw,22px);}
-}
-
-/* 🌸 粉色連結（點我進入） */
-a.starlink{
-color:#f7b6d2 !important;
-text-decoration:none !important;
-text-shadow:0 0 8px #f7b6d2,0 0 18px #ff9ecf,0 0 30px #ff7fbf;
-}
-
-a.starlink:hover{
-color:#ffd1e6 !important;
-}
-
-a.starlink:active{
-color:#ff4fa3 !important;
-}
-
-/* 🌸 圖片回憶進出場 */
-.scene img{
-width:100vw;
-max-width:100%;
-height:auto;
-display:block;
-
-}
-
-/* 進場 */
-.scene.active img{
-animation:imgIn 1.6s ease forwards;
-}
-
-/* 離場 */
-.scene img.fade-out{
-animation:imgOut 1.2s ease forwards;
-}
-
-@keyframes imgIn{
-0%{
-opacity:0;
-transform:scale(1.06);
-filter:blur(10px);
-}
-60%{
-opacity:1;
-filter:blur(3px);
-}
-100%{
-opacity:1;
-transform:scale(1);
-filter:blur(0);
-}
-}
-
-@keyframes imgOut{
-0%{
-opacity:1;
-transform:scale(1);
-filter:blur(0);
-}
-100%{
-opacity:0;
-transform:scale(0.98);
-filter:blur(8px);
-}
-}
-</style>
-
-</head> 
-
-<body onclick="handleClick()">
-
-<!-- 🌌 星層 -->
-<div class="layer-back"></div>
-<div class="layer-mid"></div>
-<div class="layer-front"></div>
-<div class="scanline"></div>
-<div class="hud"></div>
-
-<!-- 🌌 劇情（全部完整保留） -->
-
-<div class="scene active"><h1 class="typing">本沉浸式系统已开启</h1></div>
-
-<div class="scene"><h1 class="typing">视觉景象生成中..</h1></div>
-
-<div class="scene"><h1 class="typing">您已进入船舱</h1></div>
-
-<div class="scene"><h1 class="typing">载入中..</h1></div>
-
-<div class="scene"><h1 class="typing">正在连接系统核心..</h1></div>
-<div class="scene"><h1 class="typing">欢迎星航共乘者</h1></div>
-
-<div class="scene"><h1 class="typing">正在随机匹配队伍中..</h1></div>
-
-<div class="scene"><h1 class="typing">您好！我是小奈领航员</h1></div>
-
-<div class="scene"><h1 class="typing">很高兴能够与你一同探险</h1></div>
-
-<div class="scene"><h1 class="typing">准备好了吗？</h1></div>
-
-<div class="scene"><h1 class="typing">星船即将启动！</h1></div>
-
-<div class="scene"><h1 class="typing">确认玩家状态中</h1></div>
-
-<div class="scene"><h1 class="floatUp">状态：稳定</h1></div>
-
-<div class="scene"><h1 class="typing">正在步入星际轨道..</h1></div>
-
-<div class="scene"><h1 class="typing">已进入稳定航行模式</h1></div>
-
-<div class="scene"><h1 class="typing">探索中.</h1></div>
-<div class="scene"><h1 class="typing">探索中..</h1></div>
-<div class="scene"><h1 class="typing">探索中...</h1></div>
-
-<div class="scene"><h1 class="typing">侦测到回忆星系</h1></div>
-
-<div class="scene"><h1 class="typing">目标已成功锁定</h1></div>
-
-<div class="scene"><h1 class="typing">正在前往此地</h1></div>
-
-<div class="scene"><h1 class="floatUp">距离：逐渐缩短</h1></div>
-
-<div class="scene"><h1 class="typing">正在进入回忆星系范围..</h1></div>
-
-<div class="scene"><h1 class="typing">光线强度提升</h1></div>
-
-<div class="scene"><h1 class="typing">感知功能同步</h1></div>
-
-<div class="scene"><h1 class="typing">即将抵达目的地</h1></div>
-
-<div class="scene"><h1 class="typing">请保持连线稳定</h1></div>
-
-<div class="scene"><h1 class="typing">抵达回忆星系</h1></div>
-
-<div class="scene"><h1 class="typing">侦测结果顺利，允许离舱</h1></div>
-
-<div class="scene"><h1 class="typing">正在开启舱门..</h1></div>
-
-<div class="scene"><h1 class="typing">欢迎进入回忆星系</h1></div>
-
-<div class="scene"><h1 class="typing">记得今天是什么日子吗？</h1></div>
-
-<div class="scene"><h1 class="typing">今天是我们一周年的纪念日</h1></div>
-
-<div class="scene"><h1 class="typing">很感谢一路辛苦走来的我们</h1></div>
-
-<div class="scene"><h1 class="typing">坚定选择对方的我们</h1></div>
-
-<div class="scene">
-    <img src="./01.png" class="fade-img">
-</div>
-
-<div class="scene">
-    <h1 class="typing">让我们一起欣赏拼图吧~</h1>
-</div>
-<div class="scene"><h1 class="typing">小奈说：我们还要一起走，好久好久..</h1></div>
-
-<div class="scene">
-    <h1 class="typing">
-        最后..
-        <br><br>
-        <a class="starlink show"
-   href="https://myppt.cc/8Pa3Sn"
-   target="_blank">
-   点我进入
-</a>
-    </h1>
-</div>
-<audio id="bgm" src="./time-to-love.mp3" loop></audio>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-
-    let index = 0;
-    const scenes = document.querySelectorAll(".scene");
-
-    window.nextScene = function () {
-
-        if (index >= scenes.length - 1) return;
-
-        const currentScene = scenes[index];
-
-        if (!currentScene) return;
-
-        const img = currentScene.querySelector("img");
-
-        // 有圖片就先做淡出動畫
-        if (img) {
-            img.classList.add("fade-out");
-
-            setTimeout(() => {
-                currentScene.classList.remove("active");
-
-                index++;
-
-                if (index < scenes.length) {
-                    scenes[index].classList.add("active");
-                }
-
-                // 到最後一頁時顯示按鈕
-                if (index === scenes.length - 1) {
-                    const finalBtn = document.querySelector(".starlink");
-                    if (finalBtn) finalBtn.classList.add("show");
-                }
-
-            }, 1200);
-
-            return;
-        }
-
-        // 一般場景切換
-        currentScene.classList.remove("active");
-
-        index++;
-
-        if (index < scenes.length) {
-            scenes[index].classList.add("active");
-        }
-
-        // 最後一頁顯示按鈕
-        if (index >= scenes.length) {
-    const finalBtn = document.querySelector(".starlink");
-    if (finalBtn) finalBtn.classList.add("show");
-    return;
-}
-    };
+};
 
 });
 const bgm = document.getElementById("bgm");
 let musicStarted = false;
 
 function startMusic(){
-    if(musicStarted) return;
-    musicStarted = true;
+if(musicStarted) return;
+musicStarted = true;
 
-    const bgm = document.getElementById("bgm");
-    if(!bgm){
-        console.log("找不到音樂");
-        return;
-    }
+if(!bgm) return;  
 
-    bgm.volume = 0;
+bgm.volume = 0;  
 
-    const playPromise = bgm.play();
+const playPromise = bgm.play();  
 
-    if(playPromise !== undefined){
-        playPromise.catch((err) => {
-            console.log("播放被擋:", err);
-            musicStarted = false;
-        });
-    }
+if(playPromise !== undefined){  
+    playPromise.catch(() => {  
+        musicStarted = false; // fallback  
+    });  
+}  
 
-    let v = 0;
-    const fade = setInterval(() => {
-        v += 0.05;
-        bgm.volume = v;
-        if(v >= 1) clearInterval(fade);
-    }, 80);
+let v = 0;  
+const fade = setInterval(() => {  
+    v += 0.05;  
+    bgm.volume = v;  
+    if(v >= 1) clearInterval(fade);  
+}, 80);
+
 }
 function handleClick(){
-    startMusic();
-    nextScene();
-setTimeout(() => {
-    const bgm = document.getElementById("bgm");
-
-    console.log("音樂測試開始");
-
-    bgm.volume = 1;
-
-    bgm.play()
-    .then(() => {
-        console.log("🎵 成功播放");
-    })
-    .catch(err => {
-        console.log("❌ 播放失敗", err);
-    });
-
-}, 1000);
+startMusic();
+nextScene();
+}
 </script>
-</body>
+
+</body>  
 </html>
