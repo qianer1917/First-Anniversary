@@ -425,12 +425,26 @@ filter:blur(8px);
     z-index:2;
 
     filter:
-        drop-shadow(0 0 6px #fff)
-        drop-shadow(0 0 14px rgba(255,255,255,0.5));
+        drop-shadow(0 0 3px #fff)
+        drop-shadow(0 0 8px rgba(255,255,255,0.35));
 
-    animation: glow09 3.5s ease-in-out infinite;
+    animation: glow09 4.5s ease-in-out infinite;
 }
 
+@keyframes glow09{
+    0%,100%{
+        filter:
+            drop-shadow(0 0 2px #fff)
+            drop-shadow(0 0 6px rgba(255,255,255,0.25));
+        transform:scale(1);
+    }
+    50%{
+        filter:
+            drop-shadow(0 0 5px #fff)
+            drop-shadow(0 0 10px rgba(255,255,255,0.35));
+        transform:scale(1.005);
+    }
+}
 @keyframes glow09{
     0%,100%{
         filter:
@@ -573,8 +587,8 @@ function nextScene(){
     img.classList.add("fade-out");
 
     setTimeout(() => {
-        goNext();
-    }, 120);
+    goNext();
+}, 400);
 
     return;
 }
