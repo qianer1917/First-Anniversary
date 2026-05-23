@@ -508,8 +508,8 @@ function nextScene(){
     busy = true;
 
 const current = scenes[index];
-const img = current.querySelector(".fade img");
-
+const isFade = current.classList.contains("fade");
+const img = current.querySelector("img");
     const goNext = () => {
 
         current.classList.remove("active");
@@ -522,12 +522,11 @@ const img = current.querySelector(".fade img");
         setTimeout(() => busy = false, 300);
     };
 
-    if(img){
-        img.classList.add("fade-out");
-
-        setTimeout(goNext, 800);
-        return;
-    }
+    if(isFade && img){
+    img.classList.add("fade-out");
+    setTimeout(goNext, 1600); // fade要慢一點才有電影感
+    return;
+}
 
     goNext();
 }
