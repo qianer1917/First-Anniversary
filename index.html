@@ -410,6 +410,14 @@ filter:blur(8px);
         filter:none;
     }
 }
+.scene.fade img{
+    transition: opacity 1.6s ease, transform 1.6s ease;
+}
+
+.scene.fade img.fade-out{
+    opacity:0;
+    transform:scale(1);
+}
 </style>  </head>   <body onclick="handleClick()">  <!-- 🌌 星層 -->  <div class="layer-back"></div>  
 <div class="layer-mid"></div>  
 <div class="layer-front"></div>  
@@ -500,7 +508,7 @@ function nextScene(){
     busy = true;
 
 const current = scenes[index];
-const img = current.querySelector("img:not(.story-img)");
+const img = current.querySelector(".fade img");
 
     const goNext = () => {
 
