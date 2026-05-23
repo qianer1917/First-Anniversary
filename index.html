@@ -305,45 +305,50 @@ filter:blur(8px);
 </div>  
 <audio id="bgm" src="./time-to-love.mp3" loop></audio>  
 <script>  
-document.addEventListener("DOMContentLoaded", () => {
+let index = 0;
+const scenes = document.querySelectorAll(".scene");
+let busy = false;
 
-    let index = 0;
-    const scenes = document.querySelectorAll(".scene");
+function nextScene() {
 
-    window.nextScene = function () {
+    if (busy) return;
+    busy = true;
 
-        if (index >= scenes.length - 1) return;
+    const currentScene = scenes[index];
+    const img = currentScene.querySelector("img");
 
-        const currentScene = scenes[index];
-
-        const img = currentScene.querySelector("img");
-
-        // 有圖片先做淡出
-        if (img) {
-            img.classList.add("fade-out");
-
-            setTimeout(() => {
-                currentScene.classList.remove("active");
-                index++;
-
-                if (index < scenes.length) {
-                    scenes[index].classList.add("active");
-                }
-            }, 800);
-
-            return;
-        }
-
-        // 一般場景
+    const goNext = () => {
         currentScene.classList.remove("active");
         index++;
 
         if (index < scenes.length) {
             scenes[index].classList.add("active");
         }
+
+        setTimeout(() => {
+            busy = false;
+        }, 300);
     };
 
-});
+    if (img) {
+        img.classList.add("fade-out");
+
+        setTimeout(() => {
+            goNext();
+        }, 800);
+
+        return;
+    }
+
+    goNext();
+}
+
+function handleClick(){
+    startMusic();
+    nextScene();
+}
+
+/* 音樂 */
 const bgm = document.getElementById("bgm");
 let musicStarted = false;
 
@@ -362,11 +367,6 @@ function startMusic(){
         bgm.volume = v;
         if(v >= 1) clearInterval(fade);
     }, 80);
-}
-
-function handleClick(){
-    startMusic();
-    nextScene();
 }
 </script>
 
