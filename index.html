@@ -449,6 +449,19 @@ document.addEventListener("DOMContentLoaded", () => {
     let index = 0;
 
     window.nextScene = function(){
+if(index < scenes.length){
+    scenes[index].classList.add("active");
+}
+
+// ⭐ 最後一幕觸發
+if(index === scenes.length - 1){
+    setTimeout(() => {
+        const link = document.getElementById("finalLink");
+        if(link){
+            link.classList.add("show-link");
+        }
+    }, 1000);
+}
 
         const scenes = document.querySelectorAll(".scene");
         const currentScene = scenes[index];
