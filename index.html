@@ -637,9 +637,11 @@ function nextScene(){
             return;
         }
 
-        setTimeout(() => {
+  setTimeout(() => {
+  requestAnimationFrame(() => {
 scenes[index].classList.add("active");
-}, 50);
+    });
+}, 80);
     // ⭐圖片場
     if(img){
 
