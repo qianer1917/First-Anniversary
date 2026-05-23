@@ -409,6 +409,32 @@ filter:blur(8px);
         transform:scale(1);
     }
 }
+.special09{
+    position:relative;
+}
+
+.special09 img{
+    width:100vw;
+    height:100vh;
+    object-fit:contain;
+    display:block;
+}
+
+.corner-text{
+    position:absolute;
+    top:20px;
+    left:20px;
+
+    font-size:22px;
+    color:#fff3c4;
+
+    transform:rotate(-12deg);
+
+    text-shadow:0 0 10px #ffd77a,0 0 20px #ffb84d;
+
+    z-index:10;
+    pointer-events:none;
+}
 </style>  </head>   <body onclick="handleClick()">  <!-- 🌌 星層 -->  <div class="layer-back"></div>  
 <div class="layer-mid"></div>  
 <div class="layer-front"></div>  
@@ -447,6 +473,12 @@ filter:blur(8px);
 <div class="scene story"><img src="./05.png"></div>
 <div class="scene story"><img src="./06.png"></div>
 <div class="scene story"><img src="./07.png"></div>
+
+<div class="scene story special09">
+    <div class="corner-text">小安你看～</div>
+    <img src="./09.png">
+</div>
+
 <div class="scene"><h1 class="typing">小奈说：我们还要一起走，好久好久..</h1></div>  <div class="scene">  
     <h1 class="typing">  
         最后..  
