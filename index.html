@@ -283,6 +283,29 @@ transform:scale(0.98);
 filter:blur(8px);
 }
 }
+#finalLink{
+    opacity:0;
+    transform:translateY(12px);
+    filter:blur(6px);
+    display:inline-block;
+}
+
+#finalLink.show{
+    animation: finalFade 0.9s ease forwards;
+}
+
+@keyframes finalFade{
+    from{
+        opacity:0;
+        transform:translateY(12px);
+        filter:blur(6px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+        filter:blur(0);
+    }
+}
 </style>
 
 </head> 
@@ -430,35 +453,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.nextScene = function(){
 
-        if(index >= scenes.length - 1) return;
+    if(index >= scenes.length - 1) return;
 
-        const current = scenes[index];
-        const next = scenes[index + 1];
+    const current = scenes[index];
+    const next = scenes[index + 1];
 
-        current.classList.remove("active");
-        index++;
+    current.classList.remove("active");
+    index++;
 
-        if(next){
-            next.classList.add("active");
-        }
+    if(next){
+        next.classList.add("active");
+    }
 
-        // 最後一頁淡出音樂
-        if(index === scenes.length - 1){
-            fadeOutMusic();
-        }
+    // ⭐ 到最後一頁
+    if(index === scenes.length - 1){
 
-        // ⭐ 最後 link 延遲出現
-        if(index === scenes.length - 1){
-            setTimeout(() => {
-                const link = document.getElementById("finalLink");
-                if(link){
-                    link.classList.add("show");
-                }
-            }, 800);
-        }
-    };
-});
+        fadeOutMusic();
 
+        setTimeout(() => {
+            const link = document.getElementById("finalLink");
+
+            if(link){
+                link.classList.add("show");
+            }
+        }, 1000); // 延遲1秒
+    }
+};
 </script>
 
 </body>
