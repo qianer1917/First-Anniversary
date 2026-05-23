@@ -360,48 +360,45 @@ filter:blur(8px);
 let index = 0;
 let busy = false;
 
-function getScenes(){
-    return document.querySelectorAll(".scene");
-}
+const scenes = () => document.querySelectorAll(".scene");
 
 function nextScene(){
     if(busy) return;
 
-    const scenes = getScenes();
-    if(index >= scenes.length - 1) return;
+    const list = scenes();
+    if(index >= list.length - 1) return;
 
     busy = true;
 
-    const current = scenes[index];
+    const current = list[index];
     const img = current.querySelector("img");
-    const isSpecial = current.classList.contains("fade"); // 08 / 01 用
 
     const goNext = () => {
         current.classList.remove("active");
 
         index++;
 
-        const newScenes = getScenes();
-        newScenes[index].classList.add("active");
+        const newList = scenes();
+        newList[index].classList.add("active");
 
         setTimeout(() => busy = false, 300);
     };
 
-    // 🌟 特殊場景（08 / 01）
-    if(isSpecial && img){
-        img.classList.add("fade-out");
-        setTimeout(goNext, 1200);
-        return;
-    }
-
-    // 🌌 一般圖片（02~07）
+    // 有圖片 → 統一做淡出
     if(img){
-        setTimeout(goNext, 600);
+        img.classList.add("fade-out");
+        setTimeout(goNext, 1000);
         return;
     }
 
-    // ✨ 文字
+    // 沒圖片 → 直接切
     goNext();
+}
+
+/* 點擊 */
+function handleClick(){
+    startMusic();
+    nextScene();
 }
 
 /* 音樂 */
@@ -425,17 +422,12 @@ function startMusic(){
     }, 80);
 }
 
-/* 點擊 */
-function handleClick(){
-    startMusic();
-    nextScene();
-}
-
 /* 流星 */
 function spawnMeteor(){
     const m = document.createElement("div");
     m.className = "meteor";
     m.style.left = Math.random() * 100 + "vw";
+
     document.body.appendChild(m);
 
     setTimeout(() => m.remove(), 7000);
