@@ -570,15 +570,14 @@ function nextScene(){
        🌸 圖片場景（01 / 08 / others）
     ========================= */
     if(img){
-        img.classList.add("fade-out");
+    img.classList.add("fade-out");
 
-        setTimeout(() => {
-            current.classList.add("fade-out"); // ⭐補場景淡出
-            setTimeout(goNext, 600);
-        }, 600);
+    setTimeout(() => {
+        goNext();
+    }, 120);
 
-        return;
-    }
+    return;
+}
 
     /* =========================
        🌑 09（重寫不卡版）
