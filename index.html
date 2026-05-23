@@ -740,15 +740,15 @@ function sendMsg(){
 
     input.value = "";
 
-    // ⭐標記：這次是留言觸發
-    window._fromMsg = true;
+    // ⭐標記：留言模式
+    window.__msgMode = true;
     lock = true;
 
     setTimeout(() => {
         nextScene();
 
         lock = false;
-        window._fromMsg = false;
+        window.__msgMode = false;
 
     }, 3000);
 }
