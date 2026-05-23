@@ -338,11 +338,11 @@ filter:blur(8px);
     }
 }
 .story-img{
-    width:85vw;
-    max-height:75vh;
+    width:92vw;        /* 原本85vw → 變更大 */
+    max-height:85vh;   /* 原本75vh → 變更高 */
     object-fit:contain;
     opacity:0;
-    transform:scale(1.08);
+    transform:scale(1.06);
     transition:all 1.2s ease;
 }
 
@@ -350,6 +350,14 @@ filter:blur(8px);
 .scene.active .story-img{
     opacity:1;
     transform:scale(1);
+}
+.story-img{
+    width:100vw;
+    height:100vh;
+    object-fit:contain;
+    opacity:0;
+    transform:scale(1.05);
+    transition:all 1.2s ease;
 }
 </style>  </head>   <body onclick="handleClick()">  <!-- 🌌 星層 -->  <div class="layer-back"></div>  
 <div class="layer-mid"></div>  
@@ -366,11 +374,12 @@ filter:blur(8px);
 
 <div class="scene">
     <img src="./08.png" style="
-        max-width:85vw;
-        max-height:75vh;
-        width:auto;
+        width:92vw;
+        max-height:85vh;
         height:auto;
         object-fit:contain;
+        opacity:1;
+        transform:scale(1.03);
     ">
 </div>
 
