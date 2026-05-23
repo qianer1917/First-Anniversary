@@ -540,7 +540,7 @@ function initStars(){
     stars = [];
 
     const bigStars = 1;
-    const smallStars = 30;
+    const smallStars = 23;
 
     // 🌟 大星
     for(let i=0;i<bigStars;i++){
@@ -617,12 +617,12 @@ function animate(){
 
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
+        ctx.fillStyle = `rgba(255,220,140,${s.alpha})`;
         ctx.fill();
     }
 
     /* 🌠 隨機流星 */
-    if(Math.random() < 0.03){
+    if(Math.random() < 0.05){
         spawnMeteor();
     }
 
