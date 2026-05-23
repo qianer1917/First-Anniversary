@@ -588,11 +588,12 @@ filter:blur(8px);
 <audio id="bgm" src="./time-to-love.mp3" loop></audio>  
 <script>
 let index = 0;
+let lock = false;
 
-const scenes = document.querySelectorAll(".scene");
+const scenes = Array.from(document.querySelectorAll(".scene"));
 
 /* =========================
-   🎵 音樂（不影響流程）
+   🎵 音樂
 ========================= */
 const bgm = document.getElementById("bgm");
 let musicStarted = false;
@@ -615,29 +616,22 @@ function startMusic(){
 }
 
 /* =========================
-   🔥 核心：100%不死換場
+   👉 換場核心（穩定版）
 ========================= */
 function nextScene(){
 
-    const current = document.querySelector(".scene.active");
+    if(lock) return; // ⭐留言模式鎖住時禁止切
 
-    // 👉 沒有當前場景 = 強制初始化
-    if(!current){
-        scenes[0]?.classList.add("active");
-        index = 0;
-        return;
-    }
+    const current = document.querySelector(".scene.active");
+    if(!current) return;
 
     const img = current.querySelector("img");
-
-    const isLast = index >= scenes.length - 1;
 
     const goNext = () => {
         current.classList.remove("active");
 
         index++;
 
-        // 👉 到最後直接停，不爆
         if(index >= scenes.length){
             index = scenes.length - 1;
             return;
@@ -646,40 +640,37 @@ function nextScene(){
         scenes[index].classList.add("active");
     };
 
-    // =========================
-    // ⭐ 圖片場（安全處理）
-    // =========================
+    // ⭐圖片場
     if(img){
 
         const isSlow =
             img.getAttribute("src") === "./01.png" ||
             img.getAttribute("src") === "./08.png";
 
-        img.classList.remove("fade-out","slow-fade-out");
+        img.classList.remove("fade-out", "slow-fade-out");
 
         img.classList.add(isSlow ? "slow-fade-out" : "fade-out");
 
-        setTimeout(goNext, isSlow ? 1600 : 250);
+        setTimeout(goNext, isSlow ? 1800 : 250);
 
         return;
     }
 
-    // =========================
-    // ⭐ 文字場（直接過）
-    // =========================
     goNext();
 }
 
 /* =========================
-   🖱 點擊（永遠有效）
+   🖱 點擊
 ========================= */
 function handleClick(){
+    if(lock) return; // ⭐留言時禁止亂點
+
     startMusic();
     nextScene();
 }
 
 /* =========================
-   🌠 流星（防炸）
+   🌠 流星
 ========================= */
 setInterval(() => {
     const m = document.createElement("div");
@@ -691,7 +682,7 @@ setInterval(() => {
 }, 2000);
 
 /* =========================
-   💌 留言（完全不影響流程）
+   💌 留言（關鍵修好）
 ========================= */
 function sendMsg(){
     const input = document.getElementById("msg");
@@ -706,8 +697,11 @@ function sendMsg(){
 
     input.value = "";
 
+    lock = true; // ⭐鎖住整個互動
+
     setTimeout(() => {
         nextScene();
+        lock = false; // ⭐解鎖
     }, 2500);
 }
 </script>
