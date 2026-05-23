@@ -641,24 +641,27 @@ function nextScene(){
     };
 
     if(img){
-// 🌸 慢退場（01 / 08 / 09）
-if(isSlow){
-img.classList.add("slow-fade-out");
 
-setTimeout(() => {  
-            goNext();  
-        }, 2200); // 對應動畫時間  
-    }  
-    // ⚡ 一般場景快速退  
-    else{  
-        img.classList.add("fade-out");  
+    const isSlow =
+        current.classList.contains("special01") ||
+        current.classList.contains("special08");
 
-        setTimeout(() => {  
-            goNext();  
-        }, 250);  
-    }  
+    if(isSlow){
+        img.classList.add("slow-fade-out");
 
-    return;  
+        setTimeout(() => {
+            goNext();
+        }, 2000); // 慢退場
+    } 
+    else {
+        img.classList.add("fade-out");
+
+        setTimeout(() => {
+            goNext();
+        }, 250); // 快退場
+    }
+
+    return;
 }
 
     goNext();
