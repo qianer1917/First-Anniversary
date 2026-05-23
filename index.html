@@ -392,43 +392,71 @@ filter:blur(8px);
 <script>
 
 const bgm = document.getElementById("bgm");
-let index = 0;
 let musicStarted = false;
 
-/* 🎵 音樂 */
 function startMusic(){
     if(musicStarted) return;
     musicStarted = true;
 
-    bgm.volume = 1;
+    bgm.volume = 0;
     bgm.play().catch(()=>{});
+
+    let v = 0;
+    let fadeIn = setInterval(() => {
+        v += 0.05;
+        bgm.volume = v;
+        if(v >= 1) clearInterval(fadeIn);
+    }, 80);
 }
 
-/* 👉 點擊控制（重點） */
-document.body.addEventListener("click", () => {
-    startMusic();
-    nextScene();
-});
+function fadeOutMusic(){
+    let v = bgm.volume;
 
-/* 🌌 場景 */
-window.nextScene = function(){
+    let timer = setInterval(() => {
+        v -= 0.05;
+        bgm.volume = v;
+
+        if(v <= 0){
+            bgm.pause();
+            clearInterval(timer);
+        }
+    }, 100);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
 
     const scenes = document.querySelectorAll(".scene");
-    const current = scenes[index];
+    let index = 0;
 
-    if(!current) return;
+    window.nextScene = function(){
 
-    current.classList.remove("active");
-    index++;
+        if(index >= scenes.length - 1) return;
 
-    if(index < scenes.length){
-        scenes[index].classList.add("active");
-    }
-};
+        const current = scenes[index];
+        const next = scenes[index + 1];
 
-/* 🎵 音樂錯誤 */
-bgm.addEventListener("error", () => {
-    console.log("❌ 音檔錯");
+        current.classList.remove("active");
+        index++;
+
+        if(next){
+            next.classList.add("active");
+        }
+
+        // 最後一頁淡出音樂
+        if(index === scenes.length - 1){
+            fadeOutMusic();
+        }
+
+        // ⭐ 最後 link 延遲出現
+        if(index === scenes.length - 1){
+            setTimeout(() => {
+                const link = document.getElementById("finalLink");
+                if(link){
+                    link.classList.add("show");
+                }
+            }, 800);
+        }
+    };
 });
 
 </script>
