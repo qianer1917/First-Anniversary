@@ -40,9 +40,9 @@
 /* 🌌 基礎 */  
 body{  
     margin:0;  
-    background:#0b0b14;  
-    overflow:hidden;  
-  
+    background:#0b0b14;
+    overflow-x:hidden;
+    overflow-y:auto;
     display:flex;  
     justify-content:center;  
     align-items:center;  
@@ -416,12 +416,14 @@ filter:blur(8px);
     align-items:center;
 }
 
-.special09 img{
-    z-index:1;
+.special09{
+    position:relative;
+    z-index:5;
 }
 
 .corner-text{
-    z-index:999;
+    position:absolute;
+    z-index:9999;
 }
 </style>  </head>   <body onclick="handleClick()">  <!-- 🌌 星層 -->  <div class="layer-back"></div>  
 <div class="layer-mid"></div>  
@@ -481,6 +483,7 @@ filter:blur(8px);
 <div class="meteor" style="left:20%; animation-delay:0s;"></div>
 <div class="meteor" style="left:70%; animation-delay:3s;"></div>
 <audio id="bgm" src="./time-to-love.mp3" loop></audio>  
+
 <script>
 let index = 0;
 let busy = false;
@@ -510,18 +513,19 @@ function nextScene(){
     };
 
     /* =========================
-       🧸 01 / 08 特殊淡出（保留你原本邏輯）
+       🧸 01 / 08（fade 特效）
     ========================= */
-    const isSpecialFade = current.classList.contains("fade");
+    const isFade = current.classList.contains("fade");
 
-    if(img && isSpecialFade){
+    if(img && isFade){
         img.classList.add("fade-out");
         setTimeout(goNext, 1200);
         return;
     }
 
     /* =========================
-       📖 02~07 正常故事（不改）
+       📖 02~07（故事頁）
+       - 不加延遲、不干擾
     ========================= */
     const isStory = current.classList.contains("story");
 
@@ -531,9 +535,8 @@ function nextScene(){
     }
 
     /* =========================
-       🪐 09 特殊處理（只加這裡）
-       - 讓文字停留久一點
-       - 不影響其他 scene
+       🪐 09（special09）
+       - 只做停留，不影響其他
     ========================= */
     const is09 = current.classList.contains("special09");
 
@@ -571,6 +574,9 @@ function startMusic(){
     }, 80);
 }
 
+/* =========================
+   👆 點擊切換
+========================= */
 function handleClick(){
     startMusic();
     nextScene();
