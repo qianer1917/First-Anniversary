@@ -640,25 +640,27 @@ function nextScene(){
         const newList = scenes();
         newList[index].classList.add("active");
 
-        setTimeout(() => busy = false, 80);
+        setTimeout(() => busy = false, 50);
     };
 
     const is09 = current.classList.contains("special09");
     const img = current.querySelector("img");
 
-    // 🌸 special09（保留你原本效果）
+    // 🌑 special09（保留你原本效果）
     if(is09){
         current.classList.add("fade-out");
         setTimeout(goNext, 800);
         return;
     }
 
-    // 🌸 有圖片的場景（不卡版本）
+    // 🌸 有圖片的場景（重點修這裡）
     if(img){
+        img.classList.add("fade-out");
+
         requestAnimationFrame(() => {
-            img.classList.add("fade-out");
-            setTimeout(goNext, 120);
+            setTimeout(goNext, 80);
         });
+
         return;
     }
 
