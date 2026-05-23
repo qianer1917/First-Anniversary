@@ -378,50 +378,69 @@ filter:blur(8px);
     <h1 class="typing">
         最后..
         <br><br>
-        <a class="starlink"
-           href="https://myppt.cc/8Pa3Sn"
-           target="_blank">
-           点我进入
-        </a>
+        <a class="starlink show"
+   href="https://myppt.cc/8Pa3Sn"
+   target="_blank">
+   点我进入
+</a>
     </h1>
 </div>
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-let index = 0;
-
-window.nextScene = function(){
-
+    let index = 0;
     const scenes = document.querySelectorAll(".scene");
-    const currentScene = scenes[index];
 
-    if(!currentScene) return;
+    window.nextScene = function () {
 
-    const img = currentScene.querySelector("img");
+        if (index >= scenes.length - 1) return;
 
-    if(img){
-        img.classList.add("fade-out");
+        const currentScene = scenes[index];
 
-        setTimeout(() => {
-            currentScene.classList.remove("active");
+        if (!currentScene) return;
 
-            index++;
-            if(index >= scenes.length) return;
+        const img = currentScene.querySelector("img");
 
+        // 有圖片就先做淡出動畫
+        if (img) {
+            img.classList.add("fade-out");
+
+            setTimeout(() => {
+                currentScene.classList.remove("active");
+
+                index++;
+
+                if (index < scenes.length) {
+                    scenes[index].classList.add("active");
+                }
+
+                // 到最後一頁時顯示按鈕
+                if (index === scenes.length - 1) {
+                    const finalBtn = document.querySelector(".starlink");
+                    if (finalBtn) finalBtn.classList.add("show");
+                }
+
+            }, 1200);
+
+            return;
+        }
+
+        // 一般場景切換
+        currentScene.classList.remove("active");
+
+        index++;
+
+        if (index < scenes.length) {
             scenes[index].classList.add("active");
-        }, 1200);
+        }
 
-        return;
-    }
-
-    currentScene.classList.remove("active");
-
-    index++;
-    if(index >= scenes.length) return;
-
-    scenes[index].classList.add("active");
-};
+        // 最後一頁顯示按鈕
+        if (index === scenes.length - 1) {
+            const finalBtn = document.querySelector(".starlink");
+            if (finalBtn) finalBtn.classList.add("show");
+        }
+    };
 
 });
 </script>
