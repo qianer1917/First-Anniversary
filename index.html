@@ -540,7 +540,7 @@ function initStars(){
     stars = [];
 
     const bigStars = 1;
-    const smallStars = 20;
+    const smallStars = 30;
 
     // 🌟 大星
     for(let i=0;i<bigStars;i++){
@@ -622,7 +622,7 @@ function animate(){
     }
 
     /* 🌠 隨機流星 */
-    if(Math.random() < 0.08){
+    if(Math.random() < 0.03){
         spawnMeteor();
     }
 
