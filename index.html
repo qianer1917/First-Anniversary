@@ -365,7 +365,6 @@ function getScenes(){
 }
 
 function nextScene(){
-
     if(busy) return;
 
     const scenes = getScenes();
@@ -375,6 +374,7 @@ function nextScene(){
 
     const current = scenes[index];
     const img = current.querySelector("img");
+    const isSpecial = current.classList.contains("fade"); // 08 / 01 用
 
     const goNext = () => {
         current.classList.remove("active");
@@ -387,14 +387,20 @@ function nextScene(){
         setTimeout(() => busy = false, 300);
     };
 
-    // 👉 有圖片就做淡出
-    if(img){
+    // 🌟 特殊場景（08 / 01）
+    if(isSpecial && img){
         img.classList.add("fade-out");
-        setTimeout(goNext, 1000);
+        setTimeout(goNext, 1200);
         return;
     }
 
-    // 👉 文字場景直接切
+    // 🌌 一般圖片（02~07）
+    if(img){
+        setTimeout(goNext, 600);
+        return;
+    }
+
+    // ✨ 文字
     goNext();
 }
 
@@ -427,15 +433,12 @@ function handleClick(){
 
 /* 流星 */
 function spawnMeteor(){
-    const meteor = document.createElement("div");
-    meteor.className = "meteor";
+    const m = document.createElement("div");
+    m.className = "meteor";
+    m.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(m);
 
-    meteor.style.left = Math.random() * 100 + "vw";
-    meteor.style.animationDuration = (3 + Math.random() * 3) + "s";
-
-    document.body.appendChild(meteor);
-
-    setTimeout(() => meteor.remove(), 7000);
+    setTimeout(() => m.remove(), 7000);
 }
 
 setInterval(spawnMeteor, 2000);
