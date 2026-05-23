@@ -413,36 +413,18 @@ filter:blur(8px);
     position:relative;
 }
 
-.special09{
-    position:relative;
-}
-
-.special09 img{
-    width:100vw;
-    height:100vh;
-    object-fit:contain;
-    display:block;
-    position:relative;
-    z-index:1;
-}
-
 .corner-text{
     position:absolute;
     top:20px;
     left:20px;
+    z-index:999;
+    pointer-events:none;
 
-    font-size:22px;
+    font-size:20px;
     color:#fff3c4;
 
-    transform:rotate(-12deg);
-
-    text-shadow:
-        0 0 10px #ffd77a,
-        0 0 20px #ffb84d,
-        0 0 30px rgba(255,200,100,0.6);
-
-    z-index:10;   /* ⭐關鍵 */
-    pointer-events:none;
+    transform:rotate(-10deg);
+    text-shadow:0 0 10px #ffd77a;
 }
 </style>  </head>   <body onclick="handleClick()">  <!-- 🌌 星層 -->  <div class="layer-back"></div>  
 <div class="layer-mid"></div>  
@@ -483,7 +465,7 @@ filter:blur(8px);
 <div class="scene story"><img src="./06.png"></div>
 <div class="scene story"><img src="./07.png"></div>
 
-<div class="scene story special09">
+<div class="scene story special09 fade">
     <div class="corner-text">小安你看～</div>
     <img src="./09.png">
 </div>
