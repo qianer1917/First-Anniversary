@@ -514,6 +514,23 @@ filter:blur(8px);
     50%{opacity:1; transform:translate(-50%,-50%) scale(1.05);}
     100%{opacity:0.3; transform:translate(-50%,-50%) scale(0.95);}
 }
+.scene.fade-out{
+    animation: sceneOut 1.2s ease forwards;
+}
+
+@keyframes sceneOut{
+    0%{
+        opacity:1;
+        filter:blur(0);
+        transform:scale(1);
+    }
+    100%{
+        opacity:0;
+        filter:blur(12px);
+        transform:scale(0.98);
+    }
+}
+
 </style>  </head>   <body onclick="handleClick()">  <!-- 🌌 星層 -->  <div class="layer-back"></div>  
 <div class="layer-mid"></div>  
 <div class="layer-front"></div>  
@@ -623,21 +640,33 @@ function nextScene(){
         const newList = scenes();
         newList[index].classList.add("active");
 
-        setTimeout(() => busy = false, 300);
+        setTimeout(() => busy = false, 200);
     };
 
+    const is09 = current.classList.contains("special09");
     const img = current.querySelector("img");
 
-    /* 🌸 圖片淡出 */
+    /* =========================
+       🌸 圖片場景（01 / 08 / others）
+    ========================= */
     if(img){
         img.classList.add("fade-out");
-        setTimeout(goNext, 1200);
+
+        setTimeout(() => {
+            current.classList.add("fade-out"); // ⭐補場景淡出
+            setTimeout(goNext, 600);
+        }, 600);
+
         return;
     }
 
-    /* 🌑 09 特殊延遲（讓動畫播完） */
-    if(current.classList.contains("special09")){
-        setTimeout(goNext, 1600);
+    /* =========================
+       🌑 09（重寫不卡版）
+    ========================= */
+    if(is09){
+        current.classList.add("fade-out");
+
+        setTimeout(goNext, 1200);
         return;
     }
 
