@@ -287,7 +287,7 @@ filter:blur(8px);
 
 </head> 
 
-<body onclick="nextScene()">
+<body onclick="startMusic(); nextScene()">
 
 <!-- 🌌 星層 -->
 <div class="layer-back"></div>
@@ -371,6 +371,7 @@ filter:blur(8px);
 
 <div class="scene">
     <h1 class="typing">让我们一起欣赏拼图吧~</h1>
+
 </div>
 <div class="scene"><h1 class="typing">小奈说：我们还要一起走，好久好久..</h1></div>
 
@@ -386,44 +387,96 @@ filter:blur(8px);
     </h1>
 </div>
 
+<audio id="bgm" src="./time-to-love.mp3" loop></audio>
+
 <script>
+
+const bgm = document.getElementById("bgm");
+
+function startMusic(){
+    if(bgm.paused){
+        bgm.volume = 0;
+        bgm.play();
+
+        let v = 0;
+        let fadeIn = setInterval(() => {
+            v += 0.05;
+            bgm.volume = v;
+            if(v >= 1) clearInterval(fadeIn);
+        }, 100);
+    }
+}
+
+function fadeOutMusic(){
+    let v = bgm.volume;
+
+    let timer = setInterval(() => {
+        v -= 0.05;
+        bgm.volume = v;
+
+        if(v <= 0){
+            bgm.pause();
+            clearInterval(timer);
+        }
+    }, 100);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
 
-let index = 0;
+    let index = 0;
 
-window.nextScene = function(){
+    window.nextScene = function(){
 
-    const scenes = document.querySelectorAll(".scene");
-    const currentScene = scenes[index];
+        const scenes = document.querySelectorAll(".scene");
+        const currentScene = scenes[index];
 
-    if(!currentScene) return;
+        if(!currentScene) return;
 
-    const img = currentScene.querySelector("img");
+        const img = currentScene.querySelector("img");
 
-    if(img){
-        img.classList.add("fade-out");
+        // 🌸 如果有圖片 → 先退場動畫
+        if(img){
+            img.classList.add("fade-out");
 
-        setTimeout(() => {
-            currentScene.classList.remove("active");
+            setTimeout(() => {
+                currentScene.classList.remove("active");
+                index++;
 
-            index++;
-            if(index >= scenes.length) return;
+                if(index === scenes.length - 1){
+                    fadeOutMusic();
+                }
 
+                if(index < scenes.length){
+                    scenes[index].classList.add("active");
+                }
+            }, 1200);
+
+            return;
+        }
+
+        // 🌸 沒圖片直接切場景
+        currentScene.classList.remove("active");
+        index++;
+
+        if(index === scenes.length - 1){
+            fadeOutMusic();
+        }
+
+        if(index < scenes.length){
             scenes[index].classList.add("active");
-        }, 1200);
-
-        return;
-    }
-
-    currentScene.classList.remove("active");
-
-    index++;
-    if(index >= scenes.length) return;
-
-    scenes[index].classList.add("active");
-};
+        }
+    };
 
 });
+
+bgm.addEventListener("error", () => {
+    console.log("❌ 音檔載入失敗");
+});
+
+bgm.addEventListener("canplaythrough", () => {
+    console.log("✔ 音檔已成功載入");
+});
+
 </script>
 
 </body>
