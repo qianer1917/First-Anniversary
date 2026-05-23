@@ -303,22 +303,28 @@ filter:blur(8px);
 </div>  <audio id="bgm" src="./time-to-love.mp3" loop></audio>
 
 <script>  
-  
+
+let musicStarted = false;
+
 const bgm = document.getElementById("bgm");  
   
-function startMusic(){  
-    if(bgm.paused){  
-        bgm.volume = 0;  
-        bgm.play();  
-  
-        let v = 0;  
-        let fadeIn = setInterval(() => {  
-            v += 0.05;  
-            bgm.volume = v;  
-            if(v >= 1) clearInterval(fadeIn);  
-        }, 100);  
-    }  
-}  
+function startMusic(){
+    if(musicStarted) return;
+
+    musicStarted = true;
+
+    bgm.volume = 0;
+
+    const playPromise = bgm.play();
+    if(playPromise) playPromise.catch(()=>{});
+
+    let v = 0;
+    let fadeIn = setInterval(() => {
+        v += 0.03;
+        bgm.volume = v;
+        if(v >= 1) clearInterval(fadeIn);
+    }, 80);
+}
   
 function fadeOutMusic(){  
     let v = bgm.volume;  
