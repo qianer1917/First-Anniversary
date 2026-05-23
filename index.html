@@ -573,13 +573,37 @@ filter:blur(8px);
 <audio id="bgm" src="./time-to-love.mp3" loop></audio>  
 
 <script>
+
 let index = 0;
 let busy = false;
 
 const scenes = () => document.querySelectorAll(".scene");
 
 /* =========================
-   切換場景
+   🎵 音樂系統
+========================= */
+const bgm = document.getElementById("bgm");
+let musicStarted = false;
+
+function startMusic(){
+    if(musicStarted) return;
+    musicStarted = true;
+
+    if(!bgm) return;
+
+    bgm.volume = 0;
+    bgm.play().catch(()=>{});
+
+    let v = 0;
+    const fade = setInterval(() => {
+        v += 0.05;
+        bgm.volume = v;
+        if(v >= 1) clearInterval(fade);
+    }, 80);
+}
+
+/* =========================
+   👉 換場景
 ========================= */
 function nextScene(){
     if(busy) return;
@@ -604,61 +628,32 @@ function nextScene(){
 
     const img = current.querySelector("img");
 
-    /* =========================
-       fade（01 / 08）
-    ========================= */
-    const isFade = current.classList.contains("fade");
-
-    if(img && isFade){
+    /* 🌸 圖片淡出 */
+    if(img){
         img.classList.add("fade-out");
         setTimeout(goNext, 1200);
         return;
     }
 
-    /* =========================
-       special09（純展示）
-    ========================= */
+    /* 🌑 09 特殊延遲（讓動畫播完） */
     if(current.classList.contains("special09")){
-    setTimeout(goNext, 800);
-    return;
-}
-current.classList.remove("active");
+        setTimeout(goNext, 1600);
+        return;
+    }
+
     goNext();
 }
 
 /* =========================
-   音樂
-========================= */
-const bgm = document.getElementById("bgm");
-let musicStarted = false;
-
-function startMusic(){
-    if(musicStarted) return;
-    musicStarted = true;
-
-    if(!bgm) return;
-
-    bgm.volume = 0;
-    bgm.play().catch(()=>{});
-
-    let v = 0;
-    const fade = setInterval(() => {
-        v += 0.05;
-        bgm.volume = v;
-        if(v >= 1) clearInterval(fade);
-    }, 80);
-}
-
-/* =========================
-   點擊
+   🖱 點擊
 ========================= */
 function handleClick(){
-    startMusic();
+    startMusic();   // ⭐音樂
     nextScene();
 }
 
 /* =========================
-   流星
+   🌠 流星
 ========================= */
 function spawnMeteor(){
     const m = document.createElement("div");
@@ -669,6 +664,7 @@ function spawnMeteor(){
 }
 
 setInterval(spawnMeteor, 2000);
+
 </script>
 </body>  
 </html>
