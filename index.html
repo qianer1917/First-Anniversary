@@ -390,37 +390,36 @@ filter:blur(8px);
 document.addEventListener("DOMContentLoaded", () => {
 
 let index = 0;
+const scenes = document.querySelectorAll(".scene");
 
 window.nextScene = function(){
 
-    const scenes = document.querySelectorAll(".scene");
-    const currentScene = scenes[index];
+    const current = scenes[index];
+    if(!current) return;
 
-    if(!currentScene) return;
-
-    const img = currentScene.querySelector("img");
+    const img = current.querySelector("img");
 
     if(img){
         img.classList.add("fade-out");
 
         setTimeout(() => {
-            currentScene.classList.remove("active");
-
+            current.classList.remove("active");
             index++;
-            if(index >= scenes.length) return;
 
-            scenes[index].classList.add("active");
+            if(index < scenes.length){
+                scenes[index].classList.add("active");
+            }
         }, 1200);
 
         return;
     }
 
-    currentScene.classList.remove("active");
-
+    current.classList.remove("active");
     index++;
-    if(index >= scenes.length) return;
 
-    scenes[index].classList.add("active");
+    if(index < scenes.length){
+        scenes[index].classList.add("active");
+    }
 };
 
 });
