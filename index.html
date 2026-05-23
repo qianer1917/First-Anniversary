@@ -1,557 +1,411 @@
 <!DOCTYPE html>
-<html lang="zh">  
-<head>  
-<meta charset="UTF-8">  
-<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>小安&小奈</title>
 
-<style>  
-  
-/* 🌸 字體 */  
-@font-face{  
-    font-family:"DongZhu";  
-    src:url("./DongZhu.ttf") format("truetype");  
-}  
-  
-/* 🌌 基礎 */  
-body{  
-    margin:0;  
-    background:#0b0b14;  
-    overflow:hidden;  
-  
-    display:flex;  
-    justify-content:center;  
-    align-items:center;  
-  
-    font-family:"DongZhu","Noto Serif TC",serif;  
-    color:white;  
-}  
-  
-#starCanvas{  
-    position:fixed;  
-    inset:0;  
-    width:100%;  
-    height:100%;  
-    z-index:0;  
-    pointer-events:none;  
-}  
-  
-body{  
-    background:#0b0b14;  
-}  
-  
-.scene, .hud, .scanline{  
-    position:relative;  
-    z-index:2;  
-}  
-  
-/* 🌌 HUD */  
-.hud{  
-    pointer-events:none;  
-    z-index:2;  
-}  
-  
-/* 🌌 掃描線 */  
-.scanline{  
-    position:fixed;  
-    inset:0;  
-    background:linear-gradient(to bottom,transparent,rgba(255,230,150,.05),transparent);  
-    animation:scan 5s linear infinite;  
-}  
-  
-@keyframes scan{  
-    from{transform:translateY(-100%);}  
-    to{transform:translateY(100%);}  
-}  
-  
-/* 🌌 場景（真正置中） */  
-.scene{  
-    position:absolute;  
-    inset:0;  
-  
-    display:none;  
-    justify-content:center;  
-    align-items:center;  
-  
-    text-align:center;  
-  
-    padding:0 20px;  
-    box-sizing:border-box;  
-  
-    transform:scale(1.03);  
-    filter:blur(6px);  
-    transition:opacity .8s ease, transform .8s ease, filter .8s ease;  
-}  
-  
-/* 只保留唯一 active 規則 */  
-.scene.active{  
-    display:flex;  
-    opacity:1;  
-    transform:scale(1);  
-    filter:blur(0);  
-    z-index:10;  
-}  
-  
-/* 🌌 文字 */  
-h1, h2{  
-    margin:0;  
-    white-space:nowrap;  
-    font-weight:normal;  
-    text-shadow:0 0 10px #fff3c4,0 0 25px #ffd77a;  
-}  
-  
-h1{  
-    font-size:clamp(32px,6vw,72px);  
-    line-height:1.4;  
-}  
-  
-h2{  
-    font-size:clamp(22px,4.5vw,42px);  
-    line-height:1.4;  
-}  
-  
-/* 🌌 打字 */  
-.typing{  
-    display:inline-block;  
-    overflow:hidden;  
-    width:0;  
-    border-right:2px solid white;  
-    animation:typing 2.4s steps(30,end) forwards, blink .8s infinite;  
-}  
-  
-@keyframes typing{  
-    from{width:0;}  
-    to{width:100%;}  
-}  
-  
-@keyframes blink{  
-    50%{border-color:transparent;}  
-}  
-  
-/* 🌌 浮現 */  
-.floatUp{  
-    opacity:0;  
-    transform:translateY(40px);  
-    animation:floatUp 1.6s ease forwards;  
-}  
-  
-@keyframes floatUp{  
-    to{opacity:1;transform:translateY(0);}  
-}  
-  
-/* 🌌 手機 */  
-@media(max-width:768px){  
-    h1{font-size:clamp(18px,5vw,28px);}  
-    h2{font-size:clamp(15px,4vw,22px);}  
-}  
-  
-/* 🌸 粉色連結 */  
-a.starlink{  
-    color:#f7b6d2 !important;  
-    text-decoration:none !important;  
-    text-shadow:0 0 8px #f7b6d2,0 0 18px #ff9ecf,0 0 30px #ff7fbf;  
-}  
-  
-a.starlink:hover{  
-    color:#ffd1e6 !important;  
-}  
-  
-a.starlink:active{  
-    color:#ff4fa3 !important;  
-}  
-  
-/* 🌸 圖片 */  
-.scene img{  
-    width:100vw;  
-    max-width:100%;  
-    height:auto;  
-    display:block;  
-}  
-  
-/* 🌸 圖片退場動畫 */  
-.scene img.fade-out{  
-    animation:imgOut 1.2s ease forwards;  
-}  
-  
-@keyframes imgOut{  
-    0%{  
-        opacity:1;  
-        transform:scale(1);  
-        filter:blur(0);  
-    }  
-    100%{  
-        opacity:0;  
-        transform:scale(0.98);  
-        filter:blur(8px);  
-    }  
-}  
-  
-/* 🌌 浮現 */  
-.floatUp{  
-opacity:0;  
-transform:translateY(40px);  
-animation:floatUp 1.6s ease forwards;  
-}  
-  
-@keyframes floatUp{  
-to{opacity:1;transform:translateY(0);}  
-}  
-  
-/* 🌌 手機 */  
-@media(max-width:768px){  
-h1{font-size:clamp(18px,5vw,28px);}  
-h2{font-size:clamp(15px,4vw,22px);}  
-}  
-  
-/* 🌸 粉色連結（點我進入） */  
-a.starlink{  
-color:#f7b6d2 !important;  
-text-decoration:none !important;  
-text-shadow:0 0 8px #f7b6d2,0 0 18px #ff9ecf,0 0 30px #ff7fbf;  
-}  
-  
-a.starlink:hover{  
-color:#ffd1e6 !important;  
-}  
-  
-a.starlink:active{  
-color:#ff4fa3 !important;  
-}  
-  
-/* 🌸 圖片回憶進出場 */  
-.scene img{  
-width:100vw;  
-max-width:100%;  
-height:auto;  
-display:block;  
-  
-}  
-  
-/* 進場 */  
-.scene.active img{  
-animation:imgIn 1.6s ease forwards;  
-}  
-  
-/* 離場 */  
-.scene img.fade-out{  
-animation:imgOut 1.2s ease forwards;  
-}  
-  
-@keyframes imgIn{  
-0%{  
-opacity:0;  
-transform:scale(1.06);  
-filter:blur(10px);  
-}  
-60%{  
-opacity:1;  
-filter:blur(3px);  
-}  
-100%{  
-opacity:1;  
-transform:scale(1);  
-filter:blur(0);  
-}  
-}  
-  
-@keyframes imgOut{  
-0%{  
-opacity:1;  
-transform:scale(1);  
-filter:blur(0);  
-}  
-100%{  
-opacity:0;  
-transform:scale(0.98);  
-filter:blur(8px);  
-}  
-}  
-#starCanvas{  
-    position:fixed;  
-    inset:0;  
-    width:100%;  
-    height:100%;  
-    z-index:0;  
-}  
-.scene{  
-    z-index:2;  
-}  
-</style>
-</head>
-<body onclick="startMusic(); nextScene()">
-<canvas id="starCanvas"></canvas>
+<style>
 
-<!-- 🌌 星層 -->  <div class="layer-back"></div>  
-<div class="layer-mid"></div>  
-<div class="layer-front"></div>  
-<div class="scanline"></div>  
-<div class="hud"></div>  <!-- 🌌 劇情（全部完整保留） -->  <div class="scene active"><h1 class="typing">本沉浸式系统已开启</h1></div>  <div class="scene"><h1 class="typing">视觉景象生成中..</h1></div>  <div class="scene"><h1 class="typing">您已进入船舱</h1></div>  <div class="scene"><h1 class="typing">载入中..</h1></div>  <div class="scene"><h1 class="typing">正在连接系统核心..</h1></div>  
-<div class="scene"><h1 class="typing">欢迎星航共乘者</h1></div>  <div class="scene"><h1 class="typing">正在随机匹配队伍中..</h1></div>  <div class="scene"><h1 class="typing">您好！我是小奈领航员</h1></div>  <div class="scene"><h1 class="typing">很高兴能够与你一同探险</h1></div>  <div class="scene"><h1 class="typing">准备好了吗？</h1></div>  <div class="scene"><h1 class="typing">星船即将启动！</h1></div>  <div class="scene"><h1 class="typing">确认玩家状态中</h1></div>  <div class="scene"><h1 class="floatUp">状态：稳定</h1></div>  <div class="scene"><h1 class="typing">正在步入星际轨道..</h1></div>  <div class="scene"><h1 class="typing">已进入稳定航行模式</h1></div>  <div class="scene"><h1 class="typing">探索中.</h1></div>  
-<div class="scene"><h1 class="typing">探索中..</h1></div>  
-<div class="scene"><h1 class="typing">探索中...</h1></div>  <div class="scene"><h1 class="typing">侦测到回忆星系</h1></div>  <div class="scene"><h1 class="typing">目标已成功锁定</h1></div>  <div class="scene"><h1 class="typing">正在前往此地</h1></div>  <div class="scene"><h1 class="floatUp">距离：逐渐缩短</h1></div>  <div class="scene"><h1 class="typing">正在进入回忆星系范围..</h1></div>  <div class="scene"><h1 class="typing">光线强度提升</h1></div>  <div class="scene"><h1 class="typing">感知功能同步</h1></div>  <div class="scene"><h1 class="typing">即将抵达目的地</h1></div>  <div class="scene"><h1 class="typing">请保持连线稳定</h1></div>  <div class="scene"><h1 class="typing">抵达回忆星系</h1></div>  <div class="scene"><h1 class="typing">侦测结果顺利，允许离舱</h1></div>  <div class="scene"><h1 class="typing">正在开启舱门..</h1></div>  <div class="scene"><h1 class="typing">欢迎进入回忆星系</h1></div>  <div class="scene"><h1 class="typing">记得今天是什么日子吗？</h1></div>  <div class="scene"><h1 class="typing">今天是我们一周年的纪念日</h1></div>  <div class="scene"><h1 class="typing">很感谢一路辛苦走来的我们</h1></div>  <div class="scene"><h1 class="typing">坚定选择对方的我们</h1></div>  <div class="scene">  
-    <img src="./01.png" class="fade-img">  
-</div>  <div class="scene">  
-    <h1 class="typing">让我们一起欣赏拼图吧~</h1>  </div>  
-<div class="scene"><h1 class="typing">小奈说：我们还要一起走，好久好久..</h1></div>  <div class="scene">  
-    <h1 class="typing">  
-        最后..  
-        <br><br>  
-        <a class="starlink"  
-           href="https://myppt.cc/8Pa3Sn"  
-           target="_blank">  
-           点我进入  
-        </a>  
-    </h1>  
-</div>  <audio id="bgm" src="./time-to-love.mp3" loop></audio>
-
-<script>  
-
-const bgm = document.getElementById("bgm");  
-  
-function startMusic(){
-    if(musicStarted) return;
-
-    musicStarted = true;
-
-    bgm.volume = 0;
-
-    const playPromise = bgm.play();
-    if(playPromise) playPromise.catch(()=>{});
-
-    let v = 0;
-    let fadeIn = setInterval(() => {
-        v += 0.03;
-        bgm.volume = v;
-        if(v >= 1) clearInterval(fadeIn);
-    }, 80);
+/* 🌸 字體 */
+@font-face{
+    font-family:"DongZhu";
+    src:url("./DongZhu.ttf") format("truetype");
 }
-  
-function fadeOutMusic(){  
-    let v = bgm.volume;  
-  
-    let timer = setInterval(() => {  
-        v -= 0.05;  
-        bgm.volume = v;  
-  
-        if(v <= 0){  
-            bgm.pause();  
-            clearInterval(timer);  
-        }  
-    }, 100);  
-}  
-  
-document.addEventListener("DOMContentLoaded", () => {  
-  
-    let index = 0;  
-  
-    window.nextScene = function(){  
-  
-        const scenes = document.querySelectorAll(".scene");  
-        const currentScene = scenes[index];  
-  
-        if(!currentScene) return;  
-  
-        const img = currentScene.querySelector("img");  
-  
-        // 🌸 如果有圖片 → 先退場動畫  
-        if(img){  
-            img.classList.add("fade-out");  
-  
-            setTimeout(() => {  
-                currentScene.classList.remove("active");  
-                index++;  
-  
-                if(index === scenes.length - 1){  
-                    fadeOutMusic();  
-                }  
-  
-                if(index < scenes.length){  
-                    scenes[index].classList.add("active");  
-                }  
-            }, 1200);  
-  
-            return;  
-        }  
-  
-        // 🌸 沒圖片直接切場景  
-        currentScene.classList.remove("active");  
-        index++;  
-  
-        if(index === scenes.length - 1){  
-            fadeOutMusic();  
-        }  
-  
-        if(index < scenes.length){  
-            scenes[index].classList.add("active");  
-        }  
-    };  
-  
-});  
-  
-bgm.addEventListener("error", () => {  
-    console.log("❌ 音檔載入失敗");  
-});  
-  
-bgm.addEventListener("canplaythrough", () => {  
-    console.log("✔ 音檔已成功載入");  
-});  
-  
-/* 🌌 劇情控制 */  
-document.addEventListener("DOMContentLoaded", () => {  
-  
-    let index = 0;  
-  
-    window.nextScene = function(){
 
-    const scenes = document.querySelectorAll(".scene");
-    const currentScene = scenes[index];
+/* 🌌 基礎 */
+body{
+    margin:0;
+    background:#0b0b14;
+    overflow:hidden;
 
-    if(!currentScene) return;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 
-    const img = currentScene.querySelector("img");
+    font-family:"DongZhu","Noto Serif TC",serif;
+    color:white;
+}
 
-    if(img){
-        img.classList.add("fade-out");
+/* 🌌 星空 */
+.layer-back,.layer-mid,.layer-front,.scanline,.hud{
+    pointer-events:none;
+}
 
-        setTimeout(() => {
-            currentScene.classList.remove("active");
-            index++;
+.layer-back{
+    position:fixed;
+    inset:0;
+    background:radial-gradient(circle at 20% 30%,rgba(255,255,255,.25)1px,transparent 2px);
+    animation: drift 40s linear infinite;
+    opacity:.5;
+}
 
-            if(index === scenes.length - 1){
-                fadeOutMusic();
-            }
+.layer-mid{
+    position:fixed;
+    inset:0;
+    background:radial-gradient(circle at 60% 50%,rgba(255,230,180,.4)1.5px,transparent 3px);
+    animation: drift 25s linear infinite;
+    opacity:.6;
+}
 
-            if(index < scenes.length){
-                scenes[index].classList.add("active");
-            }
-        }, 1200);
+.layer-front{
+    position:fixed;
+    inset:0;
+    background:radial-gradient(circle at 30% 80%,rgba(255,255,255,.8)2px,transparent 3px);
+    animation: drift 12s linear infinite;
+    opacity:.8;
+}
 
-        return;
+@keyframes drift{
+    from{transform:translateY(0);}
+    to{transform:translateY(-120px);}
+}
+
+/* 🌌 HUD */
+.hud{
+    position:fixed;
+    inset:0;
+    border:1px solid rgba(255,230,150,.15);
+}
+
+/* 🌌 掃描線 */
+.scanline{
+    position:fixed;
+    inset:0;
+    background:linear-gradient(to bottom,transparent,rgba(255,230,150,.05),transparent);
+    animation:scan 5s linear infinite;
+}
+
+@keyframes scan{
+    from{transform:translateY(-100%);}
+    to{transform:translateY(100%);}
+}
+
+/* 🌌 場景（真正置中） */
+.scene{
+    position:absolute;
+    inset:0;
+
+    display:none;
+    justify-content:center;
+    align-items:center;
+
+    text-align:center;
+
+    padding:0 20px;
+    box-sizing:border-box;
+
+    transform:scale(1.03);
+    filter:blur(6px);
+    transition:opacity .8s ease, transform .8s ease, filter .8s ease;
+}
+
+/* 只保留唯一 active 規則 */
+.scene.active{
+    display:flex;
+    opacity:1;
+    transform:scale(1);
+    filter:blur(0);
+    z-index:10;
+}
+
+/* 🌌 文字 */
+h1, h2{
+    margin:0;
+    white-space:nowrap;
+    font-weight:normal;
+    text-shadow:0 0 10px #fff3c4,0 0 25px #ffd77a;
+}
+
+h1{
+    font-size:clamp(32px,6vw,72px);
+    line-height:1.4;
+}
+
+h2{
+    font-size:clamp(22px,4.5vw,42px);
+    line-height:1.4;
+}
+
+/* 🌌 打字 */
+.typing{
+    display:inline-block;
+    overflow:hidden;
+    width:0;
+    border-right:2px solid white;
+    animation:typing 2.4s steps(30,end) forwards, blink .8s infinite;
+}
+
+@keyframes typing{
+    from{width:0;}
+    to{width:100%;}
+}
+
+@keyframes blink{
+    50%{border-color:transparent;}
+}
+
+/* 🌌 浮現 */
+.floatUp{
+    opacity:0;
+    transform:translateY(40px);
+    animation:floatUp 1.6s ease forwards;
+}
+
+@keyframes floatUp{
+    to{opacity:1;transform:translateY(0);}
+}
+
+/* 🌌 手機 */
+@media(max-width:768px){
+    h1{font-size:clamp(18px,5vw,28px);}
+    h2{font-size:clamp(15px,4vw,22px);}
+}
+
+/* 🌸 粉色連結 */
+a.starlink{
+    color:#f7b6d2 !important;
+    text-decoration:none !important;
+    text-shadow:0 0 8px #f7b6d2,0 0 18px #ff9ecf,0 0 30px #ff7fbf;
+}
+
+a.starlink:hover{
+    color:#ffd1e6 !important;
+}
+
+a.starlink:active{
+    color:#ff4fa3 !important;
+}
+
+/* 🌸 圖片 */
+.scene img{
+    width:100vw;
+    max-width:100%;
+    height:auto;
+    display:block;
+}
+
+/* 🌸 圖片退場動畫 */
+.scene img.fade-out{
+    animation:imgOut 1.2s ease forwards;
+}
+
+@keyframes imgOut{
+    0%{
+        opacity:1;
+        transform:scale(1);
+        filter:blur(0);
     }
-
-    currentScene.classList.remove("active");
-    index++;
-
-    if(index === scenes.length - 1){
-        fadeOutMusic();
+    100%{
+        opacity:0;
+        transform:scale(0.98);
+        filter:blur(8px);
     }
+}
 
-    if(index < scenes.length){
-        scenes[index].classList.add("active");
+/* 🌌 浮現 */
+.floatUp{
+opacity:0;
+transform:translateY(40px);
+animation:floatUp 1.6s ease forwards;
+}
+
+@keyframes floatUp{
+to{opacity:1;transform:translateY(0);}
+}
+
+/* 🌌 手機 */
+@media(max-width:768px){
+h1{font-size:clamp(18px,5vw,28px);}
+h2{font-size:clamp(15px,4vw,22px);}
+}
+
+/* 🌸 粉色連結（點我進入） */
+a.starlink{
+color:#f7b6d2 !important;
+text-decoration:none !important;
+text-shadow:0 0 8px #f7b6d2,0 0 18px #ff9ecf,0 0 30px #ff7fbf;
+}
+
+a.starlink:hover{
+color:#ffd1e6 !important;
+}
+
+a.starlink:active{
+color:#ff4fa3 !important;
+}
+
+/* 🌸 圖片回憶進出場 */
+.scene img{
+width:100vw;
+max-width:100%;
+height:auto;
+display:block;
+
+}
+
+/* 進場 */
+.scene.active img{
+animation:imgIn 1.6s ease forwards;
+}
+
+/* 離場 */
+.scene img.fade-out{
+animation:imgOut 1.2s ease forwards;
+}
+
+@keyframes imgIn{
+0%{
+opacity:0;
+transform:scale(1.06);
+filter:blur(10px);
+}
+60%{
+opacity:1;
+filter:blur(3px);
+}
+100%{
+opacity:1;
+transform:scale(1);
+filter:blur(0);
+}
+}
+
+@keyframes imgOut{
+0%{
+opacity:1;
+transform:scale(1);
+filter:blur(0);
+}
+100%{
+opacity:0;
+transform:scale(0.98);
+filter:blur(8px);
+}
+}
+</style>
+
+</head> 
+
+<body onclick="startMusic(); nextScene()">
+
+<!-- 🌌 星層 -->
+<div class="layer-back"></div>
+<div class="layer-mid"></div>
+<div class="layer-front"></div>
+<div class="scanline"></div>
+<div class="hud"></div>
+
+<!-- 🌌 劇情（全部完整保留） -->
+
+<div class="scene active"><h1 class="typing">本沉浸式系统已开启</h1></div>
+
+<div class="scene"><h1 class="typing">视觉景象生成中..</h1></div>
+
+<div class="scene"><h1 class="typing">您已进入船舱</h1></div>
+
+<div class="scene"><h1 class="typing">载入中..</h1></div>
+
+<div class="scene"><h1 class="typing">正在连接系统核心..</h1></div>
+<div class="scene"><h1 class="typing">欢迎星航共乘者</h1></div>
+
+<div class="scene"><h1 class="typing">正在随机匹配队伍中..</h1></div>
+
+<div class="scene"><h1 class="typing">您好！我是小奈领航员</h1></div>
+
+<div class="scene"><h1 class="typing">很高兴能够与你一同探险</h1></div>
+
+<div class="scene"><h1 class="typing">准备好了吗？</h1></div>
+
+<div class="scene"><h1 class="typing">星船即将启动！</h1></div>
+
+<div class="scene"><h1 class="typing">确认玩家状态中</h1></div>
+
+<div class="scene"><h1 class="floatUp">状态：稳定</h1></div>
+
+<div class="scene"><h1 class="typing">正在步入星际轨道..</h1></div>
+
+<div class="scene"><h1 class="typing">已进入稳定航行模式</h1></div>
+
+<div class="scene"><h1 class="typing">探索中.</h1></div>
+<div class="scene"><h1 class="typing">探索中..</h1></div>
+<div class="scene"><h1 class="typing">探索中...</h1></div>
+
+<div class="scene"><h1 class="typing">侦测到回忆星系</h1></div>
+
+<div class="scene"><h1 class="typing">目标已成功锁定</h1></div>
+
+<div class="scene"><h1 class="typing">正在前往此地</h1></div>
+
+<div class="scene"><h1 class="floatUp">距离：逐渐缩短</h1></div>
+
+<div class="scene"><h1 class="typing">正在进入回忆星系范围..</h1></div>
+
+<div class="scene"><h1 class="typing">光线强度提升</h1></div>
+
+<div class="scene"><h1 class="typing">感知功能同步</h1></div>
+
+<div class="scene"><h1 class="typing">即将抵达目的地</h1></div>
+
+<div class="scene"><h1 class="typing">请保持连线稳定</h1></div>
+
+<div class="scene"><h1 class="typing">抵达回忆星系</h1></div>
+
+<div class="scene"><h1 class="typing">侦测结果顺利，允许离舱</h1></div>
+
+<div class="scene"><h1 class="typing">正在开启舱门..</h1></div>
+
+<div class="scene"><h1 class="typing">欢迎进入回忆星系</h1></div>
+
+<div class="scene"><h1 class="typing">记得今天是什么日子吗？</h1></div>
+
+<div class="scene"><h1 class="typing">今天是我们一周年的纪念日</h1></div>
+
+<div class="scene"><h1 class="typing">很感谢一路辛苦走来的我们</h1></div>
+
+<div class="scene"><h1 class="typing">坚定选择对方的我们</h1></div>
+
+<div class="scene">
+    <img src="./01.png" class="fade-img">
+</div>
+
+<div class="scene">
+    <h1 class="typing">让我们一起欣赏拼图吧~</h1>
+
+</div>
+<div class="scene"><h1 class="typing">小奈说：我们还要一起走，好久好久..</h1></div>
+
+<div class="scene">
+    <h1 class="typing">
+        最后..
+        <br><br>
+        <a class="starlink"
+           href="https://myppt.cc/8Pa3Sn"
+           target="_blank">
+           点我进入
+        </a>
+    </h1>
+</div>
+
+<audio id="bgm" src="./time-to-love.mp3" loop></audio>
+
+<script>
+
+const bgm = document.getElementById("bgm");
+
+function startMusic(){
+    if(bgm.paused){
+        bgm.volume = 0;
+        bgm.play();
+
+        let v = 0;
+        let fadeIn = setInterval(() => {
+            v += 0.05;
+            bgm.volume = v;
+            if(v >= 1) clearInterval(fadeIn);
+        }, 100);
     }
-};
-  
-/* 🎇 星空系統（升級版） */  
-const canvas = document.getElementById("starCanvas");  
-const ctx = canvas.getContext("2d");  
-  
-let stars = [];  
-let meteors = [];  
-  
-function resize(){  
-    canvas.width = window.innerWidth;  
-    canvas.height = window.innerHeight;  
-}  
-window.addEventListener("resize", () => {  
-    resize();  
-    initStars();  
-});  
-resize();  
-  
-function initStars(){  
-    stars = [];  
-  
-    const bigStars = 1;  
-    const smallStars = 23;  
-  
-    // 🌟 大星  
-    for(let i=0;i<bigStars;i++){  
-        stars.push({  
-            x: Math.random() * canvas.width,  
-            y: Math.random() * canvas.height,  
-            r: Math.random() * 2.5 + 2,  
-            speed: 0.2 + Math.random() * 0.3,  
-            alpha: 0.8  
-        });  
-    }  
-  
-    // ✨ 小星  
-    for(let i=0;i<smallStars;i++){  
-        stars.push({  
-            x: Math.random() * canvas.width,  
-            y: Math.random() * canvas.height,  
-            r: Math.random() * 1.2 + 0.2,  
-            speed: 0.05 + Math.random() * 0.2,  
-            alpha: 0.4 + Math.random() * 0.4  
-        });  
-    }  
-}  
-  
-/* 🌠 流星生成 */  
-function spawnMeteor(){  
-    const fromTop = Math.random() < 0.5;  
-  
-    meteors.push({  
-        x: Math.random() * canvas.width,  
-        y: fromTop ? 0 : Math.random() * canvas.height * 0.5,  
-        len: 80 + Math.random() * 120,  
-        speedX: 6 + Math.random() * 4,  
-        speedY: 3 + Math.random() * 2,  
-        life: 1  
-    });  
-}  
-  
-initStars();  
-  
-function animate(){  
-    ctx.clearRect(0,0,canvas.width,canvas.height);  
-  
-    /* 🌠 流星 */  
-    for(let i = meteors.length - 1; i >= 0; i--){  
-        let m = meteors[i];  
-  
-        m.x += m.speedX;  
-        m.y += m.speedY;  
-        m.life -= 0.01;  
-  
-        ctx.beginPath();  
-        ctx.moveTo(m.x, m.y);  
-        ctx.lineTo(m.x - m.len, m.y - m.len * 0.3);  
-  
-        ctx.strokeStyle = `rgba(255,255,255,${m.life})`;  
-        ctx.lineWidth = 2;  
-        ctx.stroke();  
-  
-        if(m.life <= 0){  
-            meteors.splice(i,1);  
-        }  
-    }  
-  
-    /* 🌌 星星 */  
-    for(let s of stars){  
-  
-        s.y += s.speed;  
-  
-        if(s.y > canvas.height){  
-            s.y = 0;  
-            s.x = Math.random() * canvas.width;  
-        }  
-  
-        ctx.beginPath();  
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);  
-        ctx.fillStyle = `rgba(255,220,140,${s.alpha})`;  
-        ctx.fill();  
-    }  
-  
-    /* 🌠 隨機流星 */  
-    if(Math.random() < 0.02){  
-        spawnMeteor();  
-    }  
-  
-    requestAnimationFrame(animate);  
-}  
-  
-animate();  
+}
 
 function fadeOutMusic(){
     let v = bgm.volume;
@@ -566,43 +420,7 @@ function fadeOutMusic(){
         }
     }, 100);
 }
-const bgm = document.getElementById("bgm");
-let musicStarted = false;
 
-/* 🎵 穩定音樂（不會波） */
-function startMusic(){
-    if(musicStarted) return;
-    musicStarted = true;
-
-    bgm.volume = 0;
-
-    const playPromise = bgm.play();
-    if(playPromise) playPromise.catch(()=>{});
-
-    let v = 0;
-    const fadeIn = setInterval(() => {
-        v += 0.02;
-        bgm.volume = Math.min(v, 1);
-        if(v >= 1) clearInterval(fadeIn);
-    }, 80);
-}
-
-/* 🎵 平滑淡出 */
-function fadeOutMusic(){
-    let v = bgm.volume;
-
-    const timer = setInterval(() => {
-        v -= 0.03;
-        bgm.volume = Math.max(v, 0);
-
-        if(v <= 0){
-            bgm.pause();
-            clearInterval(timer);
-        }
-    }, 100);
-}
-
-/* 🌌 場景控制（唯一版本） */
 document.addEventListener("DOMContentLoaded", () => {
 
     let index = 0;
@@ -610,18 +428,18 @@ document.addEventListener("DOMContentLoaded", () => {
     window.nextScene = function(){
 
         const scenes = document.querySelectorAll(".scene");
-        const current = scenes[index];
+        const currentScene = scenes[index];
 
-        if(!current) return;
+        if(!currentScene) return;
 
-        const img = current.querySelector("img");
+        const img = currentScene.querySelector("img");
 
-        // 🌸 有圖片 → fade out
+        // 🌸 如果有圖片 → 先退場動畫
         if(img){
             img.classList.add("fade-out");
 
             setTimeout(() => {
-                current.classList.remove("active");
+                currentScene.classList.remove("active");
                 index++;
 
                 if(index === scenes.length - 1){
@@ -636,8 +454,8 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // 🌸 普通場景切換
-        current.classList.remove("active");
+        // 🌸 沒圖片直接切場景
+        currentScene.classList.remove("active");
         index++;
 
         if(index === scenes.length - 1){
@@ -648,117 +466,18 @@ document.addEventListener("DOMContentLoaded", () => {
             scenes[index].classList.add("active");
         }
     };
+
 });
 
+bgm.addEventListener("error", () => {
+    console.log("❌ 音檔載入失敗");
+});
 
-/* 🌠 星空（穩定版） */
-const canvas = document.getElementById("starCanvas");
-const ctx = canvas.getContext("2d");
-
-let stars = [];
-let meteors = [];
-
-function resize(){
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-window.addEventListener("resize", resize);
-resize();
-
-/* ⭐ 星星（少一點 + 不單調） */
-function initStars(){
-    stars = [];
-
-    const bigStars = 2;     // ⭐ 少量大星
-    const smallStars = 18;   // ✨ 少量小星
-
-    for(let i=0;i<bigStars;i++){
-        stars.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            r: 2 + Math.random() * 1.5,
-            speed: 0.15 + Math.random() * 0.2,
-            alpha: 0.7
-        });
-    }
-
-    for(let i=0;i<smallStars;i++){
-        stars.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            r: 0.3 + Math.random() * 1.2,
-            speed: 0.05 + Math.random() * 0.15,
-            alpha: 0.3 + Math.random() * 0.4
-        });
-    }
-}
-
-/* 🌠 流星（少！！） */
-function spawnMeteor(){
-    meteors.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height * 0.3,
-        len: 60 + Math.random() * 60,
-        speedX: 4 + Math.random() * 3,
-        speedY: 2 + Math.random() * 2,
-        life: 1
-    });
-}
-
-initStars();
-
-/* 🎬 動畫 */
-function animate(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-
-    /* 🌠 流星 */
-    for(let i = meteors.length - 1; i >= 0; i--){
-        let m = meteors[i];
-
-        m.x += m.speedX;
-        m.y += m.speedY;
-        m.life -= 0.015;
-
-        ctx.beginPath();
-        ctx.moveTo(m.x, m.y);
-        ctx.lineTo(m.x - m.len, m.y - m.len * 0.3);
-
-        ctx.strokeStyle = `rgba(255,220,150,${m.life})`;
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-
-        if(m.life <= 0) meteors.splice(i,1);
-    }
-
-    /* ⭐ 星星 */
-    for(let s of stars){
-
-        s.y += s.speed;
-
-        if(s.y > canvas.height){
-            s.y = 0;
-            s.x = Math.random() * canvas.width;
-        }
-
-        ctx.beginPath();
-
-        // ⭐ 小亮點 + 柔光（比較夢幻）
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
-
-        ctx.fillStyle = `rgba(255,230,180,${s.alpha})`;
-        ctx.fill();
-    }
-
-    /* 🌠 流星機率（超低） */
-    if(Math.random() < 0.008){
-        spawnMeteor();
-    }
-
-    requestAnimationFrame(animate);
-}
-
-animate();
+bgm.addEventListener("canplaythrough", () => {
+    console.log("✔ 音檔已成功載入");
+});
 
 </script>
-</body>  
+
+</body>
 </html>
