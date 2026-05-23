@@ -626,10 +626,6 @@ function nextScene(){
     const current = list[index];
     const img = current.querySelector("img");
 
-    const isSlow = current.classList.contains("special08") ||
-                    current.classList.contains("special09") ||
-                    index === 1; // 01通常是第二頁（看你index）
-
     const goNext = () => {
         current.classList.remove("active");
         index++;
@@ -640,32 +636,30 @@ function nextScene(){
         busy = false;
     };
 
-    if(img){
-
+    // 👉 只讓 01、08 慢
     const isSlow =
-        current.classList.contains("special01") ||
+        index === 4 ||                 // 01（你目前第5個scene，自己可微調）
         current.classList.contains("special08");
 
-    img.classList.remove("fade-out");
-    img.classList.remove("slow-fade-out");
+    if(img){
+        img.classList.remove("fade-out", "slow-fade-out");
 
-    if(isSlow){
-        img.classList.add("slow-fade-out");
+        if(isSlow){
+            img.classList.add("slow-fade-out");
 
-        setTimeout(() => {
-            goNext();
-        }, 2000);
-    } 
-    else {
-        img.classList.add("fade-out");
+            setTimeout(() => {
+                goNext();
+            }, 2000); // 慢
+        } else {
+            img.classList.add("fade-out");
 
-        setTimeout(() => {
-            goNext();
-        }, 250);
+            setTimeout(() => {
+                goNext();
+            }, 250); // 快
+        }
+
+        return;
     }
-
-    return;
-}
 
     goNext();
 }
