@@ -310,7 +310,90 @@ transform:scale(0.98);
 filter:blur(8px);  
 }  
 }  
+.scene img{
+    width:100vw;
+    height:100vh;
+    object-fit:contain;   /* 🔥關鍵：不裁切、完整顯示 */
+    display:block;
+/* =========================
+   🌌 基礎圖片（避免互撞）
+========================= */
+.scene img{
+    width:100vw;
+    height:100vh;
+    object-fit:contain;
+    display:block;
+}
 
+/* =========================
+   🧸 01 / 08（特殊場）
+   - 不套故事動畫
+========================= */
+.scene.fade img.fade-out{
+    animation: specialFade 1.2s ease forwards;
+}
+
+@keyframes specialFade{
+    0%{
+        opacity:1;
+        transform:scale(1);
+    }
+    100%{
+        opacity:0;
+        transform:scale(1);
+    }
+}
+
+/* 08專用（可改） */
+.scene.special08 img{
+    transform:scale(1.08);
+}
+
+/* =========================
+   📖 02～07 故事模式
+   - 進場 + 離場分離
+   - 不影響其他scene
+========================= */
+
+/* 進場 */
+.scene.story.active img{
+    animation: storyIn 1.2s ease forwards;
+}
+
+/* 離場（由 JS 加 fade-out） */
+.scene.story img.fade-out{
+    animation: storyOut 1.0s ease forwards;
+}
+
+/* 進場動畫 */
+@keyframes storyIn{
+    0%{
+        opacity:0;
+        transform:translateY(20px) scale(1.05);
+        filter:blur(10px);
+    }
+    60%{
+        opacity:1;
+        filter:blur(3px);
+    }
+    100%{
+        opacity:1;
+        transform:translateY(0) scale(1);
+        filter:blur(0);
+    }
+}
+
+/* 離場動畫 */
+@keyframes storyOut{
+    0%{
+        opacity:1;
+        transform:scale(1);
+    }
+    100%{
+        opacity:0;
+        transform:scale(0.98);
+    }
+}
 </style>  </head>   <body onclick="handleClick()">  <!-- 🌌 星層 -->  <div class="layer-back"></div>  
 <div class="layer-mid"></div>  
 <div class="layer-front"></div>  
