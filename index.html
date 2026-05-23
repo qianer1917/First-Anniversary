@@ -654,12 +654,19 @@ function nextScene(){
     }
 
     // 🌸 有圖片（最關鍵修這裡）
-    if(img){
+    if (img) {
     img.classList.add("fade-out");
 
-    // 🌸 等動畫跑完再切（避免被 display:none 吃掉）
+    busy = true;
+
     setTimeout(() => {
-        goNext();
+        current.classList.remove("active");
+        index++;
+
+        const newList = scenes();
+        newList[index].classList.add("active");
+
+        busy = false;
     }, 300);
 
     return;
@@ -697,6 +704,9 @@ function sendMsg(){
     document.getElementById("output").innerText = text;
     document.getElementById("msg").value = "";
 }
+document.getElementById("msg").addEventListener("click", function(e){
+    e.stopPropagation();
+});
 </script>
 </body>  
 </html>
