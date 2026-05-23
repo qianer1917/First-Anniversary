@@ -356,7 +356,6 @@ filter:blur(8px);
 <div class="meteor" style="left:20%; animation-delay:0s;"></div>
 <div class="meteor" style="left:70%; animation-delay:3s;"></div>
 <audio id="bgm" src="./time-to-love.mp3" loop></audio>  
-
 <script>
 let index = 0;
 let busy = false;
@@ -370,19 +369,14 @@ function nextScene(){
     if(busy) return;
 
     const scenes = getScenes();
-
     if(index >= scenes.length - 1) return;
 
     busy = true;
 
     const current = scenes[index];
-
     const img = current.querySelector("img");
 
-    const isFadeScene = current.classList.contains("fade");
-
     const goNext = () => {
-
         current.classList.remove("active");
 
         index++;
@@ -393,21 +387,18 @@ function nextScene(){
         setTimeout(() => busy = false, 300);
     };
 
-    // 🌸 01 / 08：真正 fade to white（慢慢消失）
-    if(isFadeScene && img){
-        img.style.transition = "opacity 1.6s ease, transform 1.6s ease";
-        img.style.opacity = "0";
-        img.style.transform = "scale(1)";
-
-        setTimeout(goNext, 1600);
+    // 👉 有圖片就做淡出
+    if(img){
+        img.classList.add("fade-out");
+        setTimeout(goNext, 1000);
         return;
     }
 
-    // 🌌 02~07 / 文字：正常切換
+    // 👉 文字場景直接切
     goNext();
 }
 
-/* 🎵 音樂 */
+/* 音樂 */
 const bgm = document.getElementById("bgm");
 let musicStarted = false;
 
@@ -428,30 +419,26 @@ function startMusic(){
     }, 80);
 }
 
-/* 👆 點擊 */
+/* 點擊 */
 function handleClick(){
     startMusic();
     nextScene();
 }
 
-/* 🌠 流星 */
+/* 流星 */
 function spawnMeteor(){
     const meteor = document.createElement("div");
     meteor.className = "meteor";
 
     meteor.style.left = Math.random() * 100 + "vw";
     meteor.style.animationDuration = (3 + Math.random() * 3) + "s";
-    meteor.style.opacity = Math.random();
 
     document.body.appendChild(meteor);
 
-    setTimeout(() => {
-        meteor.remove();
-    }, 7000);
+    setTimeout(() => meteor.remove(), 7000);
 }
 
 setInterval(spawnMeteor, 2000);
 </script>
-
 </body>  
 </html>
