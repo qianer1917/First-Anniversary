@@ -411,155 +411,7 @@ filter:blur(8px);
 }
 
 /* =========================
-   🪐 09 特殊場景
-========================= */
-
-.special09{
-    position:relative;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    z-index:50;
-}
-
-/* 🌟 圖片本體 */
-.special09 img{
-    width:auto;
-    max-width:90vw;
-    max-height:85vh;
-    height:auto;
-    object-fit:contain;
-
-    position:relative;
-    z-index:2;
-
-    /* ✨ 白光核心（乾淨） */
-    filter:
-        drop-shadow(0 0 10px rgba(255,255,255,0.9))
-        drop-shadow(0 0 25px rgba(255,255,255,0.7))
-        drop-shadow(0 0 60px rgba(255,255,255,0.5));
-
-    animation: whiteGlow 2.8s ease-in-out infinite;
-}
-
-/* 💥 白色光暈背景 */
-.special09::before{
-    content:"";
-    position:absolute;
-    width:70%;
-    height:70%;
-
-    background:radial-gradient(
-        circle,
-        rgba(255,255,255,0.9) 0%,
-        rgba(255,255,255,0.4) 30%,
-        transparent 70%
-    );
-
-    filter: blur(35px);
-    z-index:1;
-    animation: whitePulse 2.8s ease-in-out infinite;
-}
-
-/* ✨ 外層擴散光 */
-.special09::after{
-    content:"";
-    position:absolute;
-    width:90%;
-    height:90%;
-
-    background:radial-gradient(
-        circle,
-        rgba(255,255,255,0.25),
-        transparent 70%
-    );
-
-    filter: blur(60px);
-    z-index:0;
-    animation: whitePulse 2.8s ease-in-out infinite reverse;
-}
-
-/* 🌟 呼吸（白光版） */
-@keyframes whiteGlow{
-    0%{
-        transform:scale(1);
-        filter:
-            drop-shadow(0 0 8px rgba(255,255,255,0.8))
-            drop-shadow(0 0 20px rgba(255,255,255,0.6))
-            drop-shadow(0 0 40px rgba(255,255,255,0.4));
-    }
-    50%{
-        transform:scale(1.02);
-        filter:
-            drop-shadow(0 0 18px rgba(255,255,255,1))
-            drop-shadow(0 0 45px rgba(255,255,255,0.8))
-            drop-shadow(0 0 90px rgba(255,255,255,0.6));
-    }
-    100%{
-        transform:scale(1);
-        filter:
-            drop-shadow(0 0 8px rgba(255,255,255,0.8))
-            drop-shadow(0 0 20px rgba(255,255,255,0.6))
-            drop-shadow(0 0 40px rgba(255,255,255,0.4));
-    }
-}
-
-/* 🌌 背景光呼吸 */
-@keyframes whitePulse{
-    0%{
-        transform:scale(0.95);
-        opacity:0.5;
-    }
-    50%{
-        transform:scale(1.1);
-        opacity:1;
-    }
-    100%{
-        transform:scale(0.95);
-        opacity:0.5;
-    }
-}
-.glow-img{
-    width:auto;
-    max-width:90vw;
-    max-height:85vh;
-    height:auto;
-    object-fit:contain;
-
-    filter:
-        drop-shadow(0 0 12px rgba(255,255,255,0.9))
-        drop-shadow(0 0 30px rgba(255,255,255,0.7))
-        drop-shadow(0 0 70px rgba(255,255,255,0.5));
-
-    animation: glowPulse 2.8s ease-in-out infinite;
-}
-
-/* 白光呼吸 */
-@keyframes glowPulse{
-    0%{
-        transform:scale(1);
-        filter:
-            drop-shadow(0 0 10px rgba(255,255,255,0.8))
-            drop-shadow(0 0 25px rgba(255,255,255,0.6))
-            drop-shadow(0 0 60px rgba(255,255,255,0.4));
-    }
-    50%{
-        transform:scale(1.02);
-        filter:
-            drop-shadow(0 0 20px rgba(255,255,255,1))
-            drop-shadow(0 0 50px rgba(255,255,255,0.8))
-            drop-shadow(0 0 100px rgba(255,255,255,0.6));
-    }
-    100%{
-        transform:scale(1);
-        filter:
-            drop-shadow(0 0 10px rgba(255,255,255,0.8))
-            drop-shadow(0 0 25px rgba(255,255,255,0.6))
-            drop-shadow(0 0 60px rgba(255,255,255,0.4));
-    }
-}
-/* =========================
-   🌑 09｜終極登場模式
+   🌑 09｜終極登場（白光核心版）
 ========================= */
 
 .scene.special09{
@@ -568,57 +420,64 @@ filter:blur(8px);
     overflow:hidden;
 }
 
-/* 🌌 進場前黑洞感 */
+/* 黑洞背景 */
 .scene.special09::before{
     content:"";
     position:absolute;
     inset:0;
+    background:#000;
+    z-index:0;
+}
+
+/* 中央白光擴散 */
+.scene.special09::after{
+    content:"";
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:120%;
+    height:120%;
+    transform:translate(-50%,-50%);
     background:radial-gradient(circle,
-        rgba(0,0,0,0.2) 0%,
-        rgba(0,0,0,0.7) 40%,
-        rgba(0,0,0,1) 100%
+        rgba(255,255,255,0.35) 0%,
+        rgba(255,255,255,0.15) 25%,
+        transparent 70%
     );
+    filter:blur(40px);
     z-index:1;
-    animation: blackIn 1.2s ease forwards;
+    animation: pulseWhite 2.5s ease-in-out infinite;
 }
 
-@keyframes blackIn{
-    from{opacity:0;}
-    to{opacity:1;}
-}
-
-/* 🌟 圖片本體（白光核心） */
-.glow-img{
+/* 圖片本體（真正發光核心） */
+.scene.special09 img{
     position:relative;
     z-index:2;
 
-    width:auto;
     max-width:90vw;
     max-height:85vh;
-
     object-fit:contain;
 
     opacity:0;
-    transform:scale(0.92);
+    transform:scale(0.85);
 
     filter:
-        drop-shadow(0 0 15px rgba(255,255,255,1))
-        drop-shadow(0 0 40px rgba(255,255,255,0.8))
+        drop-shadow(0 0 15px #fff)
+        drop-shadow(0 0 40px rgba(255,255,255,0.9))
         drop-shadow(0 0 90px rgba(255,255,255,0.6));
 
-    animation: revealWhite 2.2s ease forwards;
+    animation: reveal 1.8s ease forwards, glow 3s ease-in-out infinite 1.8s;
 }
 
-/* ✨ 白光浮現 */
-@keyframes revealWhite{
+/* 進場 */
+@keyframes reveal{
     0%{
         opacity:0;
-        transform:scale(0.9);
+        transform:scale(0.8);
         filter:blur(20px);
     }
-    40%{
+    60%{
         opacity:1;
-        filter:blur(6px);
+        filter:blur(4px);
     }
     100%{
         opacity:1;
@@ -627,54 +486,33 @@ filter:blur(8px);
     }
 }
 
-/* 🌟 呼吸白光 */
-.glow-img{
-    animation:
-        revealWhite 2.2s ease forwards,
-        glowPulse 3s ease-in-out infinite 2.2s;
-}
-
-@keyframes glowPulse{
+/* 呼吸白光 */
+@keyframes glow{
     0%{
-        filter:
-            drop-shadow(0 0 10px rgba(255,255,255,0.8))
-            drop-shadow(0 0 25px rgba(255,255,255,0.6))
-            drop-shadow(0 0 60px rgba(255,255,255,0.4));
         transform:scale(1);
+        filter:
+            drop-shadow(0 0 10px #fff)
+            drop-shadow(0 0 30px rgba(255,255,255,0.7));
     }
     50%{
-        filter:
-            drop-shadow(0 0 25px rgba(255,255,255,1))
-            drop-shadow(0 0 60px rgba(255,255,255,0.8))
-            drop-shadow(0 0 120px rgba(255,255,255,0.6));
         transform:scale(1.02);
+        filter:
+            drop-shadow(0 0 25px #fff)
+            drop-shadow(0 0 80px rgba(255,255,255,1));
     }
     100%{
-        filter:
-            drop-shadow(0 0 10px rgba(255,255,255,0.8))
-            drop-shadow(0 0 25px rgba(255,255,255,0.6))
-            drop-shadow(0 0 60px rgba(255,255,255,0.4));
         transform:scale(1);
+        filter:
+            drop-shadow(0 0 10px #fff)
+            drop-shadow(0 0 30px rgba(255,255,255,0.7));
     }
 }
 
-/* 💥 空間閃光（登場瞬間） */
-.scene.special09::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:radial-gradient(circle,
-        rgba(255,255,255,0.25),
-        transparent 60%
-    );
-    z-index:0;
-    animation: flash 1.2s ease forwards;
-}
-
-@keyframes flash{
-    0%{opacity:0;}
-    30%{opacity:1;}
-    100%{opacity:0;}
+/* 白光脈衝 */
+@keyframes pulseWhite{
+    0%{opacity:0.3; transform:translate(-50%,-50%) scale(0.95);}
+    50%{opacity:1; transform:translate(-50%,-50%) scale(1.05);}
+    100%{opacity:0.3; transform:translate(-50%,-50%) scale(0.95);}
 }
 </style>  </head>   <body onclick="handleClick()">  <!-- 🌌 星層 -->  <div class="layer-back"></div>  
 <div class="layer-mid"></div>  
