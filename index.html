@@ -624,7 +624,7 @@ function startMusic(){
 }
 
 /* =========================
-   👉 換場景（已優化慢出場版）
+   👉 換場景（穩定不卡版）
 ========================= */
 function nextScene(){
     if(busy) return;
@@ -641,7 +641,6 @@ function nextScene(){
 
     const goNext = () => {
         current.classList.remove("active");
-
         index++;
 
         const newList = scenes();
@@ -650,25 +649,36 @@ function nextScene(){
         busy = false;
     };
 
-    // 🌑 special09（加長淡出）
+    /* =========================
+       🌑 09（修正退出動畫）
+    ========================= */
     if(is09){
-    current.classList.add("fade-out");
-    setTimeout(goNext, 1800); // 跟01/08一致
-    return;
-}
+        const img09 = current.querySelector("img");
 
-    // 🌸 有圖片（01 / 08 / 其他）
-    if (img) {
+        if(img09){
+            img09.classList.add("fade-out");
+        }
+
+        setTimeout(goNext, 1200);
+        return;
+    }
+
+    /* =========================
+       🌸 有圖片（01 / 08 / 02~07）
+    ========================= */
+    if(img){
         img.classList.add("fade-out");
 
         setTimeout(() => {
             goNext();
-        }, 1800); // ⭐變慢（重點）
+        }, 1200);
 
         return;
     }
 
-    // 🌸 文字場景
+    /* =========================
+       🌌 純文字
+    ========================= */
     goNext();
 }
 
@@ -694,25 +704,30 @@ function spawnMeteor(){
 setInterval(spawnMeteor, 2000);
 
 /* =========================
-   💌 留言（改成：不顯示 + 進下一頁）
+   💌 留言（輸入 → 不顯示 → 進下一頁）
 ========================= */
-
 function sendMsg(){
-    const text = document.getElementById("msg").value.trim();
+    const input = document.getElementById("msg");
+    const text = input.value.trim();
 
     if(!text) return;
 
-    // 💖你可以在 console 偷看
-    console.log("💌收到留言：", text);
+    console.log("💌 留言：", text);
 
-    document.getElementById("msg").value = "";
+    input.value = "";
 
-    // 👉直接進下一頁（不顯示在畫面）
+    // 👉 直接進下一頁
     nextScene();
 }
 
-document.getElementById("msg").addEventListener("click", function(e){
-    e.stopPropagation();
+/* 防止點輸入框跳頁 */
+document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("msg");
+    if(input){
+        input.addEventListener("click", function(e){
+            e.stopPropagation();
+        });
+    }
 });
 </script>
 </body>  
