@@ -728,6 +728,7 @@ function sendMsg(){
     const text = input.value.trim();
     if(!text) return;
 
+    // ✨ 出現動畫
     output.style.opacity = "0";
     output.style.transform = "translateY(10px)";
     output.innerHTML = "🤍已收到你的话💍：<br>" + text;
@@ -740,7 +741,7 @@ function sendMsg(){
 
     input.value = "";
 
-    // ⭐標記：留言模式
+    // ⭐進入留言模式
     window.__msgMode = true;
     lock = true;
 
