@@ -376,7 +376,10 @@ function nextScene(){
     busy = true;
 
     const current = scenes[index];
+
     const img = current.querySelector("img");
+
+    const isFadeScene = current.classList.contains("fade");
 
     const goNext = () => {
 
@@ -390,17 +393,21 @@ function nextScene(){
         setTimeout(() => busy = false, 300);
     };
 
-    if(img){
-        img.classList.add("fade-out");
+    // 🌸 01 / 08：真正 fade to white（慢慢消失）
+    if(isFadeScene && img){
+        img.style.transition = "opacity 1.6s ease, transform 1.6s ease";
+        img.style.opacity = "0";
+        img.style.transform = "scale(1)";
 
-        setTimeout(goNext, 800);
+        setTimeout(goNext, 1600);
         return;
     }
 
+    // 🌌 02~07 / 文字：正常切換
     goNext();
 }
 
-/* 音樂 */
+/* 🎵 音樂 */
 const bgm = document.getElementById("bgm");
 let musicStarted = false;
 
@@ -421,7 +428,7 @@ function startMusic(){
     }, 80);
 }
 
-/* 點擊控制 */
+/* 👆 點擊 */
 function handleClick(){
     startMusic();
     nextScene();
@@ -443,11 +450,7 @@ function spawnMeteor(){
     }, 7000);
 }
 
-/* ✔ 穩定生成（已修好，不會消失） */
-setInterval(() => {
-    spawnMeteor();
-}, 2000);
-
+setInterval(spawnMeteor, 2000);
 </script>
 
 </body>  
