@@ -632,6 +632,9 @@ function nextScene(){
 
     const current = list[index];
 
+    const is09 = current.classList.contains("special09");
+    const img = current.querySelector("img");
+
     const goNext = () => {
         current.classList.remove("active");
 
@@ -640,34 +643,28 @@ function nextScene(){
         const newList = scenes();
         newList[index].classList.add("active");
 
-        setTimeout(() => busy = false, 50);
+        busy = false;
     };
 
-    const is09 = current.classList.contains("special09");
-    const img = current.querySelector("img");
-
-    // 🌑 special09（保留你原本效果）
+    // 🌑 special09
     if(is09){
         current.classList.add("fade-out");
         setTimeout(goNext, 800);
         return;
     }
 
-    // 🌸 有圖片的場景（重點修這裡）
+    // 🌸 有圖片（最關鍵修這裡）
     if(img){
         img.classList.add("fade-out");
 
-        requestAnimationFrame(() => {
-            setTimeout(goNext, 80);
-        });
-
+        // 不用 requestAnimationFrame（會造成延遲差異）
+        setTimeout(goNext, 120);
         return;
     }
 
-    // 🌸 文字場景
+    // 🌸 文字
     goNext();
 }
-
 /* =========================
    🖱 點擊
 ========================= */
