@@ -647,7 +647,7 @@ function spawnMeteor(){
 setInterval(spawnMeteor, 2000);
 
 /* =========================
-   💌 留言（輸入 → 不顯示 → 進下一頁）
+   💌 留言（優化版：有回饋 + 再跳頁）
 ========================= */
 function sendMsg(){
     const input = document.getElementById("msg");
@@ -657,10 +657,24 @@ function sendMsg(){
 
     console.log("💌 留言：", text);
 
+    const box = document.querySelector(".message-box");
+
+    // ✨ 小回饋動畫（讓畫面有“收到”的感覺）
+    box.style.transition = "0.25s ease";
+    box.style.transform = "scale(0.98)";
+    box.style.filter = "brightness(1.2)";
+
+    setTimeout(() => {
+        box.style.transform = "scale(1)";
+        box.style.filter = "brightness(1)";
+    }, 200);
+
     input.value = "";
 
-    // 👉 直接進下一頁
-    nextScene();
+    // ⏳ 稍微延遲再換頁（變順）
+    setTimeout(() => {
+        nextScene();
+    }, 450);
 }
 
 /* 防止點輸入框跳頁 */
@@ -672,6 +686,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
 </script>
 </body>  
 </html>
