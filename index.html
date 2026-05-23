@@ -283,34 +283,11 @@ transform:scale(0.98);
 filter:blur(8px);
 }
 }
-#finalLink{
-    opacity:0;
-    transform:translateY(12px);
-    filter:blur(6px);
-    display:inline-block;
-}
-
-#finalLink.show{
-    animation: finalFade 0.9s ease forwards;
-}
-
-@keyframes finalFade{
-    from{
-        opacity:0;
-        transform:translateY(12px);
-        filter:blur(6px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-        filter:blur(0);
-    }
-}
 </style>
 
 </head> 
 
-<body onclick="startMusic(); nextScene()">
+<body onclick="nextScene()">
 
 <!-- 🌌 星層 -->
 <div class="layer-back"></div>
@@ -394,7 +371,6 @@ filter:blur(8px);
 
 <div class="scene">
     <h1 class="typing">让我们一起欣赏拼图吧~</h1>
-
 </div>
 <div class="scene"><h1 class="typing">小奈说：我们还要一起走，好久好久..</h1></div>
 
@@ -402,73 +378,51 @@ filter:blur(8px);
     <h1 class="typing">
         最后..
         <br><br>
-       <a id="finalLink"
-   class="starlink"
-   href="https://myppt.cc/8Pa3Sn"
-   target="_blank">
-   点我进入
-</a>
+        <a class="starlink"
+           href="https://myppt.cc/8Pa3Sn"
+           target="_blank">
+           点我进入
+        </a>
     </h1>
 </div>
 
-<audio id="bgm" src="./time-to-love.mp3" loop></audio>
-
 <script>
-const bgm = document.getElementById("bgm");
-let musicStarted = false;
-
-function startMusic(){
-    if(musicStarted) return;
-    musicStarted = true;
-
-    bgm.volume = 0;
-    bgm.play().catch(()=>{});
-
-    let v = 0;
-    let t = setInterval(() => {
-        v += 0.05;
-        bgm.volume = v;
-        if(v >= 1) clearInterval(t);
-    }, 80);
-}
-
-function fadeOutMusic(){
-    let v = bgm.volume;
-
-    let t = setInterval(() => {
-        v -= 0.05;
-        bgm.volume = v;
-
-        if(v <= 0){
-            bgm.pause();
-            clearInterval(t);
-        }
-    }, 100);
-}
 document.addEventListener("DOMContentLoaded", () => {
 
+let index = 0;
+
+window.nextScene = function(){
+
     const scenes = document.querySelectorAll(".scene");
-    let index = 0;
+    const currentScene = scenes[index];
 
-    window.nextScene = function() {
+    if(!currentScene) return;
 
-        if (index >= scenes.length - 1) return;
+    const img = currentScene.querySelector("img");
 
-        const current = scenes[index];
-        current.classList.remove("active");
+    if(img){
+        img.classList.add("fade-out");
 
-        index++;
+        setTimeout(() => {
+            currentScene.classList.remove("active");
 
-        const next = scenes[index];
-        if (next) {
-            next.classList.add("active");
-        }
+            index++;
+            if(index >= scenes.length) return;
 
-        // 最後一頁音樂淡出
-        if (index === scenes.length - 1) {
-            fadeOutMusic();
-        }
-    };
+            scenes[index].classList.add("active");
+        }, 1200);
+
+        return;
+    }
+
+    currentScene.classList.remove("active");
+
+    index++;
+    if(index >= scenes.length) return;
+
+    scenes[index].classList.add("active");
+};
+
 });
 </script>
 
