@@ -507,6 +507,31 @@ filter:blur(8px);
         filter:blur(12px) brightness(1.3);
     }
 }
+.message-box{
+    opacity:0;
+    transform:translateY(20px) scale(0.98);
+    animation: msgIn 1.2s ease forwards;
+}
+
+@keyframes msgIn{
+    0%{
+        opacity:0;
+        transform:translateY(30px) scale(0.95);
+        filter:blur(6px);
+    }
+    60%{
+        opacity:1;
+        transform:translateY(-5px) scale(1.01);
+        filter:blur(0px);
+    }
+    100%{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+}
+.scene.active .message-box{
+    animation-delay:0.3s;
+}
 </style>  </head>   <body onclick="handleClick()">  <!-- 🌌 星層 -->  <div class="layer-back"></div>  
 <div class="layer-mid"></div>  
 <div class="layer-front"></div>  
@@ -709,10 +734,11 @@ function sendMsg(){
 
     lock = true;
 
+    // ⭐至少停 5 秒再跳下一頁
     setTimeout(() => {
         nextScene();
         lock = false;
-    }, 2500);
+    }, 5000);
 }
 </script>
 </body>  
