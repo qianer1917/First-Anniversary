@@ -283,6 +283,27 @@ transform:scale(0.98);
 filter:blur(8px);
 }
 }
+
+.hidden-link{
+    opacity:0;
+    transform:translateY(10px);
+}
+
+.show-link{
+    animation: linkFade 0.8s ease forwards;
+}
+
+@keyframes linkFade{
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
 </style>
 
 </head> 
@@ -379,7 +400,9 @@ filter:blur(8px);
     <h1 class="typing">
         最后..
         <br><br>
-        <a class="starlink"
+
+        <a id="finalLink"
+           class="starlink hidden-link"
            href="https://myppt.cc/8Pa3Sn"
            target="_blank">
            点我进入
@@ -496,6 +519,27 @@ function startMusic(){
         });
     }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const link = document.getElementById("finalLink");
+
+    // 每次切到最後一幕時才觸發
+    const observer = new MutationObserver(() => {
+
+        const lastScene = document.querySelectorAll(".scene")[document.querySelectorAll(".scene").length - 1];
+
+        if(lastScene.classList.contains("active")){
+            setTimeout(() => {
+                if(link){
+                    link.classList.add("show-link");
+                }
+            }, 1000); // ⭐ 延遲 1 秒
+        }
+    });
+
+    observer.observe(document.body, { attributes: true, subtree: true, childList: true });
+});
 
 </script>
 
