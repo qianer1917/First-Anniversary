@@ -733,46 +733,37 @@ setInterval(() => {
 function sendMsg(){
     const input = document.getElementById("msg");
     const output = document.getElementById("output");
-    const box = document.querySelector(".message-box");
 
-    if(!input || !output || !box) return;
+    if(!input || !output) return;
 
     const text = input.value.trim();
     if(!text) return;
 
-    // ✨ 顯示留言
-    output.style.opacity = "0";
-    output.style.transform = "translateY(10px)";
-    output.innerHTML = "🤍已收到你的话💍：<br>" + text;
+    // ⭐顯示動畫
+    output.innerHTML = "";
+
+    const box = document.createElement("div");
+    box.style.opacity = "0";
+    box.style.transform = "translateY(10px)";
+    box.style.transition = "all 0.8s ease";
+    box.innerHTML = "🤍已收到你的话💍：<br>" + text;
+
+    output.appendChild(box);
 
     requestAnimationFrame(() => {
-        output.style.transition = "all 0.8s ease";
-        output.style.opacity = "1";
-        output.style.transform = "translateY(0)";
+        box.style.opacity = "1";
+        box.style.transform = "translateY(0)";
     });
 
     input.value = "";
 
-    // ⭐進入留言模式
-    window.__msgMode = true;
+    // ⭐鎖5秒（你要的）
     lock = true;
 
-    // ✨留言框出場動畫
-    box.classList.add("fade-out");
-
-    // ⭐3秒後：切頁 + 解鎖（關鍵修正）
     setTimeout(() => {
-
         nextScene();
-
-        // ⭐這裡才解鎖（你剛剛缺的）
         lock = false;
-        window.__msgMode = false;
-
-        // ⭐可選：把留言框狀態重置（避免下次出問題）
-        box.classList.remove("fade-out");
-
-    }, 3000);
+    }, 5000);
 }
 </script>
 </body>  
