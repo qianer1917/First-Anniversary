@@ -327,95 +327,49 @@ filter:blur(8px);
     </h1>  
 </div>  
 <audio id="bgm" src="./time-to-love.mp3" loop></audio>  
-<script>  
-const scenes = document.querySelectorAll(".scene");
-
+<script>
 let index = 0;
 let busy = false;
 
-/* 切換場景 */
+function getScenes(){
+    return document.querySelectorAll(".scene");
+}
+
 function nextScene(){
 
     if(busy) return;
+
+    const scenes = getScenes();
 
     if(index >= scenes.length - 1) return;
 
     busy = true;
 
     const current = scenes[index];
-
     const img = current.querySelector("img");
 
-    // 圖片頁
-    if(img){
+    const goNext = () => {
 
+        current.classList.remove("active");
+
+        index++;
+
+        const newScenes = getScenes();
+        newScenes[index].classList.add("active");
+
+        setTimeout(() => busy = false, 300);
+    };
+
+    if(img){
         img.classList.add("fade-out");
 
-        setTimeout(() => {
-
-            current.classList.remove("active");
-
-            index++;
-
-            scenes[index].classList.add("active");
-
-            busy = false;
-
-        }, 1000);
-
+        setTimeout(goNext, 800);
         return;
     }
 
-    // 一般頁
-    current.classList.remove("active");
-
-    index++;
-
-    scenes[index].classList.add("active");
-
-    setTimeout(() => {
-        busy = false;
-    }, 300);
+    goNext();
 }
 
-/* 音樂 */
-const bgm = document.getElementById("bgm");
-
-let musicStarted = false;
-
-function startMusic(){
-
-    if(musicStarted) return;
-
-    musicStarted = true;
-
-    bgm.volume = 0;
-
-    bgm.play().catch(()=>{});
-
-    let v = 0;
-
-    const fade = setInterval(() => {
-
-        v += 0.05;
-
-        if(v >= 1){
-            v = 1;
-            clearInterval(fade);
-        }
-
-        bgm.volume = v;
-
-    },80);
-}
-
-/* 點擊 */
-function handleClick(){
-
-    startMusic();
-
-    nextScene();
-}
 /* 音樂 */
 const bgm = document.getElementById("bgm");
 let musicStarted = false;
@@ -435,6 +389,11 @@ function startMusic(){
         bgm.volume = v;
         if(v >= 1) clearInterval(fade);
     }, 80);
+}
+
+function handleClick(){
+    startMusic();
+    nextScene();
 }
 </script>
 
