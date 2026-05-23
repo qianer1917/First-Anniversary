@@ -648,6 +648,9 @@ function startMusic(){
     }, 80);
 }
 
+/* =========================
+   👉 修復核心（只動安全點）
+========================= */
 function nextScene(){
 
     if(lock) return;
@@ -663,16 +666,15 @@ function nextScene(){
 
         index++;
 
-        // ⭐⭐⭐ 關鍵修正：允許停在最後一頁，但不 return 死鎖
+        // ⭐關鍵修復：不要超出 + 不亂跳
         if(index >= scenes.length){
             index = scenes.length - 1;
         }
 
-        requestAnimationFrame(() => {
-            scenes[index].classList.add("active");
-        });
+        scenes[index].classList.add("active");
     };
 
+    // ⭐圖片動畫處理（保留你原本）
     if(img){
 
         const isSlow =
@@ -689,6 +691,9 @@ function nextScene(){
     goNext();
 }
 
+/* =========================
+   🖱 點擊
+========================= */
 function handleClick(){
     if(lock) return;
 
@@ -696,6 +701,9 @@ function handleClick(){
     nextScene();
 }
 
+/* =========================
+   🌠 流星（不動）
+========================= */
 setInterval(() => {
     const m = document.createElement("div");
     m.className = "meteor";
@@ -705,6 +713,9 @@ setInterval(() => {
     setTimeout(() => m.remove(), 7000);
 }, 2000);
 
+/* =========================
+   💌 留言（修卡死 + 不亂跳）
+========================= */
 function sendMsg(){
     const input = document.getElementById("msg");
     const output = document.getElementById("output");
@@ -714,17 +725,26 @@ function sendMsg(){
     const text = input.value.trim();
     if(!text) return;
 
+    // 顯示 + 小動畫（不動你UI）
     output.innerHTML = "🤍已收到你的话💍：<br>" + text;
 
     input.value = "";
 
+    // ⭐只鎖互動，不影響場景邏輯
     lock = true;
 
     setTimeout(() => {
-        nextScene();
 
-        // ⭐⭐⭐ 保底解鎖（防止任何卡死）
         lock = false;
+
+        // ⭐只有在留言頁才前進（避免亂跳）
+        const current = document.querySelector(".scene.active");
+        const isMsgScene = current && current.querySelector(".message-box");
+
+        if(isMsgScene){
+            nextScene();
+        }
+
     }, 5000);
 }
 </script>
