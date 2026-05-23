@@ -656,6 +656,8 @@ function startMusic(){
 ========================= */
 function nextScene(){
 
+    if(lock) return;
+
     const current = document.querySelector(".scene.active");
     if(!current) return;
 
@@ -667,8 +669,12 @@ function nextScene(){
 
         index++;
 
+        // ✅ 改這裡：最後一頁「顯示 + 停住」
         if(index >= scenes.length){
             index = scenes.length - 1;
+
+            // 👉 強制顯示最後一頁（避免卡死）
+            scenes[index].classList.add("active");
             return;
         }
 
@@ -679,7 +685,6 @@ function nextScene(){
         });
     };
 
-    // ⭐圖片場
     if(img){
 
         const isSlow =
@@ -687,9 +692,11 @@ function nextScene(){
             img.getAttribute("src") === "./08.png";
 
         img.classList.remove("fade-out", "slow-fade-out");
+
         img.classList.add(isSlow ? "slow-fade-out" : "fade-out");
 
         setTimeout(goNext, isSlow ? 1800 : 600);
+
         return;
     }
 
@@ -722,7 +729,6 @@ setInterval(() => {
    💌 留言（已修不卡死 + 動畫）
 ========================= */
 function sendMsg(){
-
     const input = document.getElementById("msg");
     const output = document.getElementById("output");
 
@@ -731,31 +737,24 @@ function sendMsg(){
     const text = input.value.trim();
     if(!text) return;
 
-    /* ✨ 出場動畫（先淡出再更新） */
-    output.style.transition = "all 0.3s ease";
+    // ✨ 動畫
     output.style.opacity = "0";
+    output.innerHTML = "🤍已收到你的话💍：<br>" + text;
 
-    setTimeout(() => {
-
-        output.innerHTML = "🤍已收到你的话💍：<br>" + text;
-
-        /* ✨ 進場動畫 */
-        requestAnimationFrame(() => {
-            output.style.opacity = "1";
-            output.style.transform = "translateY(0)";
-        });
-
-    }, 250);
+    requestAnimationFrame(() => {
+        output.style.transition = "all 0.8s ease";
+        output.style.opacity = "1";
+        output.style.transform = "translateY(0)";
+    });
 
     input.value = "";
 
-    /* ⭐ 這裡只「暫停點擊」，不影響 nextScene */
     lock = true;
 
-    /* ⭐ 5秒（你要的穩定版本） */
+    // ✅ 5秒（你要的）
     setTimeout(() => {
         lock = false;
-        nextScene(); // 5秒後自動進下一頁
+        nextScene();
     }, 5000);
 }
 </script>
