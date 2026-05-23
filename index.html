@@ -309,115 +309,7 @@ transform:scale(0.98);
 filter:blur(8px);  
 }  
 }  
-.seq-img{
-    max-width:90vw;
-    max-height:80vh;
-    width:auto;
-    height:auto;
-    object-fit:contain;
 
-    opacity:0;
-    transform:scale(1.05);
-    animation:seqIn 1.2s ease forwards;
-}
-
-@keyframes seqIn{
-    0%{
-        opacity:0;
-        transform:scale(1.08) translateY(10px);
-        filter:blur(10px);
-    }
-    60%{
-        opacity:1;
-        filter:blur(3px);
-    }
-    100%{
-        opacity:1;
-        transform:scale(1) translateY(0);
-        filter:blur(0);
-    }
-}
-.story-img{
-    width:92vw;        /* 原本85vw → 變更大 */
-    max-height:85vh;   /* 原本75vh → 變更高 */
-    object-fit:contain;
-    opacity:0;
-    transform:scale(1.06);
-    transition:all 1.2s ease;
-}
-
-/* 當 scene 變 active 才播放 */
-.scene.active .story-img{
-    opacity:1;
-    transform:scale(1);
-}
-.story-img{
-    width:100vw;
-    height:100vh;
-    object-fit:contain;
-    transform:translateY(30px) scale(1.03);
-}
-
-/* 進場動畫（像鏡頭滑入） */
-.scene.active .story-img{
-    animation: sceneIn 1.2s ease forwards;
-}
-
-/* 出場動畫（像鏡頭離開） */
-.scene img.fade-out{
-    animation: sceneOut 0.9s ease forwards;
-}
-
-/* 進場 */
-@keyframes sceneIn{
-    0%{
-        transform:translateY(40px) scale(1.05);
-        filter:blur(0px);
-    }
-    60%{
-        transform:translateY(-5px) scale(1.01);
-    }
-    100%{
-        transform:translateY(0px) scale(1);
-    }
-}
-
-/* 出場 */
-@keyframes sceneOut{
-    0%{
-        transform:translateY(0px) scale(1);
-        opacity:1;
-    }
-    100%{
-        transform:translateY(-30px) scale(0.98);
-        opacity:1;
-    }
-}
-/* 01 / 08 專用：純淡出 */
-.scene.fade img.fade-out{
-    animation: fadeOutSoft 1.6s ease forwards;
-}
-
-@keyframes fadeOutSoft{
-    0%{
-        opacity:1;
-        transform:scale(1);
-        filter:none;
-    }
-    100%{
-        opacity:0;
-        transform:scale(1);
-        filter:none;
-    }
-}
-.scene.fade img{
-    transition: opacity 1.6s ease, transform 1.6s ease;
-}
-
-.scene.fade img.fade-out{
-    opacity:0;
-    transform:scale(1);
-}
 </style>  </head>   <body onclick="handleClick()">  <!-- 🌌 星層 -->  <div class="layer-back"></div>  
 <div class="layer-mid"></div>  
 <div class="layer-front"></div>  
@@ -431,13 +323,13 @@ filter:blur(8px);
     <h1 class="typing">记得今天是什么日子吗？</h1>
 </div>
 
-<div class="scene fade">
+<div class="scene">
     <img src="./08.png" style="
-        width:100vw;
-        height:100vh;
+        max-width:85vw;
+        max-height:75vh;
+        width:auto;
+        height:auto;
         object-fit:contain;
-        transform:scale(1.08);
-        filter:drop-shadow(0 0 25px rgba(255,244,180,0.35));
     ">
 </div>
 
@@ -445,35 +337,11 @@ filter:blur(8px);
     <h1 class="typing">很感谢一路辛苦走来的我们</h1>
 </div>
 <div class="scene"><h1 class="typing">坚定选择对方的我们</h1></div>
-<div class="scene fade">
-    <img src="./01.png">
-</div>
 <div class="scene">  
+    <img src="./01.png" class="fade-img">  
+</div>  <div class="scene">  
     <h1 class="typing">让我们一起欣赏拼图吧~</h1>  
 </div>  
-<div class="scene">
-    <img src="./02.png" class="story-img">
-</div>
-
-<div class="scene">
-    <img src="./03.png" class="story-img">
-</div>
-
-<div class="scene">
-    <img src="./04.png" class="story-img">
-</div>
-
-<div class="scene">
-    <img src="./05.png" class="story-img">
-</div>
-
-<div class="scene">
-    <img src="./06.png" class="story-img">
-</div>
-
-<div class="scene">
-    <img src="./07.png" class="story-img">
-</div>
 <div class="scene"><h1 class="typing">小奈说：我们还要一起走，好久好久..</h1></div>  <div class="scene">  
     <h1 class="typing">  
         最后..  
@@ -508,11 +376,11 @@ function nextScene(){
     busy = true;
 
     const current = scenes[index];
+
     const isFade = current.classList.contains("fade");
     const img = current.querySelector("img");
 
     const goNext = () => {
-
         current.classList.remove("active");
 
         index++;
@@ -523,18 +391,19 @@ function nextScene(){
         setTimeout(() => busy = false, 300);
     };
 
-    // ✔ 01 / 08：純淡出（電影結尾感）
+    /* 🌸 01 / 08：電影 fade to white */
     if(isFade && img){
         img.classList.add("fade-out");
+
         setTimeout(goNext, 1600);
         return;
     }
 
-    // ✔ 02~07：正常動畫
+    /* 🌌 02~07 + 文字：正常切換 */
     goNext();
 }
 
-/* 🎵 音樂 */
+/* 音樂 */
 const bgm = document.getElementById("bgm");
 let musicStarted = false;
 
@@ -555,13 +424,13 @@ function startMusic(){
     }, 80);
 }
 
-/* 🖱 點擊控制 */
+/* 點擊 */
 function handleClick(){
     startMusic();
     nextScene();
 }
 
-/* 🌠 流星 */
+/* 流星 */
 function spawnMeteor(){
     const meteor = document.createElement("div");
     meteor.className = "meteor";
@@ -577,11 +446,7 @@ function spawnMeteor(){
     }, 7000);
 }
 
-/* ✔ 穩定流星生成 */
-setInterval(() => {
-    spawnMeteor();
-}, 2000);
-
+setInterval(spawnMeteor, 2000);
 </script>
 
 </body>  
