@@ -411,20 +411,17 @@ filter:blur(8px);
 }
 .special09{
     position:relative;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.special09 img{
+    z-index:1;
 }
 
 .corner-text{
-    position:absolute;
-    top:20px;
-    left:20px;
     z-index:999;
-    pointer-events:none;
-
-    font-size:20px;
-    color:#fff3c4;
-
-    transform:rotate(-10deg);
-    text-shadow:0 0 10px #ffd77a;
 }
 </style>  </head>   <body onclick="handleClick()">  <!-- 🌌 星層 -->  <div class="layer-back"></div>  
 <div class="layer-mid"></div>  
@@ -512,20 +509,48 @@ function nextScene(){
         setTimeout(() => busy = false, 300);
     };
 
-    // 🌟 只有 01 / 08 才做淡出（有 fade class）
-    const isSpecial = current.classList.contains("fade");
+    /* =========================
+       🧸 01 / 08 特殊淡出（保留你原本邏輯）
+    ========================= */
+    const isSpecialFade = current.classList.contains("fade");
 
-    if(img && isSpecial){
+    if(img && isSpecialFade){
         img.classList.add("fade-out");
         setTimeout(goNext, 1200);
         return;
     }
 
-    // 🌌 02~07：只播放動畫，不強制 fade
+    /* =========================
+       📖 02~07 正常故事（不改）
+    ========================= */
+    const isStory = current.classList.contains("story");
+
+    if(isStory){
+        goNext();
+        return;
+    }
+
+    /* =========================
+       🪐 09 特殊處理（只加這裡）
+       - 讓文字停留久一點
+       - 不影響其他 scene
+    ========================= */
+    const is09 = current.classList.contains("special09");
+
+    if(is09){
+        setTimeout(goNext, 1500);
+        return;
+    }
+
+    /* =========================
+       🌌 其他全部正常
+    ========================= */
     goNext();
 }
 
-/* 音樂 */
+/* =========================
+   🎵 音樂
+========================= */
 const bgm = document.getElementById("bgm");
 let musicStarted = false;
 
@@ -551,7 +576,9 @@ function handleClick(){
     nextScene();
 }
 
-/* 流星 */
+/* =========================
+   🌠 流星
+========================= */
 function spawnMeteor(){
     const m = document.createElement("div");
     m.className = "meteor";
