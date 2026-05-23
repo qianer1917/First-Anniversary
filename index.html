@@ -394,47 +394,45 @@ document.addEventListener("DOMContentLoaded", () => {
   
     let index = 0;  
   
-    window.nextScene = function(){  
-  
-        const scenes = document.querySelectorAll(".scene");  
-        const currentScene = scenes[index];  
-  
-        if(!currentScene) return;  
-  
-        const img = currentScene.querySelector("img");  
-  
-        if(img){  
-            img.classList.add("fade-out");  
-  
-            setTimeout(() => {  
-                currentScene.classList.remove("active");  
-                index++;  
-  
-                if(index === scenes.length - 1){  
-                    fadeOutMusic();  
-                }  
-  
-                if(index < scenes.length){  
-                    scenes[index].classList.add("active");  
-                }  
-            }, 1200);  
-  
-            return;  
-        }  
-  
-        currentScene.classList.remove("active");  
-        index++;  
-  
-        if(index === scenes.length - 1){  
-            fadeOutMusic();  
-        }  
-  
-        if(index < scenes.length){  
-            scenes[index].classList.add("active");  
-        }  
-    };  
-  
-});  
+    window.nextScene = function(){
+
+    const scenes = document.querySelectorAll(".scene");
+    const currentScene = scenes[index];
+
+    if(!currentScene) return;
+
+    const img = currentScene.querySelector("img");
+
+    if(img){
+        img.classList.add("fade-out");
+
+        setTimeout(() => {
+            currentScene.classList.remove("active");
+            index++;
+
+            if(index === scenes.length - 1){
+                fadeOutMusic();
+            }
+
+            if(index < scenes.length){
+                scenes[index].classList.add("active");
+            }
+        }, 1200);
+
+        return;
+    }
+
+    currentScene.classList.remove("active");
+    index++;
+
+    if(index === scenes.length - 1){
+        fadeOutMusic();
+    }
+
+    if(index < scenes.length){
+        scenes[index].classList.add("active");
+    }
+};
   
 /* 🎇 星空系統（升級版） */  
 const canvas = document.getElementById("starCanvas");  
@@ -548,8 +546,27 @@ function animate(){
   
 animate();  
 
+function fadeOutMusic(){
+    let v = bgm.volume;
+
+    let timer = setInterval(() => {
+        v -= 0.05;
+        bgm.volume = v;
+
+        if(v <= 0){
+            bgm.pause();
+            clearInterval(timer);
+        }
+    }, 100);
+}
+const bgm = document.getElementById("bgm");
+
+let musicStarted = false;
+
 function startMusic(){
-    if(!bgm.paused) return;
+    if(musicStarted) return; // ⭐只允許一次
+
+    musicStarted = true;
 
     bgm.volume = 0;
 
