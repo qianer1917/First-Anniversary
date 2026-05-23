@@ -599,12 +599,10 @@ function startMusic(){
 ========================= */
 function nextScene(){
     if(busy) return;
-
     busy = true;
 
     const list = scenes();
     const current = list[index];
-
     const img = current.querySelector("img");
 
     const goNext = () => {
@@ -617,14 +615,20 @@ function nextScene(){
         busy = false;
     };
 
-    // ⭐重點：不等待動畫
+    // 🌑 如果有圖片 → 先退場動畫
     if(img){
         img.classList.add("fade-out");
+
+        // ⭐等動畫跑完再換頁
+        setTimeout(() => {
+            goNext();
+        }, 600); // 這個時間對應你CSS 0.6s
+        return;
     }
 
+    // 🌌 純文字直接換
     goNext();
 }
-
 /* =========================
    🖱 點擊
 ========================= */
