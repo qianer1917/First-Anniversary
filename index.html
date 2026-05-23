@@ -592,12 +592,12 @@ let lock = false;
 
 const scenes = Array.from(document.querySelectorAll(".scene"));
 
-/* =========================
-   🎵 音樂
-========================= */
 const bgm = document.getElementById("bgm");
 let musicStarted = false;
 
+/* =========================
+   🎵 音樂
+========================= */
 function startMusic(){
     if(musicStarted) return;
     musicStarted = true;
@@ -616,7 +616,7 @@ function startMusic(){
 }
 
 /* =========================
-   👉 換場核心（穩定版）
+   👉 換場（穩定核心）
 ========================= */
 function nextScene(){
 
@@ -629,7 +629,8 @@ function nextScene(){
 
     const goNext = () => {
 
-        current.classList.remove("active");
+        // ⭐強制清場（避免 07→09 疊圖）
+        scenes.forEach(s => s.classList.remove("active"));
 
         index++;
 
@@ -638,13 +639,17 @@ function nextScene(){
             return;
         }
 
-        // ⭐關鍵：只留一層 delay（不要 rAF + timeout）
-        setTimeout(() => {
-            scenes[index].classList.add("active");
-        }, 80);
+        // ⭐雙 requestAnimationFrame（修 Chrome 不 repaint）
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                scenes[index].classList.add("active");
+            });
+        });
     };
 
-    // ⭐圖片場
+    // =========================
+    // 🖼 圖片場
+    // =========================
     if(img){
 
         const isSlow =
@@ -655,8 +660,8 @@ function nextScene(){
 
         img.classList.add(isSlow ? "slow-fade-out" : "fade-out");
 
-        // ⭐關鍵修復：給 07→09 足夠「退場時間」
-        setTimeout(goNext, isSlow ? 2000 : 800);
+        // ⭐關鍵：延長 transition，避免 07→09 卡住
+        setTimeout(goNext, isSlow ? 2100 : 1000);
 
         return;
     }
@@ -668,7 +673,7 @@ function nextScene(){
    🖱 點擊
 ========================= */
 function handleClick(){
-    if(lock) return; // ⭐留言時禁止亂點
+    if(lock) return;
 
     startMusic();
     nextScene();
@@ -687,7 +692,7 @@ setInterval(() => {
 }, 2000);
 
 /* =========================
-   💌 留言（關鍵修好）
+   💌 留言
 ========================= */
 function sendMsg(){
     const input = document.getElementById("msg");
@@ -702,11 +707,11 @@ function sendMsg(){
 
     input.value = "";
 
-    lock = true; // ⭐鎖住整個互動
+    lock = true;
 
     setTimeout(() => {
         nextScene();
-        lock = false; // ⭐解鎖
+        lock = false;
     }, 2500);
 }
 </script>
