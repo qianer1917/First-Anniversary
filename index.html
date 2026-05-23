@@ -620,7 +620,7 @@ function startMusic(){
 ========================= */
 function nextScene(){
 
-    if(lock) return; // ⭐留言模式鎖住時禁止切
+    if(lock) return;
 
     const current = document.querySelector(".scene.active");
     if(!current) return;
@@ -628,6 +628,7 @@ function nextScene(){
     const img = current.querySelector("img");
 
     const goNext = () => {
+
         current.classList.remove("active");
 
         index++;
@@ -637,12 +638,15 @@ function nextScene(){
             return;
         }
 
-  setTimeout(() => {
-  requestAnimationFrame(() => {
-scenes[index].classList.add("active");
-    });
-}, 80);
-    // ⭐圖片場
+        // ⭐強制等 1 frame + 1 small delay（修07→09卡頓）
+        requestAnimationFrame(() => {
+            setTimeout(() => {
+                scenes[index].classList.add("active");
+            }, 50);
+        });
+    };
+
+    // ⭐圖片場（關鍵穩定點）
     if(img){
 
         const isSlow =
@@ -653,7 +657,7 @@ scenes[index].classList.add("active");
 
         img.classList.add(isSlow ? "slow-fade-out" : "fade-out");
 
-        setTimeout(goNext, isSlow ? 2000 : 400);
+        setTimeout(goNext, isSlow ? 1800 : 600);
 
         return;
     }
