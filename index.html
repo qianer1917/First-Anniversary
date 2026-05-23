@@ -394,6 +394,30 @@ filter:blur(8px);
         transform:scale(0.98);
     }
 }
+/* 02~07 故事統一動畫 */
+.scene.story.active img{
+    animation: storyShow 2.2s ease forwards;
+}
+
+@keyframes storyShow{
+    0%{
+        opacity:0;
+        transform:scale(1.05);
+        filter:blur(8px);
+    }
+    20%{
+        opacity:1;
+        filter:blur(2px);
+    }
+    80%{
+        opacity:1;
+        filter:blur(0);
+    }
+    100%{
+        opacity:1;
+        transform:scale(1);
+    }
+}
 </style>  </head>   <body onclick="handleClick()">  <!-- 🌌 星層 -->  <div class="layer-back"></div>  
 <div class="layer-mid"></div>  
 <div class="layer-front"></div>  
@@ -426,29 +450,12 @@ filter:blur(8px);
 </div>  <div class="scene">  
     <h1 class="typing">让我们一起欣赏拼图吧~</h1>
 </div>  
-<div class="scene story">
-    <img src="./02.png" class="story-img">
-</div>
-
-<div class="scene story">
-    <img src="./03.png" class="story-img">
-</div>
-
-<div class="scene story">
-    <img src="./04.png" class="story-img">
-</div>
-
-<div class="scene story">
-    <img src="./05.png" class="story-img">
-</div>
-
-<div class="scene story">
-    <img src="./06.png" class="story-img">
-</div>
-
-<div class="scene story">
-    <img src="./07.png" class="story-img">
-</div>
+<div class="scene story"><img src="./02.png"></div>
+<div class="scene story"><img src="./03.png"></div>
+<div class="scene story"><img src="./04.png"></div>
+<div class="scene story"><img src="./05.png"></div>
+<div class="scene story"><img src="./06.png"></div>
+<div class="scene story"><img src="./07.png"></div>
 <div class="scene"><h1 class="typing">小奈说：我们还要一起走，好久好久..</h1></div>  <div class="scene">  
     <h1 class="typing">  
         最后..  
