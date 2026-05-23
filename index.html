@@ -532,6 +532,17 @@ filter:blur(8px);
 .scene.active .message-box{
     animation-delay:0.3s;
 }
+.message-box.fade-out{
+    animation: msgOut 0.8s ease forwards;
+}
+
+@keyframes msgOut{
+    to{
+        opacity:0;
+        transform:translateY(-20px) scale(0.98);
+        filter:blur(4px);
+    }
+}
 </style>  </head>   <body onclick="handleClick()">  <!-- 🌌 星層 -->  <div class="layer-back"></div>  
 <div class="layer-mid"></div>  
 <div class="layer-front"></div>  
@@ -722,13 +733,14 @@ setInterval(() => {
 function sendMsg(){
     const input = document.getElementById("msg");
     const output = document.getElementById("output");
+    const box = document.querySelector(".message-box");
 
-    if(!input || !output) return;
+    if(!input || !output || !box) return;
 
     const text = input.value.trim();
     if(!text) return;
 
-    // ✨ 出現動畫
+    // ✨ 顯示留言
     output.style.opacity = "0";
     output.style.transform = "translateY(10px)";
     output.innerHTML = "🤍已收到你的话💍：<br>" + text;
@@ -745,11 +757,20 @@ function sendMsg(){
     window.__msgMode = true;
     lock = true;
 
+    // ✨留言框出場動畫
+    box.classList.add("fade-out");
+
+    // ⭐3秒後：切頁 + 解鎖（關鍵修正）
     setTimeout(() => {
+
         nextScene();
 
+        // ⭐這裡才解鎖（你剛剛缺的）
         lock = false;
         window.__msgMode = false;
+
+        // ⭐可選：把留言框狀態重置（避免下次出問題）
+        box.classList.remove("fade-out");
 
     }, 3000);
 }
