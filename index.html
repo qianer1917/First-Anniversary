@@ -565,7 +565,7 @@ filter:blur(8px);
 <div class="scene">
     <div class="message-box" onclick="event.stopPropagation()">
 
-        <h2>💌想給小奈的話：</h2>
+        <h2>💌想给小奈的话：</h2>
 
         <input id="msg" type="text" placeholder="請輸入..." />
 
@@ -620,7 +620,7 @@ function startMusic(){
 }
 
 /* =========================
-   👉 換場景（已優化不卡版）
+   👉 換場景（已優化慢出場版）
 ========================= */
 function nextScene(){
     if(busy) return;
@@ -646,35 +646,28 @@ function nextScene(){
         busy = false;
     };
 
-    // 🌑 special09
+    // 🌑 special09（加長淡出）
     if(is09){
         current.classList.add("fade-out");
-        setTimeout(goNext, 800);
+        setTimeout(goNext, 2500); // ⭐變慢（重點）
         return;
     }
 
-    // 🌸 有圖片（最關鍵修這裡）
+    // 🌸 有圖片（01 / 08 / 其他）
     if (img) {
-    img.classList.add("fade-out");
+        img.classList.add("fade-out");
 
-    busy = true;
+        setTimeout(() => {
+            goNext();
+        }, 1800); // ⭐變慢（重點）
 
-    setTimeout(() => {
-        current.classList.remove("active");
-        index++;
+        return;
+    }
 
-        const newList = scenes();
-        newList[index].classList.add("active");
-
-        busy = false;
-    }, 300);
-
-    return;
-}
-
-    // 🌸 文字
+    // 🌸 文字場景
     goNext();
 }
+
 /* =========================
    🖱 點擊
 ========================= */
@@ -697,13 +690,23 @@ function spawnMeteor(){
 setInterval(spawnMeteor, 2000);
 
 /* =========================
-   💌 留言
+   💌 留言（改成：不顯示 + 進下一頁）
 ========================= */
+
 function sendMsg(){
-    const text = document.getElementById("msg").value;
-    document.getElementById("output").innerText = text;
+    const text = document.getElementById("msg").value.trim();
+
+    if(!text) return;
+
+    // 💖你可以在 console 偷看
+    console.log("💌收到留言：", text);
+
     document.getElementById("msg").value = "";
+
+    // 👉直接進下一頁（不顯示在畫面）
+    nextScene();
 }
+
 document.getElementById("msg").addEventListener("click", function(e){
     e.stopPropagation();
 });
