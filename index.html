@@ -328,49 +328,95 @@ filter:blur(8px);
 </div>  
 <audio id="bgm" src="./time-to-love.mp3" loop></audio>  
 <script>  
-let index = 0;
+<script>
 const scenes = document.querySelectorAll(".scene");
+
+let index = 0;
 let busy = false;
 
-function nextScene() {
+/* 切換場景 */
+function nextScene(){
 
-    if (busy) return;
+    if(busy) return;
+
+    if(index >= scenes.length - 1) return;
+
     busy = true;
 
-    const currentScene = scenes[index];
-    const img = currentScene.querySelector("img");
+    const current = scenes[index];
 
-    const goNext = () => {
-        currentScene.classList.remove("active");
-        index++;
+    const img = current.querySelector("img");
 
-        if (index < scenes.length) {
-            scenes[index].classList.add("active");
-        }
+    // 圖片頁
+    if(img){
 
-        setTimeout(() => {
-            busy = false;
-        }, 300);
-    };
-
-    if (img) {
         img.classList.add("fade-out");
 
         setTimeout(() => {
-            goNext();
-        }, 800);
+
+            current.classList.remove("active");
+
+            index++;
+
+            scenes[index].classList.add("active");
+
+            busy = false;
+
+        }, 1000);
 
         return;
     }
 
-    goNext();
+    // 一般頁
+    current.classList.remove("active");
+
+    index++;
+
+    scenes[index].classList.add("active");
+
+    setTimeout(() => {
+        busy = false;
+    }, 300);
 }
 
+/* 音樂 */
+const bgm = document.getElementById("bgm");
+
+let musicStarted = false;
+
+function startMusic(){
+
+    if(musicStarted) return;
+
+    musicStarted = true;
+
+    bgm.volume = 0;
+
+    bgm.play().catch(()=>{});
+
+    let v = 0;
+
+    const fade = setInterval(() => {
+
+        v += 0.05;
+
+        if(v >= 1){
+            v = 1;
+            clearInterval(fade);
+        }
+
+        bgm.volume = v;
+
+    },80);
+}
+
+/* 點擊 */
 function handleClick(){
+
     startMusic();
+
     nextScene();
 }
-
 /* 音樂 */
 const bgm = document.getElementById("bgm");
 let musicStarted = false;
