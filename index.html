@@ -385,7 +385,7 @@ filter:blur(8px);
 </a>
     </h1>
 </div>
-
+<audio id="bgm" src="./time-to-love.mp3" loop></audio>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -436,7 +436,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // 最後一頁顯示按鈕
-        if (index >= scenes.length) return; {
+        if (index >= scenes.length) return; 
             const finalBtn = document.querySelector(".starlink");
             if (finalBtn) finalBtn.classList.add("show");
         }
@@ -450,7 +450,10 @@ function startMusic(){
     if(musicStarted) return;
     musicStarted = true;
 
+    if(!bgm) return; // ⭐ 防炸
+
     bgm.volume = 0;
+
     bgm.play().catch(()=>{});
 
     let v = 0;
@@ -461,6 +464,5 @@ function startMusic(){
     }, 80);
 }
 </script>
-
 </body>
 </html>
