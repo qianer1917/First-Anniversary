@@ -19,6 +19,8 @@
     opacity:0;
     pointer-events:none;
     animation:meteorFall 6s linear infinite;
+
+    z-index:9999;   /* ⭐一定要加 */
 }
 
 @keyframes meteorFall{
@@ -354,6 +356,7 @@ filter:blur(8px);
 <div class="meteor" style="left:20%; animation-delay:0s;"></div>
 <div class="meteor" style="left:70%; animation-delay:3s;"></div>
 <audio id="bgm" src="./time-to-love.mp3" loop></audio>  
+
 <script>
 let index = 0;
 let busy = false;
@@ -418,16 +421,19 @@ function startMusic(){
     }, 80);
 }
 
+/* 點擊控制 */
 function handleClick(){
     startMusic();
     nextScene();
 }
+
+/* 🌠 流星 */
 function spawnMeteor(){
     const meteor = document.createElement("div");
     meteor.className = "meteor";
 
     meteor.style.left = Math.random() * 100 + "vw";
-    meteor.style.animationDuration = (4 + Math.random() * 3) + "s";
+    meteor.style.animationDuration = (3 + Math.random() * 3) + "s";
     meteor.style.opacity = Math.random();
 
     document.body.appendChild(meteor);
@@ -437,12 +443,11 @@ function spawnMeteor(){
     }, 7000);
 }
 
-// 每 3~6 秒隨機出現一顆
+/* ✔ 穩定生成（已修好，不會消失） */
 setInterval(() => {
-    if(Math.random() > 0.5){ // 50% 機率
-        spawnMeteor();
-    }
+    spawnMeteor();
 }, 2000);
+
 </script>
 
 </body>  
