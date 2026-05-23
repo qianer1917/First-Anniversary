@@ -355,27 +355,42 @@ filter:blur(8px);
     width:100vw;
     height:100vh;
     object-fit:contain;
-    opacity:0;
-    transform:translateY(20px) scale(1.02);
+    transform:translateY(30px) scale(1.03);
 }
 
-/* 只有當 scene active 才播放 */
+/* 進場動畫（像鏡頭滑入） */
 .scene.active .story-img{
-    animation: imgMove 1.4s ease forwards;
+    animation: sceneIn 1.2s ease forwards;
 }
 
-@keyframes imgMove{
+/* 出場動畫（像鏡頭離開） */
+.scene img.fade-out{
+    animation: sceneOut 0.9s ease forwards;
+}
+
+/* 進場 */
+@keyframes sceneIn{
     0%{
-        opacity:0;
-        transform:translateY(20px) scale(1.02);
+        transform:translateY(40px) scale(1.05);
+        filter:blur(0px);
     }
     60%{
-        opacity:1;
-        transform:translateY(0px) scale(1.01);
+        transform:translateY(-5px) scale(1.01);
     }
     100%{
-        opacity:1;
         transform:translateY(0px) scale(1);
+    }
+}
+
+/* 出場 */
+@keyframes sceneOut{
+    0%{
+        transform:translateY(0px) scale(1);
+        opacity:1;
+    }
+    100%{
+        transform:translateY(-30px) scale(0.98);
+        opacity:1;
     }
 }
 </style>  </head>   <body onclick="handleClick()">  <!-- 🌌 星層 -->  <div class="layer-back"></div>  
@@ -393,11 +408,11 @@ filter:blur(8px);
 
 <div class="scene">
     <img src="./08.png" style="
-        width:96vw;
-        max-height:88vh;
+        width:100vw;
+        height:100vh;
         object-fit:contain;
-        filter:drop-shadow(0 0 20px rgba(255,244,180,0.3));
-        transform:scale(1.05);
+        transform:scale(1.08);
+        filter:drop-shadow(0 0 25px rgba(255,244,180,0.35));
     ">
 </div>
 
