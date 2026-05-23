@@ -309,7 +309,34 @@ transform:scale(0.98);
 filter:blur(8px);  
 }  
 }  
+.seq-img{
+    max-width:90vw;
+    max-height:80vh;
+    width:auto;
+    height:auto;
+    object-fit:contain;
 
+    opacity:0;
+    transform:scale(1.05);
+    animation:seqIn 1.2s ease forwards;
+}
+
+@keyframes seqIn{
+    0%{
+        opacity:0;
+        transform:scale(1.08) translateY(10px);
+        filter:blur(10px);
+    }
+    60%{
+        opacity:1;
+        filter:blur(3px);
+    }
+    100%{
+        opacity:1;
+        transform:scale(1) translateY(0);
+        filter:blur(0);
+    }
+}
 </style>  </head>   <body onclick="handleClick()">  <!-- 🌌 星層 -->  <div class="layer-back"></div>  
 <div class="layer-mid"></div>  
 <div class="layer-front"></div>  
@@ -342,6 +369,29 @@ filter:blur(8px);
 </div>  <div class="scene">  
     <h1 class="typing">让我们一起欣赏拼图吧~</h1>  
 </div>  
+<div class="scene">
+    <img src="./02.png" class="seq-img">
+</div>
+
+<div class="scene">
+    <img src="./03.png" class="seq-img">
+</div>
+
+<div class="scene">
+    <img src="./04.png" class="seq-img">
+</div>
+
+<div class="scene">
+    <img src="./05.png" class="seq-img">
+</div>
+
+<div class="scene">
+    <img src="./06.png" class="seq-img">
+</div>
+
+<div class="scene">
+    <img src="./07.png" class="seq-img">
+</div>
 <div class="scene"><h1 class="typing">小奈说：我们还要一起走，好久好久..</h1></div>  <div class="scene">  
     <h1 class="typing">  
         最后..  
