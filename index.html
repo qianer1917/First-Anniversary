@@ -393,6 +393,23 @@ filter:blur(8px);
         opacity:1;
     }
 }
+/* 01 / 08 專用：純淡出 */
+.scene.fade img.fade-out{
+    animation: fadeOutSoft 1.6s ease forwards;
+}
+
+@keyframes fadeOutSoft{
+    0%{
+        opacity:1;
+        transform:scale(1);
+        filter:none;
+    }
+    100%{
+        opacity:0;
+        transform:scale(1);
+        filter:none;
+    }
+}
 </style>  </head>   <body onclick="handleClick()">  <!-- 🌌 星層 -->  <div class="layer-back"></div>  
 <div class="layer-mid"></div>  
 <div class="layer-front"></div>  
@@ -406,7 +423,7 @@ filter:blur(8px);
     <h1 class="typing">记得今天是什么日子吗？</h1>
 </div>
 
-<div class="scene">
+<div class="scene fade">
     <img src="./08.png" style="
         width:100vw;
         height:100vh;
@@ -483,7 +500,7 @@ function nextScene(){
     busy = true;
 
     const current = scenes[index];
-    const img = current.querySelector("img");
+    const img = const img = current.querySelector("img:not(.story-img)");
 
     const goNext = () => {
 
