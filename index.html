@@ -472,6 +472,54 @@ bgm.addEventListener("canplaythrough", () => {
     console.log("✔ 音檔已成功載入");
 });
 
+/* 🌌 劇情控制 */
+document.addEventListener("DOMContentLoaded", () => {
+
+    let index = 0;
+
+    window.nextScene = function(){
+
+        const scenes = document.querySelectorAll(".scene");
+        const currentScene = scenes[index];
+
+        if(!currentScene) return;
+
+        const img = currentScene.querySelector("img");
+
+        if(img){
+            img.classList.add("fade-out");
+
+            setTimeout(() => {
+                currentScene.classList.remove("active");
+                index++;
+
+                if(index === scenes.length - 1){
+                    fadeOutMusic();
+                }
+
+                if(index < scenes.length){
+                    scenes[index].classList.add("active");
+                }
+            }, 1200);
+
+            return;
+        }
+
+        currentScene.classList.remove("active");
+        index++;
+
+        if(index === scenes.length - 1){
+            fadeOutMusic();
+        }
+
+        if(index < scenes.length){
+            scenes[index].classList.add("active");
+        }
+    };
+
+});
+
+/* 🎇 星空系統（升級版） */
 const canvas = document.getElementById("starCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -487,50 +535,48 @@ window.addEventListener("resize", () => {
 });
 resize();
 
+/* ✨ 星星生成（分層版） */
 function initStars(){
     stars = [];
 
-    // ⭐ 數量（你說「3~4個大星 + 少量小星」）
-    const bigStars = 4;
-    const smallStars = 60;
+    const layers = [
+        {count: 30, size:[2,3.5], speed:[0.05,0.15], alpha:[0.5,0.9]},
+        {count: 80, size:[0.8,1.5], speed:[0.1,0.4], alpha:[0.2,0.6]},
+        {count: 120, size:[0.2,0.8], speed:[0.02,0.2], alpha:[0.1,0.4]}
+    ];
 
-    // 🌟 大星（很少）
-    for(let i=0;i<bigStars;i++){
-        stars.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            r: Math.random() * 2.5 + 2,   // 大
-            speed: 0.2 + Math.random() * 0.3,
-            alpha: 0.8
-        });
-    }
-
-    // ✨ 小星（比較多）
-    for(let i=0;i<smallStars;i++){
-        stars.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            r: Math.random() * 1.2 + 0.2, // 小
-            speed: 0.05 + Math.random() * 0.2,
-            alpha: 0.4 + Math.random() * 0.4
-        });
+    for(let layer of layers){
+        for(let i=0;i<layer.count;i++){
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: layer.size[0] + Math.random() * (layer.size[1]-layer.size[0]),
+                speed: layer.speed[0] + Math.random() * (layer.speed[1]-layer.speed[0]),
+                alpha: layer.alpha[0] + Math.random() * (layer.alpha[1]-layer.alpha[0]),
+                twinkle: Math.random() * 0.02
+            });
+        }
     }
 }
 
 initStars();
 
+/* 🌌 星空動畫 */
 function animate(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
 
     for(let s of stars){
 
-        // 🌌 緩慢下飄（不會很明顯，但有生命感）
         s.y += s.speed;
 
         if(s.y > canvas.height){
             s.y = 0;
             s.x = Math.random() * canvas.width;
         }
+
+        /* ✨ 微閃效果 */
+        s.alpha += (Math.random() - 0.5) * s.twinkle;
+        s.alpha = Math.max(0.05, Math.min(1, s.alpha));
 
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
