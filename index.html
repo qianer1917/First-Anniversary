@@ -56,39 +56,14 @@ body{
     position:fixed;
     inset:0;
     background:
-        radial-gradient(circle, rgba(255,255,255,1) 2px, transparent 4px),
-        radial-gradient(circle, rgba(255,200,255,.6) 1px, transparent 2px);
-    background-size: 50px 50px;
-    opacity:.85;
-    animation: frontFloat 35s linear infinite;
-}
+        radial-gradient(circle at 12% 18%, #fff 1px, transparent 2px),
+        radial-gradient(circle at 33% 72%, #fff 1.5px, transparent 3px),
+        radial-gradient(circle at 78% 40%, #fff .8px, transparent 2px),
+        radial-gradient(circle at 55% 10%, #fff 1.2px, transparent 3px),
+        radial-gradient(circle at 90% 85%, #fff 1px, transparent 2px);
 
-/* 🌌 三層「不只是往上」 */
-@keyframes backFloat{
-    0%{
-        transform: translate(0,0);
-    }
-    100%{
-        transform: translate(-80px,-300px);
-    }
-}
-
-@keyframes midFloat{
-    0%{
-        transform: translate(0,0);
-    }
-    100%{
-        transform: translate(60px,-600px);
-    }
-}
-
-@keyframes frontFloat{
-    0%{
-        transform: translate(0,0);
-    }
-    100%{
-        transform: translate(-120px,-900px);
-    }
+    opacity: .9;
+    animation: drift 25s linear infinite;
 }
 
 /* 🌌 HUD */
