@@ -358,26 +358,26 @@ filter:blur(8px);
    - 不影響其他scene
 ========================= */
 
+/* =========================
+   📖 02～07 故事模式（統一版本）
+========================= */
+
 /* 進場 */
 .scene.story.active img{
-    animation: storyIn 1.2s ease forwards;
+    animation: storyIn 1s ease forwards;
 }
 
-/* 離場（由 JS 加 fade-out） */
+/* 離場 */
 .scene.story img.fade-out{
-    animation: storyOut 1.0s ease forwards;
+    animation: storyOut 0.6s ease forwards;
 }
 
 /* 進場動畫 */
 @keyframes storyIn{
     0%{
         opacity:0;
-        transform:translateY(20px) scale(1.05);
-        filter:blur(10px);
-    }
-    60%{
-        opacity:1;
-        filter:blur(3px);
+        transform:translateY(10px) scale(1.03);
+        filter:blur(6px);
     }
     100%{
         opacity:1;
@@ -397,79 +397,60 @@ filter:blur(8px);
         transform:scale(0.98);
     }
 }
-/* 02~07 故事統一動畫 */
-.scene.story.active img{
-    animation: storyShow 1.2s ease forwards;
+
+/* =========================
+   🌑 09（白光輕浮動 + 穩定）
+========================= */
+
+.scene.special09 img{
+    animation: float09 3s ease-in-out infinite;
+    will-change: transform, filter;
+    transform: translateZ(0);
 }
 
-@keyframes storyShow{
+@keyframes float09{
     0%{
-        opacity:0;
-        transform:scale(1.02);
+        transform:scale(1) translateY(0);
+        filter:brightness(1.05) drop-shadow(0 0 6px rgba(255,255,255,0.4));
+    }
+    50%{
+        transform:scale(1.01) translateY(-3px);
+        filter:brightness(1.25) drop-shadow(0 0 12px rgba(255,255,255,0.6));
     }
     100%{
-        opacity:1;
-        transform:scale(1);
+        transform:scale(1) translateY(0);
+        filter:brightness(1.05) drop-shadow(0 0 6px rgba(255,255,255,0.4));
     }
 }
+
+/* 離場（09專用乾淨白光退出） */
 .scene.special09 img.fade-out{
-    animation:
-        sceneOut 1.2s ease forwards !important;
-    filter:
-        drop-shadow(0 0 15px #fff)
-        drop-shadow(0 0 40px rgba(255,255,255,0.9))
-        drop-shadow(0 0 90px rgba(255,255,255,0.6)) !important;
-}
-.scene.special09 img{
-    position:relative;
-    z-index:2;
-
-    filter:
-        drop-shadow(0 0 3px #fff)
-        drop-shadow(0 0 8px rgba(255,255,255,0.35));
-
-    animation: glow09 4.5s ease-in-out infinite;
+    animation: fade09 0.6s ease forwards !important;
 }
 
-@keyframes glow09{
-    0%,100%{
-        filter:
-            drop-shadow(0 0 2px #fff)
-            drop-shadow(0 0 6px rgba(255,255,255,0.25));
-        transform:scale(1);
+@keyframes fade09{
+    0%{
+        opacity:1;
+        filter:brightness(1.2);
     }
-    50%{
-        filter:
-            drop-shadow(0 0 5px #fff)
-            drop-shadow(0 0 10px rgba(255,255,255,0.35));
-        transform:scale(1.005);
+    100%{
+        opacity:0;
+        filter:brightness(2);
     }
 }
-@keyframes glow09{
-    0%,100%{
-        filter:
-            drop-shadow(0 0 5px #fff)
-            drop-shadow(0 0 12px rgba(255,255,255,0.4));
-        transform:scale(1);
-    }
-    50%{
-        filter:
-            drop-shadow(0 0 10px #fff)
-            drop-shadow(0 0 20px rgba(255,255,255,0.6));
-        transform:scale(1.01);
-    }
-}
+
+/* =========================
+   💌 留言框（不動）
+========================= */
+
 .message-box{
     width:100%;
     height:100%;
-
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
-
     gap:12px;
-
     text-align:center;
 }
 
@@ -481,15 +462,11 @@ filter:blur(8px);
 .message-box input{
     width:260px;
     padding:12px;
-
     border-radius:12px;
     border:1px solid rgba(255,255,255,0.3);
-
     background:rgba(0,0,0,0.4);
     color:white;
-
     text-align:center;
-
     outline:none;
 }
 
@@ -497,10 +474,8 @@ filter:blur(8px);
     padding:10px 16px;
     border:none;
     border-radius:10px;
-
     background:linear-gradient(135deg,#ffd77a,#ff9ecf);
     color:black;
-
     cursor:pointer;
 }
 
@@ -510,10 +485,6 @@ filter:blur(8px);
     text-shadow:0 0 10px #ff9ecf;
     max-width:80%;
     word-break:break-word;
-}
-.scene.special09 img{
-    animation: none;
-    filter: none;
 }
 </style>  </head>   <body onclick="handleClick()">  <!-- 🌌 星層 -->  <div class="layer-back"></div>  
 <div class="layer-mid"></div>  
@@ -629,35 +600,28 @@ function startMusic(){
 function nextScene(){
     if(busy) return;
 
-    const list = scenes();
-    if(index >= list.length - 1) return;
-
     busy = true;
 
+    const list = scenes();
     const current = list[index];
+
     const img = current.querySelector("img");
 
-    // ⭐不管動畫到哪 → 直接切
     const goNext = () => {
         current.classList.remove("active");
         index++;
 
-        const newList = scenes();
-        newList[index].classList.add("active");
+        const next = scenes()[index];
+        next.classList.add("active");
 
         busy = false;
     };
 
-    // 🌸 有圖片 → 直接觸發動畫，但不等待
+    // ⭐重點：不等待動畫
     if(img){
         img.classList.add("fade-out");
-
-        // ⭐重點：不等動畫結束，直接切
-        goNext();
-        return;
     }
 
-    // 🌌 文字 → 直接切
     goNext();
 }
 
