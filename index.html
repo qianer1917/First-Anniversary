@@ -419,94 +419,104 @@ filter:blur(8px);
     display:flex;
     justify-content:center;
     align-items:center;
-    flex-direction:column;
-    z-index:5;
+    z-index:50;
 }
 
+/* 🌟 圖片本體 */
 .special09 img{
-    width:auto;
-    max-width:90vw;
-    max-height:80vh;
-    height:auto;
-    object-fit:contain;
-    display:block;
-}
-
-/* 左上角傾斜文字 */
-.corner-text{
-    position:absolute;
-    top:20px;
-    left:20px;
-
-    font-size:20px;
-    color:#fff3c4;
-
-    transform:rotate(-10deg);
-
-    text-shadow:
-        0 0 10px #ffd77a,
-        0 0 20px rgba(255,200,100,0.6);
-
-    z-index:10;
-    pointer-events:none;
-}
-.special09{
-    position:relative;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
-
-/* 🌟 主圖：立體發光 */
-.glow-img{
     width:auto;
     max-width:90vw;
     max-height:85vh;
     height:auto;
     object-fit:contain;
 
-    /* 🌟 核心：立體邊緣光 */
+    position:relative;
+    z-index:2;
+
+    /* ✨ 白光核心（乾淨） */
     filter:
-        drop-shadow(0 0 8px rgba(255,255,255,0.6))
-        drop-shadow(0 0 18px rgba(255,220,140,0.9))
-        drop-shadow(0 0 35px rgba(255,200,120,0.7));
+        drop-shadow(0 0 10px rgba(255,255,255,0.9))
+        drop-shadow(0 0 25px rgba(255,255,255,0.7))
+        drop-shadow(0 0 60px rgba(255,255,255,0.5));
 
-    /* ✨ 讓它“浮起來”的關鍵 */
-    transform:
-        perspective(1000px)
-        translateZ(0)
-        scale(1);
-
-    transition: all 0.6s ease;
+    animation: whiteGlow 2.8s ease-in-out infinite;
 }
 
-/* 🌌 出現時的「立體浮現感」 */
-.scene.active .glow-img{
-    animation: floatGlow 3s ease-in-out infinite;
+/* 💥 白色光暈背景 */
+.special09::before{
+    content:"";
+    position:absolute;
+    width:70%;
+    height:70%;
+
+    background:radial-gradient(
+        circle,
+        rgba(255,255,255,0.9) 0%,
+        rgba(255,255,255,0.4) 30%,
+        transparent 70%
+    );
+
+    filter: blur(35px);
+    z-index:1;
+    animation: whitePulse 2.8s ease-in-out infinite;
 }
 
-/* ✨ 立體呼吸動畫 */
-@keyframes floatGlow{
+/* ✨ 外層擴散光 */
+.special09::after{
+    content:"";
+    position:absolute;
+    width:90%;
+    height:90%;
+
+    background:radial-gradient(
+        circle,
+        rgba(255,255,255,0.25),
+        transparent 70%
+    );
+
+    filter: blur(60px);
+    z-index:0;
+    animation: whitePulse 2.8s ease-in-out infinite reverse;
+}
+
+/* 🌟 呼吸（白光版） */
+@keyframes whiteGlow{
     0%{
-        transform: perspective(1000px) scale(1) translateY(0);
+        transform:scale(1);
         filter:
-            drop-shadow(0 0 6px rgba(255,255,255,0.5))
-            drop-shadow(0 0 15px rgba(255,220,140,0.7));
+            drop-shadow(0 0 8px rgba(255,255,255,0.8))
+            drop-shadow(0 0 20px rgba(255,255,255,0.6))
+            drop-shadow(0 0 40px rgba(255,255,255,0.4));
     }
-
     50%{
-        transform: perspective(1000px) scale(1.03) translateY(-4px);
+        transform:scale(1.02);
         filter:
-            drop-shadow(0 0 15px rgba(255,255,255,0.8))
-            drop-shadow(0 0 35px rgba(255,220,140,1))
-            drop-shadow(0 0 60px rgba(255,200,120,0.8));
+            drop-shadow(0 0 18px rgba(255,255,255,1))
+            drop-shadow(0 0 45px rgba(255,255,255,0.8))
+            drop-shadow(0 0 90px rgba(255,255,255,0.6));
     }
-
     100%{
-        transform: perspective(1000px) scale(1) translateY(0);
+        transform:scale(1);
         filter:
-            drop-shadow(0 0 6px rgba(255,255,255,0.5))
-            drop-shadow(0 0 15px rgba(255,220,140,0.7));
+            drop-shadow(0 0 8px rgba(255,255,255,0.8))
+            drop-shadow(0 0 20px rgba(255,255,255,0.6))
+            drop-shadow(0 0 40px rgba(255,255,255,0.4));
+    }
+}
+
+/* 🌌 背景光呼吸 */
+@keyframes whitePulse{
+    0%{
+        transform:scale(0.95);
+        opacity:0.5;
+    }
+    50%{
+        transform:scale(1.1);
+        opacity:1;
+    }
+    100%{
+        transform:scale(0.95);
+        opacity:0.5;
     }
 }
 </style>  </head>   <body onclick="handleClick()">  <!-- 🌌 星層 -->  <div class="layer-back"></div>  
