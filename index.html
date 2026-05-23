@@ -563,7 +563,7 @@ filter:blur(8px);
 <div class="scene"><h1 class="typing">小奈说：我们还要一起走，好久好久..</h1></div> 
 
 <div class="scene">
-    <div class="message-box">
+    <div class="message-box" onclick="event.stopPropagation()">
 
         <h2>💌想給小奈的話：</h2>
 
@@ -655,12 +655,15 @@ function nextScene(){
 
     // 🌸 有圖片（最關鍵修這裡）
     if(img){
-        img.classList.add("fade-out");
+    img.classList.add("fade-out");
 
-        // 不用 requestAnimationFrame（會造成延遲差異）
-        setTimeout(goNext, 120);
-        return;
-    }
+    // 🌸 等動畫跑完再切（避免被 display:none 吃掉）
+    setTimeout(() => {
+        goNext();
+    }, 300);
+
+    return;
+}
 
     // 🌸 文字
     goNext();
