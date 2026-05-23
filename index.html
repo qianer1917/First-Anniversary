@@ -415,143 +415,42 @@ filter:blur(8px);
 <script>
 
 const bgm = document.getElementById("bgm");
+let musicStarted = false;
 
 function startMusic(){
-    if(bgm.paused){
-        bgm.volume = 0;
-        bgm.play();
-
-        let v = 0;
-        let fadeIn = setInterval(() => {
-            v += 0.05;
-            bgm.volume = v;
-            if(v >= 1) clearInterval(fadeIn);
-        }, 100);
-    }
+    if(musicStarted) return;
+    musicStarted = true;
+    bgm.volume = 1;
+    bgm.play().catch(()=>{});
 }
 
-function fadeOutMusic(){
-    let v = bgm.volume;
-
-    let timer = setInterval(() => {
-        v -= 0.05;
-        bgm.volume = v;
-
-        if(v <= 0){
-            bgm.pause();
-            clearInterval(timer);
-        }
-    }, 100);
-}
-
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded",()=>{
 
     let index = 0;
 
     window.nextScene = function(){
-if(index < scenes.length){
-    scenes[index].classList.add("active");
-}
-
-// ⭐ 最後一幕觸發
-if(index === scenes.length - 1){
-    setTimeout(() => {
-        const link = document.getElementById("finalLink");
-        if(link){
-            link.classList.add("show-link");
-        }
-    }, 1000);
-}
 
         const scenes = document.querySelectorAll(".scene");
-        const currentScene = scenes[index];
+        const current = scenes[index];
 
-        if(!currentScene) return;
+        if(!current) return;
 
-        const img = currentScene.querySelector("img");
-
-        // 🌸 如果有圖片 → 先退場動畫
-        if(img){
-            img.classList.add("fade-out");
-
-            setTimeout(() => {
-                currentScene.classList.remove("active");
-                index++;
-
-                if(index === scenes.length - 1){
-                    fadeOutMusic();
-                }
-
-                if(index < scenes.length){
-                    scenes[index].classList.add("active");
-                }
-            }, 1200);
-
-            return;
-        }
-
-        // 🌸 沒圖片直接切場景
-        currentScene.classList.remove("active");
+        current.classList.remove("active");
         index++;
-
-        if(index === scenes.length - 1){
-            fadeOutMusic();
-        }
 
         if(index < scenes.length){
             scenes[index].classList.add("active");
         }
-    };
 
-});
-
-bgm.addEventListener("error", () => {
-    console.log("❌ 音檔載入失敗");
-});
-
-bgm.addEventListener("canplaythrough", () => {
-    console.log("✔ 音檔已成功載入");
-});
-
-function startMusic(){
-
-    if(!bgm) return;
-
-    if(!bgm.paused) return;
-
-    bgm.volume = 1;
-
-    const playPromise = bgm.play();
-
-    if(playPromise){
-        playPromise.catch(() => {
-            // 如果被擋，就再試一次（手機救命用）
-            setTimeout(() => {
-                bgm.play().catch(()=>{});
-            }, 300);
-        });
-    }
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    const link = document.getElementById("finalLink");
-
-    // 每次切到最後一幕時才觸發
-    const observer = new MutationObserver(() => {
-
-        const lastScene = document.querySelectorAll(".scene")[document.querySelectorAll(".scene").length - 1];
-
-        if(lastScene.classList.contains("active")){
-            setTimeout(() => {
-                if(link){
-                    link.classList.add("show-link");
-                }
-            }, 1000); // ⭐ 延遲 1 秒
+        // ⭐ 最後淡入
+        if(index === scenes.length - 1){
+            setTimeout(()=>{
+                const link = document.getElementById("finalLink");
+                if(link) link.style.opacity = 1;
+            },1000);
         }
-    });
+    }
 
-    observer.observe(document.body, { attributes: true, subtree: true, childList: true });
 });
 
 </script>
