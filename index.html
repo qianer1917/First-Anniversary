@@ -499,6 +499,8 @@ function getScenes(){
 
 function nextScene(){
 
+    function nextScene(){
+
     if(busy) return;
 
     const scenes = getScenes();
@@ -507,9 +509,10 @@ function nextScene(){
 
     busy = true;
 
-const current = scenes[index];
-const isFade = current.classList.contains("fade");
-const img = current.querySelector("img");
+    const current = scenes[index];
+    const isFade = current.classList.contains("fade");
+    const img = current.querySelector("img");
+
     const goNext = () => {
 
         current.classList.remove("active");
@@ -521,6 +524,17 @@ const img = current.querySelector("img");
 
         setTimeout(() => busy = false, 300);
     };
+
+    // ✔ 01 / 08：純淡出
+    if(isFade && img){
+        img.classList.add("fade-out");
+        setTimeout(goNext, 1600);
+        return;
+    }
+
+    // ✔ 02~07：正常動畫
+    goNext();
+}
 
     if(isFade && img){
     img.classList.add("fade-out");
