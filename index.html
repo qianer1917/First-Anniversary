@@ -438,9 +438,7 @@ filter:blur(8px);
 </div>
 
 <audio id="bgm" src="./time-to-love.mp3" loop></audio>
-
 <script>
-
 const bgm = document.getElementById("bgm");
 let musicStarted = false;
 
@@ -451,37 +449,33 @@ function startMusic(){
     bgm.play().catch(()=>{});
 }
 
-document.addEventListener("DOMContentLoaded",()=>{
+let index = 0;
 
-    let index = 0;
+window.nextScene = function(){
 
-    window.nextScene = function(){
+    const scenes = document.querySelectorAll(".scene");
+    const current = scenes[index];
 
-        const scenes = document.querySelectorAll(".scene");
-        const current = scenes[index];
+    if(!current) return;
 
-        if(!current) return;
+    current.classList.remove("active");
+    index++;
 
-        current.classList.remove("active");
-        index++;
-
-        if(index < scenes.length){
-            scenes[index].classList.add("active");
-        }
-
-        // ⭐ 最後淡入
-        if(index === scenes.length - 1){
-    setTimeout(()=>{
-    const link = document.getElementById("finalLink");
-    if(link){
-        link.classList.add("show");
+    if(index < scenes.length){
+        scenes[index].classList.add("active");
     }
-},1000);
-}
 
-});
+    // ⭐ 最後一頁顯示按鈕
+    if(index === scenes.length - 1){
+        setTimeout(()=>{
+            const link = document.getElementById("finalLink");
+            if(link){
+                link.classList.add("show");
+            }
+        },1000);
+    }
+};
 
 </script>
-
 </body>
 </html>
