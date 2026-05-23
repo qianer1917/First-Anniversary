@@ -637,8 +637,9 @@ function nextScene(){
             return;
         }
 
-        scenes[index].classList.add("active");
-    };
+        requestAnimationFrame(() => {
+scenes[index].classList.add("active");
+});
 
     // ⭐圖片場
     if(img){
