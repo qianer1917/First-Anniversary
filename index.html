@@ -511,6 +511,10 @@ filter:blur(8px);
     max-width:80%;
     word-break:break-word;
 }
+.scene.special09 img{
+    animation: none;
+    filter: none;
+}
 </style>  </head>   <body onclick="handleClick()">  <!-- 🌌 星層 -->  <div class="layer-back"></div>  
 <div class="layer-mid"></div>  
 <div class="layer-front"></div>  
@@ -648,10 +652,10 @@ function nextScene(){
 
     // 🌑 special09（加長淡出）
     if(is09){
-        current.classList.add("fade-out");
-        setTimeout(goNext, 2500); // ⭐變慢（重點）
-        return;
-    }
+    current.classList.add("fade-out");
+    setTimeout(goNext, 1800); // 跟01/08一致
+    return;
+}
 
     // 🌸 有圖片（01 / 08 / 其他）
     if (img) {
