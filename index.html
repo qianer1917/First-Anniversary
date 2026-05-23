@@ -588,12 +588,11 @@ filter:blur(8px);
 <audio id="bgm" src="./time-to-love.mp3" loop></audio>  
 <script>
 let index = 0;
-let busy = false;
 
-const scenes = Array.from(document.querySelectorAll(".scene"));
+const scenes = document.querySelectorAll(".scene");
 
 /* =========================
-   🎵 音樂（安全版）
+   🎵 音樂（不影響流程）
 ========================= */
 const bgm = document.getElementById("bgm");
 let musicStarted = false;
@@ -605,10 +604,7 @@ function startMusic(){
     if(!bgm) return;
 
     bgm.volume = 0;
-
-    bgm.play().catch(() => {
-        // 👉 防 Chrome 攔截，不會卡流程
-    });
+    bgm.play().catch(()=>{});
 
     let v = 0;
     const fade = setInterval(() => {
@@ -619,65 +615,63 @@ function startMusic(){
 }
 
 /* =========================
-   👉 核心換場（100%不會卡死版）
+   🔥 核心：100%不死換場
 ========================= */
 function nextScene(){
-    if(busy) return;
-    busy = true;
 
-    const current = scenes[index];
+    const current = document.querySelector(".scene.active");
+
+    // 👉 沒有當前場景 = 強制初始化
     if(!current){
-        busy = false;
+        scenes[0]?.classList.add("active");
+        index = 0;
         return;
     }
 
     const img = current.querySelector("img");
+
+    const isLast = index >= scenes.length - 1;
 
     const goNext = () => {
         current.classList.remove("active");
 
         index++;
 
+        // 👉 到最後直接停，不爆
         if(index >= scenes.length){
-            busy = false;
+            index = scenes.length - 1;
             return;
         }
 
         scenes[index].classList.add("active");
-        busy = false;
     };
 
-    try {
-        // ⭐ 判斷 01 / 08（只靠圖片，不靠 index）
+    // =========================
+    // ⭐ 圖片場（安全處理）
+    // =========================
+    if(img){
+
         const isSlow =
-            current.querySelector("img[src='./01.png']") ||
-            current.querySelector("img[src='./08.png']");
+            img.getAttribute("src") === "./01.png" ||
+            img.getAttribute("src") === "./08.png";
 
-        if(img){
-            img.classList.remove("fade-out", "slow-fade-out");
+        img.classList.remove("fade-out","slow-fade-out");
 
-            if(isSlow){
-                img.classList.add("slow-fade-out");
-                setTimeout(goNext, 1800);
-            } else {
-                img.classList.add("fade-out");
-                setTimeout(goNext, 250);
-            }
+        img.classList.add(isSlow ? "slow-fade-out" : "fade-out");
 
-            return;
-        }
+        setTimeout(goNext, isSlow ? 1600 : 250);
 
-        goNext();
-
-    } catch (e) {
-        // 💥 任何錯誤都強制往下一頁（避免卡死）
-        console.log("scene error:", e);
-        goNext();
+        return;
     }
+
+    // =========================
+    // ⭐ 文字場（直接過）
+    // =========================
+    goNext();
 }
 
 /* =========================
-   🖱 點擊（永遠可用）
+   🖱 點擊（永遠有效）
 ========================= */
 function handleClick(){
     startMusic();
@@ -685,45 +679,36 @@ function handleClick(){
 }
 
 /* =========================
-   🌠 流星（安全）
+   🌠 流星（防炸）
 ========================= */
-function spawnMeteor(){
-    try {
-        const m = document.createElement("div");
-        m.className = "meteor";
-        m.style.left = Math.random() * 100 + "vw";
-        document.body.appendChild(m);
+setInterval(() => {
+    const m = document.createElement("div");
+    m.className = "meteor";
+    m.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(m);
 
-        setTimeout(() => {
-            m.remove();
-        }, 7000);
-    } catch(e){}
-}
-
-setInterval(spawnMeteor, 2000);
+    setTimeout(() => m.remove(), 7000);
+}, 2000);
 
 /* =========================
-   💌 留言（不影響流程）
+   💌 留言（完全不影響流程）
 ========================= */
 function sendMsg(){
-    try {
-        const input = document.getElementById("msg");
-        const text = input.value.trim();
+    const input = document.getElementById("msg");
+    const output = document.getElementById("output");
 
-        if(!text) return;
+    if(!input || !output) return;
 
-        const output = document.getElementById("output");
-        output.innerHTML = "💌 已收到你的話：<br>" + text;
+    const text = input.value.trim();
+    if(!text) return;
 
-        input.value = "";
+    output.innerHTML = "💌 已收到你的話：<br>" + text;
 
-        setTimeout(() => {
-            nextScene();
-        }, 500);
+    input.value = "";
 
-    } catch(e){
+    setTimeout(() => {
         nextScene();
-    }
+    }, 300);
 }
 </script>
 </body>  
