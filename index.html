@@ -580,7 +580,6 @@ filter:blur(8px);
 <div class="scene">
     <h1 class="typing">让我们一起欣赏拼图吧~</h1>
 </div>
-</div>  
 <div class="scene story"><img src="./02.png"></div>
 <div class="scene story"><img src="./03.png"></div>
 <div class="scene story"><img src="./04.png"></div>
@@ -666,15 +665,15 @@ function nextScene(){
 
         index++;
 
-        // ⭐關鍵修復：不要超出 + 不亂跳
-        if(index >= scenes.length){
+        // ⭐防爆：確保不超界
+        if(index >= scenes.length - 1){
             index = scenes.length - 1;
         }
 
         scenes[index].classList.add("active");
     };
 
-    // ⭐圖片動畫處理（保留你原本）
+    // 圖片動畫
     if(img){
 
         const isSlow =
@@ -725,23 +724,24 @@ function sendMsg(){
     const text = input.value.trim();
     if(!text) return;
 
-    // 顯示 + 小動畫（不動你UI）
+    output.style.opacity = "0";
     output.innerHTML = "🤍已收到你的话💍：<br>" + text;
+
+    requestAnimationFrame(() => {
+        output.style.transition = "0.8s ease";
+        output.style.opacity = "1";
+    });
 
     input.value = "";
 
-    // ⭐只鎖互動，不影響場景邏輯
     lock = true;
 
     setTimeout(() => {
 
         lock = false;
 
-        // ⭐只有在留言頁才前進（避免亂跳）
         const current = document.querySelector(".scene.active");
-        const isMsgScene = current && current.querySelector(".message-box");
-
-        if(isMsgScene){
+        if(current && current.querySelector(".message-box")){
             nextScene();
         }
 
