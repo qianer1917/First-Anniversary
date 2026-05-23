@@ -402,11 +402,12 @@ filter:blur(8px);
     <h1 class="typing">
         最后..
         <br><br>
-        <a class="starlink"
-           href="https://myppt.cc/8Pa3Sn"
-           target="_blank">
-           点我进入
-        </a>
+       <a id="finalLink"
+   class="starlink"
+   href="https://myppt.cc/8Pa3Sn"
+   target="_blank">
+   点我进入
+</a>
     </h1>
 </div>
 
@@ -453,32 +454,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.nextScene = function(){
 
-    if(index >= scenes.length - 1) return;
+        if(index >= scenes.length - 1) return;
 
-    const current = scenes[index];
-    const next = scenes[index + 1];
+        const current = scenes[index];
+        current.classList.remove("active");
 
-    current.classList.remove("active");
-    index++;
+        index++;
 
-    if(next){
-        next.classList.add("active");
-    }
+        const next = scenes[index];
+        if(next){
+            next.classList.add("active");
+        }
 
-    // ⭐ 到最後一頁
-    if(index === scenes.length - 1){
+        // ⭐ 到最後一頁（安全版）
+        if(index === scenes.length - 1){
 
-        fadeOutMusic();
+            fadeOutMusic();
 
-        setTimeout(() => {
-            const link = document.getElementById("finalLink");
-
-            if(link){
-                link.classList.add("show");
-            }
-        }, 1000); // 延遲1秒
-    }
-};
+            setTimeout(() => {
+                const link = document.getElementById("finalLink");
+                if(link){
+                    link.classList.add("show");
+                }
+            }, 1000);
+        }
+    };
+});
 </script>
 
 </body>
