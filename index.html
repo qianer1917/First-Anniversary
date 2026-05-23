@@ -409,27 +409,18 @@ filter:blur(8px);
         transform:scale(1);
     }
 }
-.special09{
-    position:relative;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
+
+/* =========================
+   🪐 09 特殊場景
+========================= */
 
 .special09{
     position:relative;
-    z-index:5;
-}
-
-.corner-text{
-    position:absolute;
-    z-index:9999;
-.special09{
     display:flex;
     justify-content:center;
     align-items:center;
     flex-direction:column;
-    position:relative;
+    z-index:5;
 }
 
 .special09 img{
@@ -438,14 +429,28 @@ filter:blur(8px);
     max-height:80vh;
     height:auto;
     object-fit:contain;
+    display:block;
 }
 
+/* 左上角傾斜文字 */
 .corner-text{
     position:absolute;
     top:20px;
     left:20px;
+
+    font-size:20px;
+    color:#fff3c4;
+
+    transform:rotate(-10deg);
+
+    text-shadow:
+        0 0 10px #ffd77a,
+        0 0 20px rgba(255,200,100,0.6);
+
     z-index:10;
+    pointer-events:none;
 }
+
 </style>  </head>   <body onclick="handleClick()">  <!-- 🌌 星層 -->  <div class="layer-back"></div>  
 <div class="layer-mid"></div>  
 <div class="layer-front"></div>  
@@ -511,6 +516,9 @@ let busy = false;
 
 const scenes = () => document.querySelectorAll(".scene");
 
+/* =========================
+   切換場景
+========================= */
 function nextScene(){
     if(busy) return;
 
@@ -520,7 +528,6 @@ function nextScene(){
     busy = true;
 
     const current = list[index];
-    const img = current.querySelector("img");
 
     const goNext = () => {
         current.classList.remove("active");
@@ -533,8 +540,10 @@ function nextScene(){
         setTimeout(() => busy = false, 300);
     };
 
+    const img = current.querySelector("img");
+
     /* =========================
-       🧸 01 / 08（fade 特效）
+       fade（01 / 08）
     ========================= */
     const isFade = current.classList.contains("fade");
 
@@ -545,35 +554,18 @@ function nextScene(){
     }
 
     /* =========================
-       📖 02~07（故事頁）
-       - 不加延遲、不干擾
+       special09（純展示）
     ========================= */
-    const isStory = current.classList.contains("story");
-
-    if(isStory){
-        goNext();
-        return;
-    }
-
-    /* =========================
-       🪐 09（special09）
-       - 只做停留，不影響其他
-    ========================= */
-    const is09 = current.classList.contains("special09");
-
-    if(is09){
+    if(current.classList.contains("special09")){
         setTimeout(goNext, 1500);
         return;
     }
 
-    /* =========================
-       🌌 其他全部正常
-    ========================= */
     goNext();
 }
 
 /* =========================
-   🎵 音樂
+   音樂
 ========================= */
 const bgm = document.getElementById("bgm");
 let musicStarted = false;
@@ -596,7 +588,7 @@ function startMusic(){
 }
 
 /* =========================
-   👆 點擊切換
+   點擊
 ========================= */
 function handleClick(){
     startMusic();
@@ -604,7 +596,7 @@ function handleClick(){
 }
 
 /* =========================
-   🌠 流星
+   流星
 ========================= */
 function spawnMeteor(){
     const m = document.createElement("div");
