@@ -712,6 +712,27 @@ output.innerHTML += `
 ">
 💌 ${text}
 </div>`;
+if(img){
+
+    const isSlow =
+        current.classList.contains("special08") ||
+        current.classList.contains("special09") ||
+        index === 1; // 01（如果位置不同你可以再調）
+
+    if(isSlow){
+        img.classList.add("slow-fade-out"); // ⭐關鍵：慢模糊
+    } else {
+        img.classList.add("fade-out"); // 原本離場不動
+    }
+
+    const delay = isSlow ? 1400 : 250;
+
+    setTimeout(() => {
+        goNext();
+    }, delay);
+
+    return;
+}
 </script>
 </body>  
 </html>
