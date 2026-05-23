@@ -280,7 +280,7 @@ filter:blur(8px);
 
 </head> 
 
-<body onclick="startMusic(); nextScene()">
+<body onclick="handleClick()">
 
 <canvas id="starCanvas"></canvas>
 
@@ -385,6 +385,8 @@ filter:blur(8px);
 <audio id="bgm" src="./time-to-love.mp3" loop></audio>
 
 <script>
+
+let musicStarted = false;
 
 const bgm = document.getElementById("bgm");
 
@@ -621,7 +623,7 @@ function animate(){
 ctx.fillStyle = `rgba(255, 230, 180, ${flicker})`;
 
     /* 🌠 隨機流星 */
-    if(Math.random() < 0.03){
+    if(Math.random() < 0.01){
         spawnMeteor();
     }
 
@@ -630,6 +632,30 @@ ctx.fillStyle = `rgba(255, 230, 180, ${flicker})`;
 
 animate();
 
+function startMusic(){
+    if(!bgm.paused) return; // ⭐關鍵：已播放就不要重播
+
+    bgm.currentTime = 0; // ⭐保證從頭開始但不疊音
+    bgm.volume = 0;
+
+    bgm.play();
+
+    let v = 0;
+    let fadeIn = setInterval(() => {
+        v += 0.03;
+        bgm.volume = v;
+        if(v >= 1) clearInterval(fadeIn);
+    }, 80);
+}
+
+function handleClick(){
+    nextScene();
+
+    if(!musicStarted){
+        musicStarted = true;
+        startMusic();
+    }
+}
 </script>
 
 </body>
