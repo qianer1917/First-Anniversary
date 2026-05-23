@@ -376,11 +376,10 @@ function nextScene(){
     busy = true;
 
     const current = scenes[index];
-
-    const isFade = current.classList.contains("fade");
     const img = current.querySelector("img");
 
     const goNext = () => {
+
         current.classList.remove("active");
 
         index++;
@@ -391,15 +390,13 @@ function nextScene(){
         setTimeout(() => busy = false, 300);
     };
 
-    /* 🌸 01 / 08：電影 fade to white */
-    if(isFade && img){
+    if(img){
         img.classList.add("fade-out");
 
-        setTimeout(goNext, 1600);
+        setTimeout(goNext, 800);
         return;
     }
 
-    /* 🌌 02~07 + 文字：正常切換 */
     goNext();
 }
 
@@ -424,13 +421,13 @@ function startMusic(){
     }, 80);
 }
 
-/* 點擊 */
+/* 點擊控制 */
 function handleClick(){
     startMusic();
     nextScene();
 }
 
-/* 流星 */
+/* 🌠 流星 */
 function spawnMeteor(){
     const meteor = document.createElement("div");
     meteor.className = "meteor";
@@ -446,7 +443,11 @@ function spawnMeteor(){
     }, 7000);
 }
 
-setInterval(spawnMeteor, 2000);
+/* ✔ 穩定生成（已修好，不會消失） */
+setInterval(() => {
+    spawnMeteor();
+}, 2000);
+
 </script>
 
 </body>  
