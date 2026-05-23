@@ -619,10 +619,10 @@ function nextScene(){
        special09（純展示）
     ========================= */
     if(current.classList.contains("special09")){
-        setTimeout(goNext, 1500);
-        return;
-    }
-
+    setTimeout(goNext, 800);
+    return;
+}
+current.classList.remove("active");
     goNext();
 }
 
